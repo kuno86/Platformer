@@ -1,0 +1,55 @@
+Frames
+-----------------------
+0  Worldmap frame1
+1  Worldmap frame2
+2  still standing / walk frame1 / run frame1
+3  walk fram2 / run frame2
+4  skidding (press opposite of current movement)
+5  jump from walk /run
+6  sprint frame1
+7  sprint frame2
+8  jump from sprint
+9  sliding
+10 itemgrab still standing / walk frame1 /run frame1 /sprint frame1
+11 itemgrab walk frame2 / run frame2 / sprint frame2
+12 throw item
+13 itemgrab swim frame1
+14 itemgrab swim frame2
+15 swim frame1
+16 swim frame2
+17 swim frame3
+18 climb frame1
+19 climb frame2
+20 onYoshi normal
+21 onYoshi ducked
+22 pickUpBurried frame1
+23 pickUpBurried frame2
+24 enter vertical pipe
+25 spinjump frame2
+26 spinjump frame4
+27 death frame
+
+
+Animations
+-----------
+#  Name		Frames
+-----------------------
+0  World	0,1
+1  stand	2
+2  walk	& run	2,3
+3  sprint	2,3
+4  skid		4
+5  jump		5
+6  spinjump	25,2(vFlip),26,2 
+7  sprintjump	8
+8  slide	9
+9  grabstand	10
+10 grabMove	11,10
+11 throw	12
+12 swim		13,14,15,16,17
+13 climb	18,19
+14 yoshi	20
+15 yoshiDucked	21
+16 pickup Burr.	22,23
+17 vert. Pipe	24
+18 dying	27

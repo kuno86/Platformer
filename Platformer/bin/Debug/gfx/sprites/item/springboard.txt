@@ -1,0 +1,2 @@
+4 Block high-jump without jump-button.
+12 Block high-jump with jump-button pressed at max spring compression.

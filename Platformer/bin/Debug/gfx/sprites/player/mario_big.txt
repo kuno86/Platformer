@@ -1,0 +1,34 @@
+Frames
+-----------------------
+0  Worldmap frame1
+1  Worldmap frame2
+2  still standing / walk frame1 / run frame1
+3  walk fram2 / run frame2
+4  skidding (press opposite of current movement)
+5  jump from walk /run
+6  sprint frame1
+7  sprint frame2
+8  jump from sprint
+9  sliding
+10 itemgrab still standing / walk frame1 /run frame1 /sprint frame1
+11 itemgrab walk frame2 / run frame2 / sprint frame2
+12 throw item
+13 itemgrab swim frame1
+14 itemgrab swim frame2
+15 swim frame1
+16 swim frame2
+17 swim frame3
+18 climb frame1
+19 climb frame2
+20 onYoshi normal
+21 onYoshi ducked
+22 pickUpBurried frame1
+23 pickUpBurried frame2
+24 enter vertical pipe
+25 spinjump frame2
+26 spinjump frame4
+27 ducked
+28 ducked itemgrab
+29 --- unused
+30 --- unused
+31 death frame

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{40D91567-B35A-449C-A51E-A9C909CA299C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <AssemblyName>Platformer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AniFrame.cs" />
+    <Compile Include="BaseObj.cs" />
+    <Compile Include="block\Bricks.cs" />
+    <Compile Include="block\Cannon.cs" />
+    <Compile Include="block\Lava.cs" />
+    <Compile Include="block\Pow.cs" />
+    <Compile Include="block\Qm.cs" />
+    <Compile Include="block\Qm_e.cs" />
+    <Compile Include="effect\Bricks_shatter.cs" />
+    <Compile Include="effect\Hammerbros_hammer.cs" />
+    <Compile Include="effect\Minismoke.cs" />
+    <Compile Include="effect\Qm_open.cs" />
+    <Compile Include="effect\Smb1_getCoin.cs" />
+    <Compile Include="effect\Smb2_pow_on.cs" />
+    <Compile Include="effect\Smoke.cs" />
+    <Compile Include="effect\Sparkle.cs" />
+    <Compile Include="item\Fireflower.cs" />
+    <Compile Include="item\Keyy.cs" />
+    <Compile Include="item\Mushroom.cs" />
+    <Compile Include="item\Mushroom_p.cs" />
+    <Compile Include="item\OneUp.cs" />
+    <Compile Include="item\Coin.cs" />
+    <Compile Include="item\PSwitch_b.cs" />
+    <Compile Include="item\Spring_p.cs" />
+    <Compile Include="item\Starman.cs" />
+    <Compile Include="item\ThreeUp.cs" />
+    <Compile Include="npc\Boo.cs" />
+    <Compile Include="Collision.cs" />
+    <Compile Include="Circle.cs" />
+    <Compile Include="effect\Fireball_hit.cs" />
+    <Compile Include="Geometry.cs" />
+    <Compile Include="npc\Bulletbill.cs" />
+    <Compile Include="npc\Buzzybeetle.cs" />
+    <Compile Include="npc\Goomba.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="npc\Fireballshot.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="effect\Brickshatter.cs" />
+    <Compile Include="npc\Hammerbros.cs" />
+    <Compile Include="npc\Koopa_green.cs" />
+    <Compile Include="npc\Koopa_red.cs" />
+    <Compile Include="npc\Piranhaplant.cs" />
+    <Compile Include="npc\Potaboo.cs" />
+    <Compile Include="npc\Spiny.cs" />
+    <Compile Include="npc\VeloTest.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Texture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

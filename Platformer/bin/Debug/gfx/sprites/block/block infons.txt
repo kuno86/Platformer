@@ -1,0 +1,4 @@
+moves 6 pixels up and down on hit.
+
+Brick parts go up 48 and 16 pixel.
+Brick parts go sideways 36 pixel, velocity starts 8 and -1 per aniFrame to 0
