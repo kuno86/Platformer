@@ -43,16 +43,16 @@ namespace Game
             Image.drawTileFrame(texture, frame, 8, x, y);
 
             
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if (Map.spriteList[i].x + Map.spriteList[i].w > x &&
-                        Map.spriteList[i].x < x + w &&
-                        Map.spriteList[i].y + Map.spriteList[i].h > y &&
-                        Map.spriteList[i].y < y + h)
+                    if (Map.spriteArray[i].x + Map.spriteArray[i].w > x &&
+                        Map.spriteArray[i].x < x + w &&
+                        Map.spriteArray[i].y + Map.spriteArray[i].h > y &&
+                        Map.spriteArray[i].y < y + h)
                     {
-                        Map.spriteList.Add(new Smb2_pow_on(x, y));
+                        Map.spriteAdd(new Smb2_pow_on(x, y));
                         x = -100;
                         y = -100;
                     }

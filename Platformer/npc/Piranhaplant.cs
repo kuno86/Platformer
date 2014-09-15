@@ -88,24 +88,27 @@ namespace Game
             }
             else
             {
-                for (int i = 0; i != Map.spriteList.Count(); i++)
+                for (int i = 0; i != Map.spriteArrMax; i++)
                 {
-                    if (Map.spriteList[i].name == "Player")
+                    if (Map.spriteArray[i] != null)
                     {
-                        if (timer == 0 && Map.spriteList[i].colRect.x - (Map.spriteList[i].colRect.w / 2) - x - (w / 2) > 16)
+                        if (Map.spriteArray[i].name == "Player")
                         {
-                            yVel = yVel * -1;
-                            timer = 180;
-                        }
+                            if (timer == 0 && Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) > 16)
+                            {
+                                yVel = yVel * -1;
+                                timer = 180;
+                            }
 
-                        if (timer == 0 && Map.spriteList[i].colRect.x + (Map.spriteList[i].colRect.w / 2) - x + (w / 2) < -16)
-                        {
-                            yVel = yVel * -1;
-                            timer = 180;
-                        }
+                            if (timer == 0 && Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) < -16)
+                            {
+                                yVel = yVel * -1;
+                                timer = 180;
+                            }
 
-                        if ((Map.spriteList[i].colRect.x - (Map.spriteList[i].colRect.w / 2) - x - (w / 2) < 16) && (Map.spriteList[i].colRect.x + (Map.spriteList[i].colRect.w / 2) - x + (w / 2) > -16))
-                            timer=90;
+                            if ((Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) < 16) && (Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) > -16))
+                                timer = 90;
+                        }
                     }
                 }
             }

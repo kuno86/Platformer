@@ -54,6 +54,9 @@ namespace Game
 
         public static List<BaseObj> spriteList = new List<BaseObj>();   //List of all sprites that are currently active
 
+        public static BaseObj[] spriteArray = new BaseObj[4096];
+        public static int spriteArrMax;
+
         public static BaseObj[] sprites = new BaseObj[1024];  // this is a catalouge of all spawnable sprites
 
 
@@ -84,6 +87,7 @@ namespace Game
             int y=0;
             tileSize = tilesize;
             currentDimension = 2;
+            spriteArrMax = 0;
             sprites[000] = null;
             sprites[001] = new Player(-200, -200);
             sprites[002] = new Boo(-200, -200);
@@ -101,6 +105,7 @@ namespace Game
             sprites[014] = new Spiny(-200, -200, false, 1, true);   //Spiny-Egg
             sprites[015] = new Piranhaplant(-200, -200, 1);     //Green Piranha Plant
             sprites[016] = new Piranhaplant(-200, -200, 2);     //Red Piranha Plant
+            sprites[017] = new Hammerbros(-200, -200);
 
             sprites[100] = new Bricks(-200, -200, (short)rnd.Next(1, 5));
             sprites[101] = new Pow(-200, -200);
@@ -189,19 +194,24 @@ namespace Game
             var keyboard = Keyboard.GetState();     
             var maus = Mouse.GetState();        //Don't use this mouse for coordinates, their origin is not from the gameWindow !!!
            
-            int spriteListCount = spriteList.Count();
-            for (int i = 0; i < spriteListCount; i++)
+            
+            for (int i = 0; i <= spriteArrMax; i++)
             {
+                if (spriteArray[i] != null)
+                {
+                    Image.drawText("[" + i + "]=" + spriteArray[i].name + " X=" + (int)spriteArray[i].x + " Y=" + (int)spriteArray[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
 
-                Image.drawText("[" + i + "]=" + spriteList[i].name + " X=" + (int)spriteList[i].x + " Y=" + (int)spriteList[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
-
-                spriteList[i].process();
-                if (spriteList[i].x + spriteList[i].w > RootThingy.sceneX || spriteList[i].x < 0 || spriteList[i].y < 0 || spriteList[i].y + spriteList[i].h > RootThingy.sceneY)
-                { spriteList.RemoveAt(i); spriteListCount--; }  //Delete sprites that are out of scene Borders
-                                
-                
+                    spriteArray[i].process();
+                    if (spriteArray[i].despawnOffScreen)
+                    {
+                        if (spriteArray[i].x + spriteArray[i].w > RootThingy.sceneX || spriteArray[i].x < 0 || spriteArray[i].y < 0 || spriteArray[i].y + spriteArray[i].h > RootThingy.sceneY)
+                        {
+                            spriteArray[i] = null;
+                            //spriteArrayCount--; 
+                        }  //Delete sprites that are out of scene Borders
+                    }
+                }
             }
-
 
 
 
@@ -215,32 +225,35 @@ namespace Game
                 double tempX;                                                                   //
                 double tempY;                                                                       //
                 short tempType;                                                                         //
-                for (int i = 0; i != spriteList.Count(); i++)                                               //
-                {                                                                                           //
-                    if (spriteList[i].name == "Coin")                                                       //
-                    {                                                                                       //
-                        tempX = spriteList[i].x;                                            //
-                        tempY = spriteList[i].y;                                            //Buffer X, Y and type of the object to be replaced
-                        tempType = spriteList[i].type;                                      //
-                        spriteList[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
-                    }                                                                                       //
-                    else if (spriteList[i].name == "?-Block_e")                                             //
-                    {                                                                                       //
-                        tempX = spriteList[i].x;                                                            //
-                        tempY = spriteList[i].y;                                                            //
-                        tempType = spriteList[i].type;                                                      //
-                        spriteList[i] = new Coin(tempX, tempY, tempType);                                   //
-                    }                                                                                       //
+                for (int i = 0; i != spriteArrMax; i++)                                               //
+                {
+                    if (spriteArray[i] != null)                                                            //
+                    {
+                        if (spriteArray[i].name == "Coin")                                                       //
+                        {                                                                                       //
+                            tempX = spriteArray[i].x;                                            //
+                            tempY = spriteArray[i].y;                                            //Buffer X, Y and type of the object to be replaced
+                            tempType = spriteArray[i].type;                                      //
+                            spriteArray[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
+                        }                                                                                       //
+                        else if (spriteArray[i].name == "?-Block_e")                                             //
+                        {                                                                                       //
+                            tempX = spriteArray[i].x;                                                            //
+                            tempY = spriteArray[i].y;                                                            //
+                            tempType = spriteArray[i].type;                                                      //
+                            spriteArray[i] = new Coin(tempX, tempY, tempType);                                   //
+                        }
+                    }                                                                                         //
                 }                                                                                           //
             }
 
-            if (pSwitchTimer_b == -1)
+            if (pSwitchTimer_b == 1)
                 pSwitch_b = false;
 
                                     //Handle Silver P-Switches
             if (pSwitchTimer_s > -1)    //Count down the switch duration
                 pSwitchTimer_s--;       //
-            if (pSwitchTimer_s == -1)   //Revert effect after time is up
+            if (pSwitchTimer_s == 1)   //Revert effect after time is up
                 pSwitch_s = false;      //
 
             
@@ -280,7 +293,7 @@ namespace Game
 
                 case 3:
                     if(sprites[currentIDArr[currentDimension, 0]]!=null)
-                        Image.drawText(sprites[currentIDArr[currentDimension, 0]].getName(), (mausX * 16), (mausY * 16)-12, Color.White, Texture.ASCII);
+                        Image.drawText("Id" + currentIDArr[currentDimension, 0] + " = " + sprites[currentIDArr[currentDimension, 0]].getName(), (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
                     else
                         Image.drawText("Id" + currentIDArr[currentDimension, 0]+" = Leer", (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
                     break;    //sprites
@@ -318,7 +331,7 @@ namespace Game
 
 
             if (keyboard[Key.End])               // +
-            { spriteList.Add(new Hammerbros(mausX*16,mausY*16)); Thread.Sleep(150); }     // Spawn something with End (Ende) Key
+            { spriteAdd(new Firebar(mausX*16,mausY*16)); Thread.Sleep(150); }     // Spawn something with End (Ende) Key
 
 
             if (keyboard[Key.PageUp])               // +
@@ -333,7 +346,7 @@ namespace Game
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW
         public void draw()
-        {
+        {            
             Image.beginDraw2D();
             double tileX = 0;
             double tileY = 0;
@@ -370,44 +383,46 @@ namespace Game
                 {
                     if (map[arrY, arrX, 3] > -1)
                     {
+                        //Console.WriteLine("arrY=" + arrY + " | arrX=" + arrX);
                         switch (map[arrY, arrX, 3])    //Sprite-ID
                         {
-                            //spriteList.Add()
-                            //spriteList.Add(new BaseObj(0, 0, 1, 1));
+                            //spriteArray.Add()
+                            //spriteArray.Add(new BaseObj(0, 0, 1, 1));
                             case 000: break;
-                            case 001: spriteList.Add(new Player(arrX * 16, arrY * 16)); break;
-                            case 002: spriteList.Add(new Boo(arrX * 16, arrY * 16)); break;
-                            case 003: spriteList.Add(new Goomba(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 4))); break;
-                            case 004: spriteList.Add(new Koopa_green(arrX * 16, arrY * 16)); break;
-                            case 005: spriteList.Add(new Koopa_green(arrX * 16, arrY * 16, false, 1, 2)); break;  //jumping
-                            case 006: spriteList.Add(new Koopa_green(arrX * 16, arrY * 16, false, 1, 2)); break;  //high jumping
-                            case 007: spriteList.Add(new Koopa_red(arrX * 16, arrY * 16)); break;
-                            case 008: spriteList.Add(new Koopa_red(arrX * 16, arrY * 16, false, 1, 2)); break;  //jumping
-                            case 009: spriteList.Add(new Koopa_red(arrX * 16, arrY * 16, false, 1, 2)); break;  //high jumping
-                            case 010: spriteList.Add(new Bulletbill(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 5))); break;
-                            case 011: spriteList.Add(new Bulletbill(arrX * 16, arrY * 16, false, 3,true)); break;   //homing version (only type 3 !!!)
-                            case 012: spriteList.Add(new Buzzybeetle(arrX * 16, arrY * 16, false)); break;
-                            case 013: spriteList.Add(new Spiny(arrX * 16, arrY * 16, false, 1, false)); break;  //Spiny
-                            case 014: spriteList.Add(new Spiny(arrX * 16, arrY * 16, false, 1, true)); break;    //Spiny-Egg
-                            case 015: spriteList.Add(new Piranhaplant(arrX * 16, arrY * 16, 1)); break;    //Green Piranha Plant
-                            case 016: spriteList.Add(new Piranhaplant(arrX * 16, arrY * 16, 2)); break;    //Red Piranha Plant
+                            case 001: spriteAdd(new Player(arrX * 16, arrY * 16)); break;
+                            case 002: spriteAdd(new Boo(arrX * 16, arrY * 16)); break;
+                            case 003: spriteAdd(new Goomba(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 4))); break;
+                            case 004: spriteAdd(new Koopa_green(arrX * 16, arrY * 16)); break;
+                            case 005: spriteAdd(new Koopa_green(arrX * 16, arrY * 16, false, 1, 2)); break;  //jumping
+                            case 006: spriteAdd(new Koopa_green(arrX * 16, arrY * 16, false, 1, 2)); break;  //high jumping
+                            case 007: spriteAdd(new Koopa_red(arrX * 16, arrY * 16)); break;
+                            case 008: spriteAdd(new Koopa_red(arrX * 16, arrY * 16, false, 1, 2)); break;  //jumping
+                            case 009: spriteAdd(new Koopa_red(arrX * 16, arrY * 16, false, 1, 2)); break;  //high jumping
+                            case 010: spriteAdd(new Bulletbill(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 5))); break;
+                            case 011: spriteAdd(new Bulletbill(arrX * 16, arrY * 16, false, 3, true)); break;   //homing version (only type 3 !!!)
+                            case 012: spriteAdd(new Buzzybeetle(arrX * 16, arrY * 16, false)); break;
+                            case 013: spriteAdd(new Spiny(arrX * 16, arrY * 16, false, 1, false)); break;  //Spiny
+                            case 014: spriteAdd(new Spiny(arrX * 16, arrY * 16, false, 1, true)); break;    //Spiny-Egg
+                            case 015: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 1)); break;    //Green Piranha Plant
+                            case 016: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 2)); break;    //Red Piranha Plant
+                            case 017: spriteAdd(new Hammerbros(arrX * 16, arrY * 16)); break; 
 
-                            case 100: spriteList.Add(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
-                            case 101: spriteList.Add(new Pow(arrX * 16, arrY * 16)); break;
-                            case 102: spriteList.Add(new Qm(arrX * 16, arrY * 16)); break;
-                            case 103: spriteList.Add(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
-                            case 104: spriteList.Add(new Mushroom(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 3))); break;
-                            case 105: spriteList.Add(new Fireflower(arrX * 16, arrY * 16, (short)rnd.Next(1, 4))); break;
-                            case 106: spriteList.Add(new Starman(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 5))); break;
-                            case 107: spriteList.Add(new PSwitch_b(arrX * 16, arrY * 16)); break;
-                            case 108: spriteList.Add(new Spring_p(arrX * 16, arrY * 16)); break;
-                            case 109: spriteList.Add(new Cannon(arrX * 16, arrY * 16)); break;
-                            case 110: spriteList.Add(new Keyy(arrX * 16, arrY * 16, (short)rnd.Next(1, 3))); break;
+                            case 100: spriteAdd(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
+                            case 101: spriteAdd(new Pow(arrX * 16, arrY * 16)); break;
+                            case 102: spriteAdd(new Qm(arrX * 16, arrY * 16)); break;
+                            case 103: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
+                            case 104: spriteAdd(new Mushroom(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 3))); break;
+                            case 105: spriteAdd(new Fireflower(arrX * 16, arrY * 16, (short)rnd.Next(1, 4))); break;
+                            case 106: spriteAdd(new Starman(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 5))); break;
+                            case 107: spriteAdd(new PSwitch_b(arrX * 16, arrY * 16)); break;
+                            case 108: spriteAdd(new Spring_p(arrX * 16, arrY * 16)); break;
+                            case 109: spriteAdd(new Cannon(arrX * 16, arrY * 16)); break;
+                            case 110: spriteAdd(new Keyy(arrX * 16, arrY * 16, (short)rnd.Next(1, 3))); break;
 
-                            case 111: spriteList.Add(new Lava(arrX * 16, arrY * 16)); break;
-                            case 112: spriteList.Add(new Potaboo(arrX * 16, arrY * 16)); break;
+                            case 111: spriteAdd(new Lava(arrX * 16, arrY * 16)); break;
+                            case 112: spriteAdd(new Potaboo(arrX * 16, arrY * 16)); break;
 
-                            case 300: spriteList.Add(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
+                            case 300: spriteAdd(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
 
                             default: Console.WriteLine("Invalid Sprite-ID: " + map[arrY, arrX, 3] + " @[" + arrX + "][" + arrY + "] "); break; 
                         }
@@ -453,7 +468,7 @@ namespace Game
                 }
             }
             Image.drawText("Animated Objects: " + animatedCounter, 0, 552, Color.Red, Texture.ASCII);
-            Image.drawText("Sprites: " + spriteList.Count, 0, 564, Color.Red, Texture.ASCII);
+            Image.drawText("Sprites: " + spriteArrMax, 0, 564, Color.Red, Texture.ASCII);
 
             Image.drawText("P-Switch b timer: " + pSwitchTimer_b, 0, 576, Color.Blue, Texture.ASCII);
             Image.drawText("P-Switch s timer: " + pSwitchTimer_s, 0, 588, Color.Silver, Texture.ASCII);
@@ -514,6 +529,32 @@ namespace Game
 
             Image.endDraw2D();
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ADD_A_SPRITE
+        public static int spriteAdd(BaseObj spriteObj)
+        {
+            bool done = false;
+            int i = 0;
+            while (!done && i<=spriteArray.Count())
+            {
+                if (spriteArray[i] == null)
+                {
+                    spriteArray[i] = spriteObj;
+                    done = true;
+                    if (i > spriteArrMax)
+                        spriteArrMax = i;
+                }
+                else
+                {
+                    Console.WriteLine("spriteAdd("+spriteArray[i].getName()+")");
+                    //Console.ReadKey();
+                    i++;
+                }
+            }
+            return i;
+        }
+
+
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// GET_CURRENT_DIMENSION
         public int getCurrentDimension()

@@ -33,11 +33,11 @@ namespace Game
         {
             refreshColRect();
             frame = 0;
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if ((Map.spriteList[i].x < x) && (Map.spriteList[i].dir))  //is right from player an d looks away
+                    if ((Map.spriteArray[i].x < x) && (Map.spriteArray[i].dir))  //is right from player an d looks away
                     {
                         dir = true;
                         frame = 1;
@@ -46,12 +46,12 @@ namespace Game
                         else
                             xVel = -velMax;
 
-                        if (Map.spriteList[i].y > y)
+                        if (Map.spriteArray[i].y > y)
                             y += 0.16;
-                        if (Map.spriteList[i].y < y+h)
+                        if (Map.spriteArray[i].y < y+h)
                             y -= 0.16;
                     }
-                    else if ((Map.spriteList[i].x > x) && (!Map.spriteList[i].dir))  //is left from player an d looks away
+                    else if ((Map.spriteArray[i].x > x) && (!Map.spriteArray[i].dir))  //is left from player an d looks away
                     {
                         dir = false;
                         frame = 1;
@@ -60,9 +60,9 @@ namespace Game
                         else
                             xVel = velMax;
 
-                        if (Map.spriteList[i].y > y)
+                        if (Map.spriteArray[i].y > y)
                             y += 0.16;
-                        if (Map.spriteList[i].y < y)
+                        if (Map.spriteArray[i].y < y)
                             y -= 0.16;
                     }
                     else

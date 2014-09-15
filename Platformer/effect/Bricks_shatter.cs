@@ -34,10 +34,10 @@ namespace Game
 
         public override void process()
         {
-            Map.spriteList.Add(new Brickshatter(texture, frames, x+8, y, 2, -4));       //Higher part that goes right
-            Map.spriteList.Add(new Brickshatter(texture, frames, x, y, -2, -4));        //Higher part that goes Left
-            Map.spriteList.Add(new Brickshatter(texture, frames, x+8, y+8, 2, -1.33));  //Lower part that goes right
-            Map.spriteList.Add(new Brickshatter(texture, frames, x, y+8, -2, -1.33));   //Lower part that goes Left
+            Map.spriteAdd(new Brickshatter(texture, frames, x+8, y, 2, -4));       //Higher part that goes right
+            Map.spriteAdd(new Brickshatter(texture, frames, x, y, -2, -4));        //Higher part that goes Left
+            Map.spriteAdd(new Brickshatter(texture, frames, x+8, y+8, 2, -1.33));  //Lower part that goes right
+            Map.spriteAdd(new Brickshatter(texture, frames, x, y+8, -2, -1.33));   //Lower part that goes Left
             x = -100;
             y = -100;
         }

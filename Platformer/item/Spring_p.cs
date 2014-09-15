@@ -94,24 +94,24 @@ namespace Game
 
             var keyboard = Keyboard.GetState();
             //Thread.Sleep(30);
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if (getCol2Obj(Map.spriteList[i].colRect, cRect))
+                    if (getCol2Obj(Map.spriteArray[i].colRect, cRect))
                     {
 
-                        Image.drawText((Map.spriteList[i].colRect.y + Map.spriteList[i].colRect.h - y).ToString(), (int)x + w + 3, (int)y, Color.Red, Texture.ASCII);
+                        Image.drawText((Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y).ToString(), (int)x + w + 3, (int)y, Color.Red, Texture.ASCII);
 
-                        if (Map.spriteList[i].colRect.y + Map.spriteList[i].colRect.h - y >= 4)
+                        if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 4)
                             frame = 1;
-                        else if (Map.spriteList[i].colRect.y + Map.spriteList[i].colRect.h - y >= 8)
+                        else if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 8)
                         {
                             frame = 2;
                             if(keyboard[Key.Z] || keyboard[Key.Y])
-                                Map.spriteList[i].setXYVel(Map.spriteList[i].xVel, springVel - 3);
+                                Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel - 3);
                             else
-                                Map.spriteList[i].setXYVel(Map.spriteList[i].xVel, springVel);
+                                Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel);
                         }
                     }
                 }

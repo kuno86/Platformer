@@ -100,24 +100,28 @@ namespace Game
 
                 double tempX;                                                                               //
                 double tempY;                                                                               //
-                short tempType;                                                                             //
-                for (int i = 0; i != Map.spriteList.Count(); i++)                                           //
+                short tempType;                   
+                if(!Map.pSwitch_b)
+                for (int i = 0; i != Map.spriteArrMax; i++)                                           //
                 {                                                                                           //
-                    if (Map.spriteList[i].name == "Coin")                                                   //
-                    {                                                                                       //
-                        tempX = Map.spriteList[i].x;                                            //
-                        tempY = Map.spriteList[i].y;                                            //Buffer X, Y and type of the object to be replaced
-                        tempType = Map.spriteList[i].type;                                      //
-                        Map.spriteList[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
-                    }                                                                                       //
-                    else if (Map.spriteList[i].name == "?-Block_e")                                         //
-                    {                                                                                       //
-                        tempX = Map.spriteList[i].x;                                                        //
-                        tempY = Map.spriteList[i].y;                                                        //
-                        tempType = Map.spriteList[i].type;                                                  //
-                        Map.spriteList[i] = new Coin(tempX, tempY, tempType);                               //
-                    }                                                                                       //
-                }                                                                                           //
+                    if (Map.spriteArray[i] != null)
+                    {
+                        if (Map.spriteArray[i].name == "Coin")                                                   //
+                        {                                                                                       //
+                            tempX = Map.spriteArray[i].x;                                            //
+                            tempY = Map.spriteArray[i].y;                                            //Buffer X, Y and type of the object to be replaced
+                            tempType = Map.spriteArray[i].type;                                      //
+                            Map.spriteArray[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
+                        }                                                                                       //
+                        else if (Map.spriteArray[i].name == "?-Block_e")                                         //
+                        {                                                                                       //
+                            tempX = Map.spriteArray[i].x;                                                        //
+                            tempY = Map.spriteArray[i].y;                                                        //
+                            tempType = Map.spriteArray[i].type;                                                  //
+                            Map.spriteArray[i] = new Coin(tempX, tempY, tempType);                               //
+                        }                                                                                       //
+                    }
+                }//
             }
 
             if (pressed)

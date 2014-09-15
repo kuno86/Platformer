@@ -61,22 +61,22 @@ namespace Game
                     dir = true;
             }
 
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
                     if (homing)
                     {
-                        if (Map.spriteList[i].colRect.y > y)
+                        if (Map.spriteArray[i].colRect.y > y)
                             y++;
-                        if (Map.spriteList[i].colRect.y < y)
+                        if (Map.spriteArray[i].colRect.y < y)
                             y--;
-                        if (Map.spriteList[i].colRect.x + Map.spriteList[i].colRect.w + HomingRange > x)
+                        if (Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w + HomingRange > x)
                         { xVel += 0.2; } 
-                        if (Map.spriteList[i].colRect.x - HomingRange < x + w)
+                        if (Map.spriteArray[i].colRect.x - HomingRange < x + w)
                         { xVel -= 0.2; }
                     }
-                    if (getCol2Obj(this.colRect, Map.spriteList[i].colRect))
+                    if (getCol2Obj(this.colRect, Map.spriteArray[i].colRect))
                         ;//hurt or get hurt
                 }
             }

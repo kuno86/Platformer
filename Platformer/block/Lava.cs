@@ -49,11 +49,14 @@ namespace Game
                 frame = 1;
             }
 
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (getCol2Obj(colRect,Map.spriteList[i].colRect))
+                if (Map.spriteArray[i] != null)
                 {
-                    
+                    if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
+                    {
+
+                    }
                 }
             }
 

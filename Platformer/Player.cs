@@ -266,7 +266,7 @@ namespace Game
             {
                 if (shotCoolDown == 0 && keyboard.IsKeyDown(RunShootBtn) && power==2)
                 {
-                    Map.spriteList.Add(new Fireballshot(x, y, this, stateArr[state][frame].flipV ^ dir));
+                    Map.spriteAdd(new Fireballshot(x, y, this, stateArr[state][frame].flipV ^ dir));
                     shotCoolDown = 5;//30
                 }
             }
@@ -350,55 +350,60 @@ namespace Game
                 
 
             //get colliding Object and react to them
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (getCol2Obj(colRect, Map.spriteList[i].colRect) && this.id!=Map.spriteList[i].id)
+                if (Map.spriteArray[i] != null)
                 {
-                    switch (Map.spriteList[i].getName()){
-                        case "Coin": 
-                            getCoin(); 
-                            Map.spriteList[i].setXY(-100, -100);
-                            Map.spriteList.Add(new Smb1_getCoin(x, y));
-                            break;
+                    if (getCol2Obj(colRect, Map.spriteArray[i].colRect) && this.id != Map.spriteArray[i].id)
+                    {
+                        switch (Map.spriteArray[i].getName())
+                        {
+                            case "Coin":
+                                getCoin();
+                                Map.spriteArray[i].setXY(-100, -100);
+                                Map.spriteAdd(new Smb1_getCoin(x, y));
+                                break;
 
-                        case "Mushroom":
-                            if (power == 0)
-                                setPowerUp_big();
-                            Map.spriteList[i].setXY(-100, -100);
-                            break;
+                            case "Mushroom":
+                                if (power == 0)
+                                    setPowerUp_big();
+                                Map.spriteArray[i].setXY(-100, -100);
+                                break;
 
-                        case "Fireflower":
+                            case "Fireflower":
                                 setPowerUp_fire();
-                            Map.spriteList[i].setXY(-100, -100);
-                            break;
+                                Map.spriteArray[i].setXY(-100, -100);
+                                break;
 
-                        case "Starman":
-                            
-                            Map.spriteList[i].setXY(-100, -100);
-                            break;
+                            case "Starman":
 
-                        case "OneUp":
-                            getLive();
-                            Map.spriteList[i].setXY(-100, -100);
-                            break;
+                                Map.spriteArray[i].setXY(-100, -100);
+                                invulnerableTimer = 1800;
+                                break;
 
-                        case "ThreeUp":
-                            getLive(); 
-                            getLive(); 
-                            getLive();
-                            Map.spriteList[i].setXY(-100, -100);
-                            break;
+                            case "OneUp":
+                                getLive();
+                                Map.spriteArray[i].setXY(-100, -100);
+                                break;
 
-                        case "PSwitch_b":
-                            Map.pSwitchTimer_b = 1800;  //1800 Frames = 30 seconds
-                            break;
-                            
-                        case "Mushroom_p":
-                        case "Goomba":
-                        case "Boo":
-                            getDamage(); 
-                            break;
-                        default: break;
+                            case "ThreeUp":
+                                getLive();
+                                getLive();
+                                getLive();
+                                Map.spriteArray[i].setXY(-100, -100);
+                                break;
+
+                            case "PSwitch_b":
+                                Map.pSwitchTimer_b = 1800;  //1800 Frames = 30 seconds
+                                break;
+
+                            case "Mushroom_p":
+                            case "Goomba":
+                            case "Boo":
+                                getDamage();
+                                break;
+                            default: break;
+                        }
                     }
                 }
             }
@@ -407,7 +412,7 @@ namespace Game
             if (invulnerableTimer > 0)
             {
                 invulnerableTimer--;                        //Creates a Sparkle on a random Position withing the collision-box
-                Map.spriteList.Add(new Sparkle(Map.rnd.Next((int)colRect.x,(int)colRect.x+(int)colRect.w+1)-4,Map.rnd.Next((int)colRect.y,(int)colRect.y+(int)colRect.h)-4));
+                Map.spriteAdd(new Sparkle(Map.rnd.Next((int)colRect.x,(int)colRect.x+(int)colRect.w+1)-4,Map.rnd.Next((int)colRect.y,(int)colRect.y+(int)colRect.h)-4));
             }
 
 

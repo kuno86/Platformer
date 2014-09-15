@@ -44,21 +44,21 @@ namespace Game
             if (wait > 0)
                 wait--;
 
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if (wait <= 0 && (Map.spriteList[i].colRect.x - (Map.spriteList[i].colRect.w / 2) - x - (w / 2) > 16))
+                    if (wait <= 0 && (Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) > 16))
                     { 
-                        Map.spriteList.Add(new Bulletbill(x + 16, y, false, type, homing));
-                        Map.spriteList.Add(new Smoke(x + 16, y, type));                     //shot right
+                        Map.spriteAdd(new Bulletbill(x + 16, y, false, type, homing));
+                        Map.spriteAdd(new Smoke(x + 16, y, type));                     //shot right
                         wait = Map.rnd.Next(90, 300);
                     }
 
-                    if (wait <= 0 && (Map.spriteList[i].colRect.x + (Map.spriteList[i].colRect.w / 2) - x + (w / 2) < -16))
+                    if (wait <= 0 && (Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) < -16))
                     { 
-                        Map.spriteList.Add(new Bulletbill(x - 16, y, true, type, homing));
-                        Map.spriteList.Add(new Smoke(x - 16, y, type));                     //shoot left
+                        Map.spriteAdd(new Bulletbill(x - 16, y, true, type, homing));
+                        Map.spriteAdd(new Smoke(x - 16, y, type));                     //shoot left
                         wait = Map.rnd.Next(90, 300);
                     }
                         

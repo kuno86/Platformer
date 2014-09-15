@@ -37,8 +37,8 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_spiny =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_spiny.bmp");//
         public static int smb1_piranha_green =  Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_piranha_green.bmp");//
         public static int smb1_piranha_red =    Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_piranha_red.bmp");//
-        public static int smb1_hammerbros =     Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_hammerbros.bmp");
-        public static int smb1_potaboo =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_potaboo.bmp");
+        public static int smb1_hammerbros =     Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_hammerbros.bmp");//
+        public static int smb1_potaboo =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_potaboo.bmp");//
 
         //Items
         public static int smb1_mushroom =       Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\item\smb1_mushroom.bmp");//
@@ -91,6 +91,8 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_cannon =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_cannon.bmp");//
         public static int smb3_cannon =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb3_cannon.bmp");//
         public static int smw_cannon =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smw_cannon.bmp");//
+
+        public static int smb1_firebarBlock =   Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_firebar-block.bmp");//
 
         public static int smb1_lava =           Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_lava.bmp");//
         public static int smb3_lava1 =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb3_lava1.bmp");//

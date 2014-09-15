@@ -30,6 +30,8 @@ namespace Game
 
         public bool grabable = false;
 
+        public bool despawnOffScreen = true;
+
         public static int idCount=0;
         public int id;
 

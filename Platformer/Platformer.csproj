@@ -50,11 +50,13 @@
     <Compile Include="BaseObj.cs" />
     <Compile Include="block\Bricks.cs" />
     <Compile Include="block\Cannon.cs" />
+    <Compile Include="block\Firebar.cs" />
     <Compile Include="block\Lava.cs" />
     <Compile Include="block\Pow.cs" />
     <Compile Include="block\Qm.cs" />
     <Compile Include="block\Qm_e.cs" />
     <Compile Include="effect\Bricks_shatter.cs" />
+    <Compile Include="effect\Firebar_segment.cs" />
     <Compile Include="effect\Hammerbros_hammer.cs" />
     <Compile Include="effect\Minismoke.cs" />
     <Compile Include="effect\Qm_open.cs" />
@@ -82,7 +84,7 @@
     <Compile Include="npc\Goomba.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="npc\Fireballshot.cs" />
+    <Compile Include="block\Fireballshot.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="effect\Brickshatter.cs" />
     <Compile Include="npc\Hammerbros.cs" />

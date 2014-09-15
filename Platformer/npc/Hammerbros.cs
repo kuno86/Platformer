@@ -78,9 +78,9 @@ namespace Game
             {
                 state = 4;
                 if (dir)     //Left
-                    Map.spriteList.Add(new Hammerbros_hammer(x + 1, y - 10, dir, -3 - (Map.rnd.NextDouble()), type));
+                    Map.spriteAdd(new Hammerbros_hammer(x + 1, y - 10, dir, -3 - (Map.rnd.NextDouble()), type));
                 else
-                    Map.spriteList.Add(new Hammerbros_hammer(x - 1, y - 10, dir, -3 - (Map.rnd.NextDouble()), type));
+                    Map.spriteAdd(new Hammerbros_hammer(x - 1, y - 10, dir, -3 - (Map.rnd.NextDouble()), type));
             }
             if (throwDelay == 0)
             {

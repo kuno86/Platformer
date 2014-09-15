@@ -1,11 +1,11 @@
- - Rewrite sprite-Holder from List to Array
-
  - ? (qm) block spawn their contents from Map.sprites[].
 
  - Firebars are completly lost, recode...
 
- - reAdd Hammerbros + their Hammers
-
- - Starman effect
+ - fix Hammerbros AI 
 
  - fix Potaboos
+
+ - smooth buzzy beetle movement
+
+ - blue p-switch can trigger again while other still active

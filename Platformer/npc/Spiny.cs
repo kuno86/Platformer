@@ -66,13 +66,16 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].colWithOthers && this.id != Map.spriteList[i].id)
+                if (Map.spriteArray[i] != null)
                 {
-                    if (getCol2Obj(colRect, Map.spriteList[i].colRect))
+                    if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
                     {
-                        dir = !dir; //Map.spriteList[i].dir = !Map.spriteList[i].dir;
+                        if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
+                        {
+                            dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
+                        }
                     }
                 }
             }

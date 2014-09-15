@@ -11,9 +11,9 @@ namespace Game
         private short frame = 0;
         private short frames;
         private short frameDelay = 0;
-        private BaseObj content = null;
+        private int contentID = 103;
 
-        public Qm(double x, double y, short type=1, BaseObj content=null, bool invisible=false )
+        public Qm(double x, double y, short type=1, int contentID=103, bool invisible=false )
             : base(x, y)
         {
             this.name = "?-Block";
@@ -24,6 +24,8 @@ namespace Game
                 case 4: this.texture = Texture.smw_qm; frames = 4; break; 
                 default: this.texture = Texture.smb1_qm; frames = 4; break;
             }
+            if(Map.sprites[contentID]!=null)
+                this.contentID = contentID;
             this.x = x;
             this.y = y;
             this.w = 16;
@@ -52,19 +54,19 @@ namespace Game
                 Image.drawTileFrame(texture, frame, 4, x, y);
 
 
-            for (int i = 0; i != Map.spriteList.Count(); i++)
+            for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteList[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if (Map.spriteList[i].x + Map.spriteList[i].w > x &&
-                        Map.spriteList[i].x < x + w &&
-                        Map.spriteList[i].y + Map.spriteList[i].h > y &&
-                        Map.spriteList[i].y < y + h)
+                    if (Map.spriteArray[i].x + Map.spriteArray[i].w > x &&
+                        Map.spriteArray[i].x < x + w &&
+                        Map.spriteArray[i].y + Map.spriteArray[i].h > y &&
+                        Map.spriteArray[i].y < y + h)
                     {
-                        Map.spriteList.Add(new Qm_e(x, y, type));
-                        Map.spriteList.Add(new Qm_open(x,y-16));
-                        Map.spriteList.Add(new Starman(x,y-16));
-                        //Map.spriteList.Add(content);
+                        Map.spriteAdd(new Qm_e(x, y, type));
+                        Map.spriteAdd(new Qm_open(x,y-16));
+                        //Map.spriteAdd(new Starman(x,y-16));
+                        Map.spriteAdd(Map.sprites[this.contentID]);
                         x = -100;
                         y = -100;
                     }
