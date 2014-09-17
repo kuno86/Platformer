@@ -23,7 +23,8 @@ namespace Game
         //jumps 40 Pixel high
         public bool isDead = false; //does not respawn after it was killed
         private int jumpDelay;
-        private bool onGround, falling;
+        private bool onGround;
+        private double originY;
 
 
         public Potaboo(double x, double y, bool dir = false, short type = 1, double yVel= -3.32)
@@ -41,6 +42,7 @@ namespace Game
             this.h = 16;
             this.type = type;
             this.yVel = yVel;
+            originY=y;
             this.dir = dir; //Startdirection: true = Up/Left(-) ; false = Down/Right(+)
             jumpDelay = Map.rnd.Next(20, 120);
         }
@@ -66,36 +68,29 @@ namespace Game
             if (jumpDelay == 0)
             {
                 yVel = -3.32;
-                dir = true;
+                onGround = false;
             }
-            if (getColXY((int)x + (w / 2), (int)(y + yVel + h + 1)) == 1)    //floorCol
+            if (jumpDelay > 0)
+                jumpDelay--;
+
+            if (y >= originY && !onGround)
             {
-                if (colBottom == 1)
-                {
-                    y --;
-                }
+                yVel = 0;
+                y = originY;
+                jumpDelay = Map.rnd.Next(20, 120);
                 onGround = true;
-                falling = false;
             }
 
-            if (getColXY((int)x + (w / 2), (int)y - 1) == 1)
-            {
-                if (colTop == 1)
-                    yVel += Map.gravity;
-                onGround = false;
-                falling = true;
-            }
+            if (yVel >= 0)
+                dir = true;
             else
-            {
-                yVel += Map.gravity;
-                onGround = false;
-                falling = true;
-            }
+                dir = false;
 
+            yVel += Map.gravity;
             y += yVel;
-
-
+            
             Image.drawTileFrame(texture, frame, frames, x, y, false, dir);
+            Image.drawText(("t " + jumpDelay), (int)x, (int)originY + 12, Color.White, Texture.ASCII);
         }
 
 

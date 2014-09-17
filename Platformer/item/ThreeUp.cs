@@ -8,9 +8,9 @@ namespace Game
 {
     class ThreeUp : BaseObj
     {
-        public bool onGround, falling;
+        public bool onGround, falling,fixd;
 
-        public ThreeUp(double x, double y, short type = 0)
+        public ThreeUp(double x, double y, bool fixd=false, short type = 0)
             : base(x, y, 16, 16)
         {
             this.name = "ThreeUp";
@@ -19,6 +19,7 @@ namespace Game
                 case 0: this.texture = Texture.smw_3up; break;
                 default: this.texture = Texture.smw_3up; break;
             }
+            this.fixd = fixd;
             this.x = x;
             this.y = y;
             this.w = 16;
@@ -32,21 +33,38 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-
-            if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
+            if (!fixd)
             {
-                if (colBottom == 1)
-                    y--;
-                onGround = true;
-                falling = false;
-            }
-            else
-            {
-                y++;
-                onGround = false;
-                falling = true;
-            }
+                if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
+                {
+                    if (colBottom == 1)
+                        y--;
+                    yVel = 0;
+                    onGround = true;
+                    falling = false;
+                }
+                else
+                {
+                    yVel += Map.gravity;
+                    onGround = false;
+                    falling = true;
+                }
 
+
+                if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
+                {
+                    xVel = 0;
+                    falling = true;
+                }
+                if (getColXY((int)x + w + 1, (int)y + (h / 2)) == 1)    //LeftCol
+                {
+                    xVel = 0;
+                    falling = true;
+                }
+
+                y = y + yVel;
+                x += xVel;
+            }
             Image.drawImage(texture, x, y);
         }
 

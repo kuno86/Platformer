@@ -150,17 +150,19 @@ namespace Game
             {
                 if (colBottom == 1)
                     y--;
+                yVel = 0;
                 onGround = true;
                 falling = false;
                 jumpDelay = Map.rnd.Next(150, 300);
             }
             else
             {
-                y++;
+                yVel+=Map.gravity;
                 onGround = false;
                 falling = true;
             }
 
+            y = y + yVel;
             if (dir)
                 x -= 0.3;
             else

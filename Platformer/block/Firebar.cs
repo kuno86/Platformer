@@ -12,7 +12,7 @@ namespace Game
         private bool spawned = false;
         private bool clockwise = true;
         private short segments;
-        public Firebar(double x, double y, short segments = 12, bool clockwise = true)
+        public Firebar(double x, double y, short segments = 6, bool clockwise = true)
             : base(x, y)
         {
             this.despawnOffScreen = false;

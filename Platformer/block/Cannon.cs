@@ -13,8 +13,9 @@ namespace Game
         private bool flipV;
         private int wait;
         private bool homing;
+        public bool onGround, falling;
 
-        public Cannon(double x, double y, short type = 1, bool flipV=false)
+        public Cannon(double x, double y, short type = 1, bool flipV=false, bool fixd=false)
             : base(x, y)
         {
             this.name = "Cannon";
@@ -41,6 +42,40 @@ namespace Game
 
         public override void process()
         {
+
+            refreshColRect();
+            getColGrid();
+
+            if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
+            {
+                if (colBottom == 1)
+                    y--;
+                yVel = 0;
+                onGround = true;
+                falling = false;
+            }
+            else
+            {
+                yVel += Map.gravity;
+                onGround = false;
+                falling = true;
+            }
+
+
+            if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
+            {
+                xVel = 0;
+                falling = true;
+            }
+            if (getColXY((int)x + w + 1, (int)y + (h / 2)) == 1)    //LeftCol
+            {
+                xVel = 0;
+                falling = true;
+            }
+
+            y = y + yVel;
+            x += xVel;
+
             if (wait > 0)
                 wait--;
 

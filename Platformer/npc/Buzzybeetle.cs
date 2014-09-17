@@ -65,8 +65,8 @@ namespace Game
 
         public override void process()
         {
-            getColGrid();
             refreshColRect();
+            getColGrid();
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
                 if (Map.spriteArray[i] != null)
@@ -110,12 +110,13 @@ namespace Game
                     {
                         if (colBottom == 1)
                             y--;
+                        yVel = 0;
                         onGround = true;
                         falling = false;
                     }
                     else
                     {
-                        y++;
+                        yVel+=Map.gravity;
                         onGround = false;
                         falling = true;
                     }
@@ -138,12 +139,13 @@ namespace Game
                     {
                         if (colBottom == 1)
                             y--;
+                        yVel = 0;
                         onGround = true;
                         falling = false;
                     }
                     else
                     {
-                        y++;
+                        yVel += Map.gravity;
                         onGround = false;
                         falling = true;
                     }
@@ -160,6 +162,7 @@ namespace Game
                     break;
 
             }
+            y = y + yVel;
 
             if (dir)
                 x -= 0.3;

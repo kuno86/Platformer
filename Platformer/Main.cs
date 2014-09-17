@@ -20,6 +20,7 @@ namespace Game
         public static string exePath = Environment.CurrentDirectory;
         public static double sceneX = 640;
         public static int sceneY = 480;
+        public static bool debugInfo=true;
 
         public static Random rnd = new Random();
 
@@ -112,7 +113,7 @@ namespace Game
                 };
 
                 // Run the game at 60 updates per second
-                game.Run(20.0);
+                game.Run(60.0);
             }
         }
 

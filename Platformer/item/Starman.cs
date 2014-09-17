@@ -67,7 +67,7 @@ namespace Game
             {
                 dir = false;
             }
-            if (getColXY((int)x + w + 1, (int)y + (h / 2)) == 1)
+            if (getColXY((int)x + w + 1, (int)y + (h / 2)) == 1)    //RWallCol
             {
                 dir = true;
             }

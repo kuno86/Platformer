@@ -120,12 +120,13 @@ namespace Game
                     {
                         if (colBottom == 1)
                             y--;
+                        yVel = 0;
                         onGround = true;
                         falling = false;
                     }
                     else
                     {
-                        y++;
+                        yVel += Map.gravity;
                         onGround = false;
                         falling = true;
                     }
@@ -161,14 +162,12 @@ namespace Game
                     }
                     else
                     {
-                        y++;
+                        yVel += Map.gravity;
                         onGround = false;
                         falling = true;
                     }
                     if (getColXY((int)colRect.x + (colRect.w / 2), (int)colRect.y - 1) == 1)
                         yVel = 0;
-                    yVel += Map.gravity;
-                    y = y + yVel;
                     break;
                 ///////////////////////////////////////////////////////////////////////////////////
                 case 4:
@@ -191,12 +190,13 @@ namespace Game
                     {
                         if (colBottom == 1)
                             y--;
+                        yVel = 0;
                         onGround = true;
                         falling = false;
                     }
                     else
                     {
-                        y++;
+                        yVel += Map.gravity;
                         onGround = false;
                         falling = true;
                     }
@@ -213,6 +213,7 @@ namespace Game
 
             }
 
+            y = y + yVel;
             if (dir)
                 x -= 0.3;
             else

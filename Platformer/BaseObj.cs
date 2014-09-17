@@ -94,22 +94,25 @@ namespace Game
             colBottom = 0;
             colRight = 0;
             colLeft = 0;
-            try
+            if (despawnOffScreen)
             {
-                if (Map.map[(int)(y / 16), (int)(x / 16), 0] == 1 || Map.map[(int)(y / 16), (int)((x + Map.tileSize) / 16), 0] == 1)  //ceiling-Collisions
-                    colTop = 1;           //
+                try
+                {
+                    if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)(colRect.y / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 1)  //ceiling-Collisions
+                        colTop = 1;           //
 
-                if (Map.map[(int)((y + h) / 16), (int)(x / 16), 0] == 1 || Map.map[(int)((y + h) / 16), (int)((x + Map.tileSize) / 16), 0] == 1 || //Floor-Collisions (Solids-check)
-                    Map.map[(int)((y + h) / 16), (int)(x / 16), 0] == 2 || Map.map[(int)((y + h) / 16), (int)((x + Map.tileSize) / 16), 0] == 2)  //Floor-Collisions (clouds-check)
-                    colBottom = 1;
+                    if (Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 1 || //Floor-Collisions (Solids-check)
+                        Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 2 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 2)  //Floor-Collisions (clouds-check)
+                        colBottom = 1;
 
-                if (Map.map[(int)(y / 16), (int)((x + w) / 16), 0] == 1 || Map.map[(int)((y + Map.tileSize) / 16), (int)((x + w) / 16), 0] == 1)  //Right Walls Collsion
-                    colRight = 1;
+                    if (Map.map[(int)(colRect.y / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1)  //Right Walls Collsion
+                        colRight = 1;
 
-                if (Map.map[(int)(y / 16), (int)(x / 16), 0] == 1 || Map.map[(int)((y + Map.tileSize) / 16), (int)(x / 16), 0] == 1)  //Left Wall Collision
-                    colLeft = 1;
+                    if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)(colRect.x / 16), 0] == 1)  //Left Wall Collision
+                        colLeft = 1;
+                }
+                catch { ; }
             }
-            catch { ; }
         }
 
         ///////////////////////////////////////////Return Collision Value for a Pixel on Map

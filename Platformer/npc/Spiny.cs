@@ -101,16 +101,18 @@ namespace Game
                     state = 1;
                     this.name = "Spiny";
                 }
+                yVel = 0;
                 onGround = true;
                 falling = false;
             }
             else
             {
-                y++;
+                yVel+=Map.gravity;
                 onGround = false;
                 falling = true;
             }
 
+            y = y + yVel;
             if (dir)
                 x -= 0.3;
             else

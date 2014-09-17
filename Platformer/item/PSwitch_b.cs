@@ -41,25 +41,18 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            
+
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
                 if (colBottom == 1)
                     y--;
+                yVel = 0;
                 onGround = true;
                 falling = false;
             }
             else
             {
-                y++;
-                onGround = false;
-                falling = true;
-            }
-
-            if (getColXY((int)x + (w / 2), (int)y - 1) == 1) 
-            {
-                if(colTop==1)
-                    y++;
+                yVel += Map.gravity;
                 onGround = false;
                 falling = true;
             }
@@ -75,6 +68,8 @@ namespace Game
                 xVel = 0;
                 falling = true;
             }
+
+            y = y + yVel;
             x += xVel;
 
             if (!pressed)
@@ -96,32 +91,34 @@ namespace Game
             {
                 pressed = true;
                 frameDelay = 90;
-                Map.pSwitch_b = true;
 
                 double tempX;                                                                               //
                 double tempY;                                                                               //
-                short tempType;                   
-                if(!Map.pSwitch_b)
-                for (int i = 0; i != Map.spriteArrMax; i++)                                           //
-                {                                                                                           //
-                    if (Map.spriteArray[i] != null)
-                    {
-                        if (Map.spriteArray[i].name == "Coin")                                                   //
-                        {                                                                                       //
-                            tempX = Map.spriteArray[i].x;                                            //
-                            tempY = Map.spriteArray[i].y;                                            //Buffer X, Y and type of the object to be replaced
-                            tempType = Map.spriteArray[i].type;                                      //
-                            Map.spriteArray[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
-                        }                                                                                       //
-                        else if (Map.spriteArray[i].name == "?-Block_e")                                         //
-                        {                                                                                       //
-                            tempX = Map.spriteArray[i].x;                                                        //
-                            tempY = Map.spriteArray[i].y;                                                        //
-                            tempType = Map.spriteArray[i].type;                                                  //
-                            Map.spriteArray[i] = new Coin(tempX, tempY, tempType);                               //
-                        }                                                                                       //
-                    }
-                }//
+                short tempType;
+                if (!Map.pSwitch_b)
+                {
+                    Map.pSwitch_b = true;
+                    for (int i = 0; i != Map.spriteArrMax; i++)                                           //
+                    {                                                                                           //
+                        if (Map.spriteArray[i] != null)
+                        {
+                            if (Map.spriteArray[i].name == "Coin")                                                   //
+                            {                                                                                       //
+                                tempX = Map.spriteArray[i].x;                                            //
+                                tempY = Map.spriteArray[i].y;                                            //Buffer X, Y and type of the object to be replaced
+                                tempType = Map.spriteArray[i].type;                                      //
+                                Map.spriteArray[i] = new Qm_e(tempX, tempY, tempType);               //Overwrite position with new object data from Buffers
+                            }                                                                                       //
+                            else if (Map.spriteArray[i].name == "?-Block_e")                                         //
+                            {                                                                                       //
+                                tempX = Map.spriteArray[i].x;                                                        //
+                                tempY = Map.spriteArray[i].y;                                                        //
+                                tempType = Map.spriteArray[i].type;                                                  //
+                                Map.spriteArray[i] = new Coin(tempX, tempY, tempType);                               //
+                            }                                                                                       //
+                        }
+                    }//
+                }
             }
 
             if (pressed)

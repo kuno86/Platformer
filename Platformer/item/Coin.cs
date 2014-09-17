@@ -63,12 +63,13 @@ namespace Game
                 {
                     if(colBottom==1)
                         y--;
+                    yVel = 0;
                     onGround = true;
                     falling = false;
                 }
                 else
                 {
-                    y++;
+                    yVel += Map.gravity;
                     onGround = false;
                     falling = true;
                 }
@@ -84,6 +85,8 @@ namespace Game
                     xVel = 0;
                     falling = true;
                 }
+
+                y = y + yVel;
                 x += xVel;
             }
             Image.drawTileFrame(texture, frame, frames, x, y);

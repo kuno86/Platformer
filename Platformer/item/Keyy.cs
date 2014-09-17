@@ -42,20 +42,13 @@ namespace Game
             {
                 if (colBottom == 1)
                     y--;
+                yVel = 0;
                 onGround = true;
                 falling = false;
             }
-
-            if (getColXY((int)x + (w / 2), (int)y - 1) == 1)
-            {
-                if (colTop == 1)
-                    y++;
-                onGround = false;
-                falling = true;
-            }
             else
             {
-                y++;
+                yVel += Map.gravity;
                 onGround = false;
                 falling = true;
             }
@@ -71,10 +64,10 @@ namespace Game
                 xVel = 0;
                 falling = true;
             }
+
+            y = y + yVel;
             x += xVel;
-
            
-
             Image.drawImage(texture, x, y, dir);
 
         }
