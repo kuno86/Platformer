@@ -17,8 +17,7 @@ namespace Game
     {
         public int hbW = 16;
         public int hbH = 16;
-        private bool onGround;
-        private bool falling;
+        private bool onGround;  //out position
         private short frames;
         private short frame = 0;
         private short frameDelay;
@@ -42,6 +41,7 @@ namespace Game
                 case 1: this.texture = Texture.smb1_piranha_green; ignorePlayer = false; frames = 2; this.name = "Piranhaplant Green"; break;    //Brown smb1
                 case 2: this.texture = Texture.smb1_piranha_red; ignorePlayer = true; frames = 2; this.name = "Piranhaplant Red"; break;    //Blue smb1
             }
+            onGround = true;
             this.x = x;
             this.y = y;
             this.w = 16;
@@ -83,6 +83,7 @@ namespace Game
                 if (timer==0)
                 {
                     yVel = yVel * -1;
+                    onGround = !onGround;
                     timer = 180;
                 }
             }
@@ -97,17 +98,28 @@ namespace Game
                             if (timer == 0 && Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) > 16)
                             {
                                 yVel = yVel * -1;
+                                onGround = !onGround;
                                 timer = 180;
                             }
 
                             if (timer == 0 && Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) < -16)
                             {
                                 yVel = yVel * -1;
+                                onGround = !onGround;
                                 timer = 180;
                             }
 
                             if ((Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) < 16) && (Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) > -16))
-                                timer = 90;
+                            {
+                                if (yVel == -1)
+                                {
+                                    yVel = 1;
+                                    onGround = !onGround;
+                                    timer = 180;
+                                }
+                                if (yVel == 1)
+                                    timer = 90;
+                            }
                         }
                     }
                 }
@@ -115,7 +127,10 @@ namespace Game
             
 
             animate();
-            
+            Image.drawText("t" + timer , (int)x, (int)y + 48, Color.White, Texture.ASCII);
+            Image.drawText(";v" + yVel, (int)x, (int)y + 60, Color.White, Texture.ASCII);
+            Image.drawText("Out" + onGround, (int)x, (int)y + 72, Color.White, Texture.ASCII);
+
             //Image.endDraw2D();
             //GL.Begin(PrimitiveType.LineLoop);
             //GL.Color3(Color.Aqua);

@@ -85,3 +85,11 @@ C:\Users\pfeil\Desktop\Platformer\Platformer\obj\x86\Debug\Platformer.csprojReso
 K:\Platformer\Platformer\bin\Debug\Platformer.exe.config
 K:\Platformer\Platformer\obj\x86\Debug\Platformer.exe
 K:\Platformer\Platformer\obj\x86\Debug\Platformer.pdb
+G:\Platformer\Platformer\bin\Debug\Platformer.exe
+G:\Platformer\Platformer\bin\Debug\Platformer.pdb
+G:\Platformer\Platformer\bin\Debug\OpenTK.dll
+G:\Platformer\Platformer\bin\Debug\OpenTK.GLControl.dll
+G:\Platformer\Platformer\bin\Debug\OpenTK.pdb
+G:\Platformer\Platformer\bin\Debug\OpenTK.xml
+G:\Platformer\Platformer\bin\Debug\OpenTK.GLControl.xml
+G:\Platformer\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference.cache

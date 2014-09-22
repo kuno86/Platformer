@@ -301,14 +301,21 @@ namespace Game
                 if (colBottom == 1)
                 {
                     y=(int)y-1;
-                    
+                    yVel = 0;
                 }
-                yVel = 0;
-                onGround = true;
-                jumping = false;
-                spinjumping = false;
-                falling = false;
-                canJmp = true;
+                if (!jumping && !spinjumping)
+                {
+                    onGround = true;
+                    falling = false;
+                    canJmp = true;
+                }
+                else
+                {
+                    jumping = false;
+                    spinjumping = false;
+                    falling = false;
+                    canJmp = true;
+                }
             }
             else
             {
@@ -321,9 +328,9 @@ namespace Game
                 if (colTop == 1)
                 {
                     y=(int)y+1;
-
+                    yVel = 0;
                 }
-                yVel = 0;
+                
                 onGround = false;
                 jumping = false;
                 falling = true;

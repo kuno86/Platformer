@@ -10,6 +10,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System.Drawing.Imaging;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Game
 {
@@ -36,6 +37,10 @@ namespace Game
         public int frameCount = 0;
         public int frameDelay = 3;
         public int maxTextureSize;
+
+
+        public static List<int> fpsLine = new List<int>();
+
 
         public static double xFriction = 0.0625;
         public static double xFrictionIce = 0.0078125;
@@ -184,7 +189,27 @@ namespace Game
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// PROCESS
         public void process(int mausX, int mausY)
         {
+            
+            int fpsX = 642;
+            int fpsY = 367;
+            
+            if (fpsLine.Count >= 1)
+            {
+                for (int i = 0; i != fpsLine.Count - 1; i++)
+                {
+                    GL.Begin(PrimitiveType.Lines);
+                    GL.Color3(Color.Yellow);
+                    GL.Vertex2(fpsX + i, fpsY + 100);
+                    GL.Vertex2(fpsX + i, fpsY + 100 - fpsLine[i]);
+                    GL.End();
+                }
+            }
+
             Image.beginDraw2D();
+
+            if (fpsLine.Count >= 1)
+                Image.drawText("FPS-Graph:"+(int)fpsLine[0], 705, 468, Color.Yellow, Texture.ASCII);
+
             frameCount++;
             if (frameCount == 10)
             {
@@ -565,7 +590,11 @@ namespace Game
             return i;
         }
 
-
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// RETURN_A_RANDOM_BOOL-Value
+        public static bool rndBool()
+        {
+            return (rnd.Next(2) == 0);
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// GET_CURRENT_DIMENSION
         public int getCurrentDimension()

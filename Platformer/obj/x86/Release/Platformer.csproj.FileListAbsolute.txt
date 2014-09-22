@@ -1,0 +1,10 @@
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\Platformer.exe.config
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\Platformer.exe
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\Platformer.pdb
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\OpenTK.dll
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\OpenTK.GLControl.dll
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\OpenTK.pdb
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\OpenTK.xml
+C:\Users\Karsten\Desktop\Platformer\Platformer\bin\Release\OpenTK.GLControl.xml
+C:\Users\Karsten\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.exe
+C:\Users\Karsten\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.pdb

@@ -3,3 +3,5 @@
 
  - fix Potaboos
 
+ - blocks based on sprites need collision-stuff (and Render to foreground ?)
+

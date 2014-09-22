@@ -92,6 +92,12 @@ namespace Game
                     }
                                         
                     game.Title = (("FPS: " + (int)(game.RenderFrequency) +" ; "+ Math.Round(game.RenderTime*1000,2)+"ms/frame"));
+                    
+                    
+                    Map.fpsLine.Insert(0,(int)game.RenderFrequency);
+                    while (Map.fpsLine.Count > 230)
+                        Map.fpsLine.RemoveAt(Map.fpsLine.Count - 1);
+
                 };
                 
                 game.RenderFrame += (sender, e) =>
@@ -113,7 +119,7 @@ namespace Game
                 };
 
                 // Run the game at 60 updates per second
-                game.Run(60.0);
+                game.Run(199.0);
             }
         }
 
