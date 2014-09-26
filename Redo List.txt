@@ -1,7 +1,0 @@
-
- - fix Hammerbros AI 
-
- - fix Potaboos
-
- - blocks based on sprites need collision-stuff (and Render to foreground ?)
-

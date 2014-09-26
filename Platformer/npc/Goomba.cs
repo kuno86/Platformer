@@ -44,6 +44,10 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.type = type;
             this.dir = dir; //Startdirection: true = Left ; false = Right
             onGround = false;

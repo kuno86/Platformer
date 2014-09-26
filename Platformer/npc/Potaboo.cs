@@ -23,11 +23,10 @@ namespace Game
         //jumps 40 Pixel high
         public bool isDead = false; //does not respawn after it was killed
         private int jumpDelay;
-        private bool onGround;
         private double originY;
+        private double jumpVel;
 
-
-        public Potaboo(double x, double y, bool dir = false, short type = 1, double yVel= -3.32)
+        public Potaboo(double x, double y, bool dir = false, short type = 1, double jumpVel= -3.32)
             : base(x, y, 16, 16)
         {
             this.name = "Potaboo";
@@ -40,8 +39,12 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.type = type;
-            this.yVel = yVel;
+            this.jumpVel = jumpVel;
             originY=y;
             this.dir = dir; //Startdirection: true = Up/Left(-) ; false = Down/Right(+)
             jumpDelay = Map.rnd.Next(20, 120);
@@ -64,21 +67,20 @@ namespace Game
             {
                 frame = 0;
             }
-                        
-            if (jumpDelay == 0)
-            {
-                yVel = -3.32;
-                onGround = false;
-            }
-            if (jumpDelay > 0)
-                jumpDelay--;
+            
+            
 
-            if (y >= originY && !onGround)
+            if (y >= originY)
             {
                 yVel = 0;
                 y = originY;
-                jumpDelay = Map.rnd.Next(20, 120);
-                onGround = true;
+                if (jumpDelay > 0)
+                    jumpDelay--;
+                if (jumpDelay == 0)
+                {
+                    jumpDelay = Map.rnd.Next(80, 160);
+                    yVel = jumpVel;
+                }
             }
 
             if (yVel >= 0)
@@ -90,7 +92,7 @@ namespace Game
             y += yVel;
             
             Image.drawTileFrame(texture, frame, frames, x, y, false, dir);
-            Image.drawText(("t " + jumpDelay), (int)x, (int)originY + 12, Color.White, Texture.ASCII);
+            //Image.drawText(("t " + jumpDelay), (int)x, (int)originY + 12, Color.White, Texture.ASCII);
         }
 
 

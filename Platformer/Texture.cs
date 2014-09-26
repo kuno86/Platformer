@@ -86,6 +86,11 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_bricks3 =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_bricks3.bmp");//
         public static int smb3_bricks =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb3_bricks.bmp");//
 
+        public static int smb1_platform =       Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_platform.bmp");//
+
+        public static int smb1_wine =           Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_wine.bmp");//
+        public static int smb1_winehead =       Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_winehead.bmp");//
+
         public static int smw_peaSpring =       Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smw_pea-spring.bmp");
 
         public static int smb1_cannon =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_cannon.bmp");//

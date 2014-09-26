@@ -22,6 +22,12 @@ namespace Game
             this.y = y;
             this.w = 8;
             this.h = 8;
+            this.colOffsetX = (short)this.x;
+            this.colOffsetY = (short)this.y;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.owner = owner;
             if (owner.name == "Player")   //Check who spawned the fireball and set its harming accordingly 
                 harmPlayers=false;

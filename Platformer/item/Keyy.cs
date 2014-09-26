@@ -20,10 +20,15 @@ namespace Game
                 case 2: this.texture = Texture.smb2_key; break;
                 default: this.texture = Texture.smb2_key; break;
             }
+            this.blockTop = true;
             this.x = x;
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.dir=dir;
             this.type = type;
             grabable = true;

@@ -29,6 +29,7 @@ namespace Game
         {
             refreshColRect();
             frameDelay++;
+            y--;
             if (frameDelay == 3)
             {
                 frame++;

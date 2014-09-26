@@ -25,6 +25,10 @@ namespace Game
             this.yVel = yVel;
             this.w = 8;
             this.h = 8;
+            this.colOffsetX = (short)this.x;
+            this.colOffsetY = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
         }
 
         public override string getName()

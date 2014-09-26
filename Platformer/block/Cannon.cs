@@ -28,10 +28,15 @@ namespace Game
                 default: this.texture = Texture.smb1_cannon; break;
             }
             wait = Map.rnd.Next(90, 300);
+            this.blockTop = true;
             this.x = x;
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.flipV = flipV;
             this.type = type;
             this.colWithOthers = true;

@@ -1,0 +1,7 @@
+
+ - fix Hammerbros AI 
+
+ - fix green Phiranha-plant AI
+
+ - fix Plaform(sprite) collision when moving
+

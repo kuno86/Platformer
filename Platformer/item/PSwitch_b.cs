@@ -28,6 +28,10 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.type = type;
             grabable = true;
             pressed = false;
@@ -115,6 +119,7 @@ namespace Game
                                 tempY = Map.spriteArray[i].y;                                                        //
                                 tempType = Map.spriteArray[i].type;                                                  //
                                 Map.spriteArray[i] = new Coin(tempX, tempY, tempType);                               //
+                                Map.map[(int)y / 16, (int)x / 16, 0] = 0;
                             }                                                                                       //
                         }
                     }//

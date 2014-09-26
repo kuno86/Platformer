@@ -57,7 +57,7 @@ namespace Game
         public static int pSwitchTimer_s = -1;   //Timer for silver P-Switch
         
 
-        public static List<BaseObj> spriteList = new List<BaseObj>();   //List of all sprites that are currently active
+        //public static List<BaseObj> spriteList = new List<BaseObj>();   //List of all sprites that are currently active
 
         public static BaseObj[] spriteArray = new BaseObj[4096];
         public static int spriteArrMax;
@@ -114,7 +114,7 @@ namespace Game
 
             sprites[100] = new Bricks(-200, -200, (short)rnd.Next(1, 5));
             sprites[101] = new Pow(-200, -200);
-            sprites[102] = new Qm(-200, -200);
+            sprites[102] = new Qm(-200, -200,1,(short)rnd.Next(103,113));
             sprites[103] = new Coin(-200, -200, (short)rnd.Next(1, 6));
             sprites[104] = new Mushroom(-200, -200, false, (short)rnd.Next(1, 3));
             sprites[105] = new Mushroom_p(-200, -200);
@@ -122,13 +122,15 @@ namespace Game
             sprites[107] = new Starman(-200, -200, false, (short)rnd.Next(1, 5));
             sprites[108] = new OneUp(-200, -200);
             sprites[109] = new ThreeUp(-200, -200);
-            sprites[110] = new PSwitch_b(-200, -200);
+            sprites[110] = new Keyy(-200, -200, (short)rnd.Next(1, 3));
             sprites[111] = new Spring_p(-200, -200);
-            sprites[112] = new Cannon(-200, -200);
-            sprites[113] = new Keyy(-200, -200, (short)rnd.Next(1, 3));
+            sprites[112] = new PSwitch_b(-200, -200);
+            sprites[113] = new Cannon(-200, -200);
+            
 
             sprites[114] = new Lava(-200, -200);
             sprites[115] = new Potaboo(-200, -200);
+            sprites[116] = new Firebar(-200, -200);
             
             maxTextureSize = GL.GetInteger(OpenTK.Graphics.OpenGL.GetPName.MaxTextureSize);
             Console.WriteLine("BG: " + Texture.backGround);
@@ -228,10 +230,24 @@ namespace Game
             {
                 if (spriteArray[i] != null)
                 {
-                    if(RootThingy.debugInfo)
-                        Image.drawText("[" + i + "]=" + spriteArray[i].name + " X=" + (int)spriteArray[i].x + " Y=" + (int)spriteArray[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
-
                     spriteArray[i].process();
+
+
+                    if (RootThingy.debugInfo)
+                    {
+                        Image.drawText("[" + i + "]=" + spriteArray[i].name + " X=" + (int)spriteArray[i].x + " Y=" + (int)spriteArray[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
+                        Image.endDraw2D();
+                        GL.Begin(PrimitiveType.LineLoop);
+                        GL.Color3(Color.Aqua);
+                        GL.Vertex2(spriteArray[i].colRect.x, spriteArray[i].colRect.y);
+                        GL.Vertex2(spriteArray[i].colRect.x + spriteArray[i].colRect.w, spriteArray[i].colRect.y);
+                        GL.Vertex2(spriteArray[i].colRect.x + spriteArray[i].colRect.w, spriteArray[i].colRect.y + spriteArray[i].colRect.h);
+                        GL.Vertex2(spriteArray[i].colRect.x, spriteArray[i].colRect.y + spriteArray[i].colRect.h);
+                        GL.End();
+                        Image.beginDraw2D();
+                    }
+                    
+                    
                     if (spriteArray[i].despawnOffScreen)
                     //{
                         if (spriteArray[i].x + spriteArray[i].w > RootThingy.sceneX || spriteArray[i].x < 0 || spriteArray[i].y < 0 || spriteArray[i].y + spriteArray[i].h > RootThingy.sceneY)
@@ -273,6 +289,7 @@ namespace Game
                             tempY = spriteArray[i].y;                                                            //
                             tempType = spriteArray[i].type;                                                      //
                             spriteArray[i] = new Coin(tempX, tempY, tempType);                                   //
+                            Map.map[(int)(tempY/16), (int)(tempX/16), 0] = 0;
                         }
                     }                                                                                         //
                 }                                                                                           //
@@ -360,9 +377,11 @@ namespace Game
                 Thread.Sleep(150);
             }
 
+            if (keyboard[Key.F10])               // F10
+            { spriteAdd(new Winehead(mausX*16, mausY*16,1,(rnd.Next(2)==1))); Thread.Sleep(150); }     // Spawn something with F10 Key
 
             if (keyboard[Key.F11])               // F11
-            { spriteAdd(new Firebar(mausX*16,mausY*16)); Thread.Sleep(150); }     // Spawn something with End (Ende) Key
+            { spriteAdd(new Platform(mausX * 16, mausY * 16, 6, false)); Thread.Sleep(150); }     // Spawn something with F11 Key
 
             if (keyboard[Key.F12])               // +
             { RootThingy.debugInfo = !RootThingy.debugInfo; Thread.Sleep(150); }
@@ -438,11 +457,11 @@ namespace Game
                             case 014: spriteAdd(new Spiny(arrX * 16, arrY * 16, false, 1, true)); break;    //Spiny-Egg
                             case 015: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 1)); break;    //Green Piranha Plant
                             case 016: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 2)); break;    //Red Piranha Plant
-                            case 017: spriteAdd(new Hammerbros(arrX * 16, arrY * 16)); break; 
+                            case 017: spriteAdd(new Hammerbros(arrX * 16, arrY * 16)); break;
 
                             case 100: spriteAdd(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
                             case 101: spriteAdd(new Pow(arrX * 16, arrY * 16)); break;
-                            case 102: spriteAdd(new Qm(arrX * 16, arrY * 16)); break;
+                            case 102: spriteAdd(new Qm(arrX * 16, arrY * 16, 1, (short)rnd.Next(103, 113))); break;
                             case 103: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
                             case 104: spriteAdd(new Mushroom(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 3))); break;
                             case 105: spriteAdd(new Mushroom_p(arrX * 16, arrY * 16)); break;
@@ -450,13 +469,15 @@ namespace Game
                             case 107: spriteAdd(new Starman(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 5))); break;
                             case 108: spriteAdd(new OneUp(arrX * 16, arrY * 16)); break;
                             case 109: spriteAdd(new ThreeUp(arrX * 16, arrY * 16)); break;
-                            case 110: spriteAdd(new PSwitch_b(arrX * 16, arrY * 16)); break;
+                            case 110: spriteAdd(new Keyy(arrX * 16, arrY * 16, (short)rnd.Next(1, 3))); break;
                             case 111: spriteAdd(new Spring_p(arrX * 16, arrY * 16)); break;
-                            case 112: spriteAdd(new Cannon(arrX * 16, arrY * 16)); break;
-                            case 113: spriteAdd(new Keyy(arrX * 16, arrY * 16, (short)rnd.Next(1, 3))); break;
+                            case 112: spriteAdd(new PSwitch_b(arrX * 16, arrY * 16)); break;
+                            case 113: spriteAdd(new Cannon(arrX * 16, arrY * 16)); break;
+                            
 
                             case 114: spriteAdd(new Lava(arrX * 16, arrY * 16)); break;
                             case 115: spriteAdd(new Potaboo(arrX * 16, arrY * 16)); break;
+                            case 116: spriteAdd(new Firebar(arrX * 16, arrY * 16)); break;
 
                             case 300: spriteAdd(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
 

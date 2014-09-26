@@ -30,6 +30,12 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
+            //this.colRect.x = (short)this.x;
+            //this.colRect.y = (short)this.y;
+            this.colOffsetX = 1;
+            this.colOffsetY = 1;
+            this.colRect.w = 14;
+            this.colRect.h = 14;
             this.fixd = fixd;
             this.type = type;
         }

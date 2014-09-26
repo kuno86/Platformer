@@ -23,6 +23,12 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
+            if (x >= 0 && y >= 0)
+                Map.map[(int)y / 16, (int)x / 16, 0] = 1;
             this.segments = segments;
             this.clockwise = clockwise;
             angle = startAngle + 180;

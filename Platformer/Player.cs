@@ -363,6 +363,7 @@ namespace Game
                 {
                     if (getCol2Obj(colRect, Map.spriteArray[i].colRect) && this.id != Map.spriteArray[i].id)
                     {
+                        Console.WriteLine("Player touches something");
                         switch (Map.spriteArray[i].getName())
                         {
                             case "Coin":
@@ -438,16 +439,6 @@ namespace Game
             animate();
 
 
-
-            Image.endDraw2D();
-            GL.Begin(PrimitiveType.LineLoop);
-            GL.Color3(Color.Aqua);
-            GL.Vertex2(colRect.x, colRect.y);
-            GL.Vertex2(colRect.x+colRect.w, colRect.y);
-            GL.Vertex2(colRect.x+colRect.w, colRect.y+colRect.h);
-            GL.Vertex2(colRect.x, colRect.y+colRect.h);
-            GL.End();
-            Image.beginDraw2D();
             
            
         }

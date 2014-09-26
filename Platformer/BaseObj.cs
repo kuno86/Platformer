@@ -29,6 +29,8 @@ namespace Game
         public ColRect colRect;
 
         public bool grabable = false;
+        public bool blockTop = false;   //Acts like a solid block, stuff can land and stay on it
+        public bool blockSides = false;
 
         public bool despawnOffScreen = true;
 
@@ -87,7 +89,7 @@ namespace Game
             this.yVel = yVel;
         }
 
-        ///////////////////////////////////////////Return Collision Value for a Block on Map
+        ///////////////////////////////////////////Return Collision Value for a Block on Map/Sprite
         protected void getColGrid()
         {
             colTop = 0;
@@ -96,6 +98,7 @@ namespace Game
             colLeft = 0;
             if (despawnOffScreen)
             {
+                /////////////////////////////////////////////////For Block collision
                 try
                 {
                     if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)(colRect.y / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 1)  //ceiling-Collisions
@@ -112,6 +115,39 @@ namespace Game
                         colLeft = 1;
                 }
                 catch { ; }
+
+                /////////////////////////////////////////////////For sprites with collision
+                for (int i = 0; i != Map.spriteArrMax; i++)
+                {
+                    if (Map.spriteArray[i] != null)
+                    {
+                        if (getCol2Obj(Map.spriteArray[i].colRect, this.colRect))
+                        {
+                            if (Map.spriteArray[i].blockTop)
+                            {
+                                if (this.colRect.y + this.colRect.h < Map.spriteArray[i].colRect.y)
+                                {
+                                    colBottom = 1;
+                                    this.y += Map.spriteArray[i].yVel;
+                                }
+                            }
+
+                            if (Map.spriteArray[i].blockSides)
+                            {
+                                if (this.colRect.x < Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w)
+                                    colRight = 1;
+                                if (this.colRect.x + this.colRect.w > Map.spriteArray[i].colRect.x)
+                                    colLeft = 1;
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+
             }
         }
 

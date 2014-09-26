@@ -50,6 +50,8 @@ namespace Game
             this.h = 24;
             this.colOffsetX = 2;
             this.colOffsetY = 0;
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
             this.colRect.w = 12;
             this.colRect.h = 16;
             this.type = type;

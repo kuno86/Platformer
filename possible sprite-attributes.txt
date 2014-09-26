@@ -1,0 +1,44 @@
+grabtop= Can Mario pick it up and carry it?
+grabside= Can Mario grab this from the side and carry it?
+jumphurt= Will Mario get bounce if he jumps on the top of this NPC?
+playerblock= Will the player treat this NPC like a block?
+playerblocktop= Can the player stand on this NPC?
+npcblock= Will other NPCs treat this NPC as a block?
+npcblocktop= Will other NPCs walk on this NPC's head?
+noblockcollision= Passes through blocks.
+cliffturn= Will it turn around when it comes to an edge, rather than falling off?
+nohurt= Will not hurt the player if set to 1.
+noyoshi= If yoshi can't eat it, set this to 1.
+nofireball= Setting to 1 prevents fire from harming this NPC.
+noiceball= Setting to 1 prevents ice from freezing this NPC.
+nogravity= Is uneffected by gravity if set to 1.
+speed= How fast it moves. (Percentage) 0=0% 1=100% 2=200%
+
+score= How many points the NPC should give you upon its death/collection. Score can be set to any number from 0-13. Each gives a different amount of points listed below.
+0 give 0 points
+1 gives 10 points
+2 gives 100 points
+3 gives 200 points
+4 gives 400 points
+5 gives 800 points
+6 gives 1000 points
+7 gives 2000 points
+8 gives 4000 points
+9 gives 8000 points
+10 gives a 1up
+11 gives a 2up
+12 gives a 3up
+13 gives a 5up (anything higher than 13 will produce a 5up as well.)
+
+NPC Appearance Flags
+
+foreground= This will be drawn in front of other sprites if set to 1.
+frames= How many frames the sprites animation uses for a single direction.
+framespeed= How fast the frames of the sprites animation change. 8 is Normal.
+framestyle= 0=No Directional Sprites, 1=Left and Right movement, 2=Left and Right movement and inverted (upsidedown) if Held.
+gfxoffsetx= Moves the graphic in a specific direction (X) -1 is up, 1 is down.
+gfxoffsety= Moves the graphic in a specific direction (Y) -1 is left, 1 is right.
+width= The NPCs hitbox width (in pixels)
+height= The NPCs hitbox height (in pixels)
+gfxheight= Only set if sprite height is different than Hit box height.
+gfxwidth= Only set if sprite width is different than Hit box width. 

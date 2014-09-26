@@ -52,9 +52,12 @@
     <Compile Include="block\Cannon.cs" />
     <Compile Include="block\Firebar.cs" />
     <Compile Include="block\Lava.cs" />
+    <Compile Include="block\Platform.cs" />
     <Compile Include="block\Pow.cs" />
     <Compile Include="block\Qm.cs" />
     <Compile Include="block\Qm_e.cs" />
+    <Compile Include="block\Wine.cs" />
+    <Compile Include="block\Winehead.cs" />
     <Compile Include="effect\Bricks_shatter.cs" />
     <Compile Include="effect\Firebar_segment.cs" />
     <Compile Include="effect\Hammerbros_hammer.cs" />

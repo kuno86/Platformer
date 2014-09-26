@@ -28,7 +28,10 @@ namespace Game
             }
             this.x = x;
             this.y = y;
-            
+            this.colRect.x = (short)this.x;
+            this.colRect.y = (short)this.y;
+            this.colRect.w = (short)this.w;
+            this.colRect.h = (short)this.h;
             this.colWithOthers = true;
         }
 
