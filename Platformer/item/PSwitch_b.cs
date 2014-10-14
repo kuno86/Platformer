@@ -48,8 +48,12 @@ namespace Game
 
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
-                if (colBottom == 1)
+                while (colBottom == 1)
+                {
                     y--;
+                    refreshColRect();
+                    getColGrid();
+                }
                 yVel = 0;
                 onGround = true;
                 falling = false;

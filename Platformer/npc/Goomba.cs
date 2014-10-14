@@ -62,19 +62,21 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            for (int i = 0; i != Map.spriteArray.Count(); i++)
-            {
-                if (Map.spriteArray[i] != null)
-                {
-                    if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
-                    {
-                        if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
-                        {
-                            dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
-                        }
-                    }
-                }
-            }
+
+            //for (int i = 0; i != Map.spriteArray.Count(); i++)
+            //{
+            //    if (Map.spriteArray[i] != null)
+            //    {
+            //        if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
+            //        {
+            //            if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
+            //            {
+            //                dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
+            //            }
+            //        }
+            //    }
+            //}
+
             if (getColXY((int)x -1, (int)y + (h / 2)) == 1) //Left wall ?
             { 
                 dir = false;
@@ -89,8 +91,12 @@ namespace Game
 
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
-                if (colBottom == 1)
+                while (colBottom == 1)
+                {
                     y--;
+                    refreshColRect();
+                    getColGrid();
+                }
                 yVel = 0;
                 onGround = true;
                 falling = false;

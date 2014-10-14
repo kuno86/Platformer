@@ -298,9 +298,11 @@ namespace Game
 
             if (getColXY((int)x + (colRect.w / 2), (int)colRect.y + colRect.h + 1) == 1)   //Floor-Collision
             {
-                if (colBottom == 1)
+                while (colBottom == 1)
                 {
-                    y=(int)y-1;
+                    y--;
+                    refreshColRect();
+                    getColGrid();
                     yVel = 0;
                 }
                 if (!jumping && !spinjumping)

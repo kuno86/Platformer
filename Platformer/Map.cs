@@ -28,6 +28,7 @@ namespace Game
         private int sceneX = (int)RootThingy.sceneX;
         private int sceneY = (int)RootThingy.sceneY;
         private int mausRad, mausRadLast;
+        
         private int currentDimension;
         private int[,] currentIDArr = new int[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };   //first dimesion is dimension-ID, then {currentID,MaxID} 
         int bgW, bgH;
@@ -38,6 +39,8 @@ namespace Game
         public int frameDelay = 3;
         public int maxTextureSize;
 
+        public int mausX, mausY, mausXLast, mausYLast;
+        public static double mausXVel, mausYVel;
 
         public static List<int> fpsLine = new List<int>();
 
@@ -189,7 +192,7 @@ namespace Game
         }
         
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// PROCESS
-        public void process(int mausX, int mausY)
+        public void process(int mausXX, int mausYY)
         {
             
             int fpsX = 642;
@@ -231,7 +234,7 @@ namespace Game
                 if (spriteArray[i] != null)
                 {
                     spriteArray[i].process();
-
+                    spriteArray[i].refreshColRect();
 
                     if (RootThingy.debugInfo)
                     {
@@ -305,13 +308,22 @@ namespace Game
                 pSwitch_s = false;      //
 
             
-            Image.drawText("Mouse-Grid X: " + (mausX / 16), 0, 504, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse-Grid Y: " + (mausY / 16), 0, 516, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse X: " + mausX, 0, 528, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse Y: " + mausY, 0, 540, Color.Red, Texture.ASCII);
+            Image.drawText("Mouse-Grid X: " + (mausXX / 16), 0, 504, Color.Red, Texture.ASCII);
+            Image.drawText("Mouse-Grid Y: " + (mausYY / 16), 0, 516, Color.Red, Texture.ASCII);
+            Image.drawText("Mouse X: " + mausXX + "(xVel: " + mausXVel + ")", 0, 528, Color.Red, Texture.ASCII);
+            Image.drawText("Mouse Y: " + mausYY + "(yVel: " + mausYVel + ")", 0, 540, Color.Red, Texture.ASCII);
 
-            mausX = mausX / 16;
-            mausY = mausY / 16;
+            mausXVel = mausXX - mausXLast;
+            mausYVel = mausYY - mausYLast;
+
+            mausXLast = mausXX;
+            mausYLast = mausYY;
+            mausX = mausXX;
+            mausY = mausYY;
+            
+
+            mausX = mausXX / 16;
+            mausY = mausYY / 16;
             
             mausRadLast = mausRad;
             mausRad = maus.Wheel;

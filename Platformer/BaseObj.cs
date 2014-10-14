@@ -125,7 +125,7 @@ namespace Game
                         {
                             if (Map.spriteArray[i].blockTop)
                             {
-                                if (this.colRect.y + this.colRect.h < Map.spriteArray[i].colRect.y)
+                                if (this.colRect.y + this.colRect.h <= Map.spriteArray[i].colRect.y)
                                 {
                                     colBottom = 1;
                                     this.y += Map.spriteArray[i].yVel;
@@ -134,9 +134,9 @@ namespace Game
 
                             if (Map.spriteArray[i].blockSides)
                             {
-                                if (this.colRect.x < Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w)
+                                if (this.colRect.x <= Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w)
                                     colRight = 1;
-                                if (this.colRect.x + this.colRect.w > Map.spriteArray[i].colRect.x)
+                                if (this.colRect.x + this.colRect.w >= Map.spriteArray[i].colRect.x)
                                     colLeft = 1;
                             }
                         }
@@ -173,7 +173,7 @@ namespace Game
         protected int toInt(double z)
         {return Convert.ToInt32(z); }
 
-        protected void refreshColRect()
+        public void refreshColRect()
         {
             colRect.x = x + colOffsetX;
             colRect.y = y + colOffsetY;

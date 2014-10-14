@@ -28,8 +28,6 @@ namespace Game
                 default: this.texture = Texture.smb1_platform; break;
             }
             this.yVel = -0.1;
-            if (x >= 0 && y >= 0)
-                Map.map[(int)y / 16, (int)x / 16, 0] = 1;
             this.size = size;
             if (startAtHalfSize)
                 this.x = x + 8;
@@ -51,7 +49,33 @@ namespace Game
         public override void process()
         {
             refreshColRect();
+            
+            xVel = Map.mausXVel;
+            yVel = Map.mausYVel;
             y += yVel;
+            x += xVel;
+
+            for (int i = 0; i != Map.spriteArrMax; i++)
+            {
+                if (Map.spriteArray[i] != null)
+                {
+                    if (
+                        //getCol2Obj(this.colRect, Map.spriteArray[i].colRect) &&
+                        this.id != Map.spriteArray[i].id &&                                                                 //don't check collision with yourself
+                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h > this.colRect.y) &&                  
+                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y +this.colRect.h) &&
+                        (Map.spriteArray[i].colRect.x <= this.colRect.x + this.colRect.w && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= this.colRect.x)
+                        )
+                    {
+                        Map.spriteArray[i].setXYVel(this.xVel, this.yVel);
+                        Map.spriteArray[i].setXY(Map.spriteArray[i].x + this.xVel, Map.spriteArray[i].y + this.yVel);
+
+                        Image.drawText("!!", (int)Map.spriteArray[i].x, (int)Map.spriteArray[i].y - 12, System.Drawing.Color.White, Texture.ASCII);
+                    }
+
+                }
+            }
+
             for (int i = 0; i != this.size; i++)
             {
                 Image.drawImage(texture, x + (8 * i), y);
