@@ -157,6 +157,7 @@ namespace Game
                     getColGrid();
                 }
                 yVel = 0;
+                xVel = 0.3;
                 onGround = true;
                 falling = false;
                 jumpDelay = Map.rnd.Next(150, 300);
@@ -170,9 +171,9 @@ namespace Game
 
             y = y + yVel;
             if (dir)
-                x -= 0.3;
+                x -= xVel;
             else
-                x += 0.3;
+                x += xVel;
 
             animate();
 

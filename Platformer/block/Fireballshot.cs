@@ -33,6 +33,7 @@ namespace Game
                 harmPlayers=false;
             this.dir = dir;
             this.colWithOthers = true;
+            this.colWithBlocks = true;
         }
 
         public override string getName()

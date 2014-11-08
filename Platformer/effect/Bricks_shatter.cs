@@ -27,6 +27,8 @@ namespace Game
             this.y = y;
             this.w = 8;
             this.h = 8;
+            this.colWithBlocks = false;
+            this.colWithOthers = false;
         }
 
         public override string getName()

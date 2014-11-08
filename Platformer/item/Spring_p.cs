@@ -40,6 +40,7 @@ namespace Game
             this.type = type;
             grabable = true;
             active = false;
+            this.colWithBlocks = true;
             this.colWithOthers = true;
         }
 

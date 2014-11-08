@@ -32,6 +32,7 @@ namespace Game
             this.dir=dir;
             this.type = type;
             grabable = true;
+            this.colWithBlocks = true;
             this.colWithOthers = true;
         }
 
@@ -74,7 +75,7 @@ namespace Game
                 falling = true;
             }
 
-            y = y + yVel;
+            y += yVel;
             x += xVel;
            
             Image.drawImage(texture, x, y, dir);

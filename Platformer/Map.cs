@@ -115,10 +115,10 @@ namespace Game
             sprites[016] = new Piranhaplant(-200, -200, 2);     //Red Piranha Plant
             sprites[017] = new Hammerbros(-200, -200);
 
-            sprites[100] = new Bricks(-200, -200, (short)rnd.Next(1, 5));
-            sprites[101] = new Pow(-200, -200);
-            sprites[102] = new Qm(-200, -200,1,(short)rnd.Next(103,113));
-            sprites[103] = new Coin(-200, -200, (short)rnd.Next(1, 6));
+            sprites[100] = null;
+            sprites[101] = new Coin(-200, -200, (short)rnd.Next(1, 6));     //fixed Coin
+            sprites[102] = new Coin(-200, -200, (short)rnd.Next(1, 6), false);  //loose Coin
+            sprites[103] = new Pow(-200, -200);
             sprites[104] = new Mushroom(-200, -200, false, (short)rnd.Next(1, 3));
             sprites[105] = new Mushroom_p(-200, -200);
             sprites[106] = new Fireflower(-200, -200, (short)rnd.Next(1, 4));
@@ -131,9 +131,12 @@ namespace Game
             sprites[113] = new Cannon(-200, -200);
             
 
-            sprites[114] = new Lava(-200, -200);
-            sprites[115] = new Potaboo(-200, -200);
-            sprites[116] = new Firebar(-200, -200);
+            sprites[200] = new Lava(-200, -200);
+            sprites[201] = new Potaboo(-200, -200);
+            sprites[202] = new Firebar(-200, -200);
+            sprites[203] = new Winehead(-200, -200);
+            sprites[204] = new Bricks(-200, -200, (short)rnd.Next(1, 5), (short)rnd.Next(102,114));
+            sprites[205] = new Qm(-200, -200, 1, 102);
             
             maxTextureSize = GL.GetInteger(OpenTK.Graphics.OpenGL.GetPName.MaxTextureSize);
             Console.WriteLine("BG: " + Texture.backGround);
@@ -253,7 +256,7 @@ namespace Game
                     
                     if (spriteArray[i].despawnOffScreen)
                     //{
-                        if (spriteArray[i].x + spriteArray[i].w > RootThingy.sceneX || spriteArray[i].x < 0 || spriteArray[i].y < 0 || spriteArray[i].y + spriteArray[i].h > RootThingy.sceneY)
+                        if (spriteArray[i].x + spriteArray[i].w > RootThingy.sceneX || spriteArray[i].x < 0 || /*spriteArray[i].y < 0 ||*/ spriteArray[i].y + spriteArray[i].h > RootThingy.sceneY)
                         {
                             spriteArray[i] = null;
                             //spriteArrayCount--; 
@@ -381,6 +384,9 @@ namespace Game
                 }
             }
 
+
+            ///////////////////////////////////////////////////////////////////// KEYS
+
             if (keyboard[Key.D])
             {
                 currentDimension++;
@@ -390,10 +396,10 @@ namespace Game
             }
 
             if (keyboard[Key.F10])               // F10
-            { spriteAdd(new Winehead(mausX*16, mausY*16,1,(rnd.Next(2)==1))); Thread.Sleep(150); }     // Spawn something with F10 Key
+            { spriteAdd(new Lakitu(mausX*16,mausY*16,false,14)); Thread.Sleep(150); }     // Spawn something with F10 Key
 
             if (keyboard[Key.F11])               // F11
-            { spriteAdd(new Platform(mausX * 16, mausY * 16, 6, false)); Thread.Sleep(150); }     // Spawn something with F11 Key
+            { spriteAdd(new Platform(mausX * 16, mausY * 16, 6, 0)); Thread.Sleep(150); }     // Spawn something with F11 Key
 
             if (keyboard[Key.F12])               // +
             { RootThingy.debugInfo = !RootThingy.debugInfo; Thread.Sleep(150); }
@@ -471,10 +477,10 @@ namespace Game
                             case 016: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 2)); break;    //Red Piranha Plant
                             case 017: spriteAdd(new Hammerbros(arrX * 16, arrY * 16)); break;
 
-                            case 100: spriteAdd(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
-                            case 101: spriteAdd(new Pow(arrX * 16, arrY * 16)); break;
-                            case 102: spriteAdd(new Qm(arrX * 16, arrY * 16, 1, (short)rnd.Next(103, 113))); break;
-                            case 103: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
+                            case 100: break;
+                            case 101: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
+                            case 102: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6),false)); break;
+                            case 103: spriteAdd(new Pow(arrX * 16, arrY * 16)); break;
                             case 104: spriteAdd(new Mushroom(arrX * 16, arrY * 16, false, (short)rnd.Next(1, 3))); break;
                             case 105: spriteAdd(new Mushroom_p(arrX * 16, arrY * 16)); break;
                             case 106: spriteAdd(new Fireflower(arrX * 16, arrY * 16, (short)rnd.Next(1, 4))); break;
@@ -487,9 +493,12 @@ namespace Game
                             case 113: spriteAdd(new Cannon(arrX * 16, arrY * 16)); break;
                             
 
-                            case 114: spriteAdd(new Lava(arrX * 16, arrY * 16)); break;
-                            case 115: spriteAdd(new Potaboo(arrX * 16, arrY * 16)); break;
-                            case 116: spriteAdd(new Firebar(arrX * 16, arrY * 16)); break;
+                            case 200: spriteAdd(new Lava(arrX * 16, arrY * 16)); break;
+                            case 201: spriteAdd(new Potaboo(arrX * 16, arrY * 16)); break;
+                            case 202: spriteAdd(new Firebar(arrX * 16, arrY * 16)); break;
+                            case 203: spriteAdd(new Winehead(arrX * 16, arrY * 16)); break;
+                            case 204: spriteAdd(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
+                            case 205: spriteAdd(new Qm(arrX * 16, arrY * 16, 1, (short)rnd.Next(102, 114))); break;
 
                             case 300: spriteAdd(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
 
@@ -615,7 +624,7 @@ namespace Game
                 }
                 else
                 {
-                    Console.WriteLine("spriteAdd("+spriteArray[i].getName()+")");
+                    Console.WriteLine("["+i+"]spriteAdd("+spriteArray[i].getName()+")");
                     //Console.ReadKey();
                     i++;
                 }

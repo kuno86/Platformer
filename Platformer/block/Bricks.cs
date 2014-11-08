@@ -68,7 +68,7 @@ namespace Game
                         if (contentID != 0)
                         {
                             Map.spriteAdd(new Qm_open(x, y - 16));
-                            int tmp = Map.spriteAdd(Map.sprites[contentID]);
+                            int tmp = Map.spriteAdd(DeepCopySprite(this.contentID));
                             Map.spriteArray[tmp].setXY(x, y - h);
                             Map.spriteAdd(new Qm_e(x, y, type));
                             Map.spriteAdd(new Qm_open(x, y - 16));

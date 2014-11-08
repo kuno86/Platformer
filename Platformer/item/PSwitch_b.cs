@@ -35,6 +35,7 @@ namespace Game
             this.type = type;
             grabable = true;
             pressed = false;
+            this.colWithBlocks = true;
             this.colWithOthers = true;
         }
 

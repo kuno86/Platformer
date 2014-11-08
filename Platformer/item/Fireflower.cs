@@ -11,8 +11,7 @@ namespace Game
         private short frame = 0;
         private short frames;
         private short frameDelay = 0;
-        public bool fixd;
-        public bool onGround, falling;
+        public bool fixd, falling;
 
         public Fireflower(double x, double y, short type = 1, bool fixd = true)
             : base(x, y, 16, 16)
@@ -35,6 +34,8 @@ namespace Game
             this.colRect.h = (short)this.h;
             this.fixd = fixd;
             this.type = type;
+            this.colWithBlocks = true;
+            this.colWithOthers = true;
         }
 
         public override string getName()
@@ -66,6 +67,15 @@ namespace Game
                 yVel = 0;
                 onGround = true;
                 falling = false;
+                if (onGround)
+                {
+                    if (xVel > xDecel)
+                        xVel -= xDecel;
+                    if (xVel < xDecel)
+                        xVel += xDecel;
+                    if(xVel <= xDecel && xVel >= xDecel*-1)
+                        xVel = 0;
+                }
             }
             else
             {

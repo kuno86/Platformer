@@ -38,6 +38,8 @@ namespace Game
             this.colRect.h = 14;
             this.fixd = fixd;
             this.type = type;
+            this.colWithBlocks = true;
+            this.colWithOthers = false;
         }
 
         public override string getName()
@@ -76,6 +78,10 @@ namespace Game
                     yVel = 0;
                     onGround = true;
                     falling = false;
+                    if (xVel > xDecel)
+                        xVel -= xDecel;
+                    else
+                        xVel = 0;
                 }
                 else
                 {

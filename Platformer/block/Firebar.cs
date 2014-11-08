@@ -36,6 +36,8 @@ namespace Game
                 adder = 0.03;
             else
                 adder = -0.03;
+            this.colWithBlocks = false;
+            this.colWithOthers = true;
         }
 
         public override string getName()

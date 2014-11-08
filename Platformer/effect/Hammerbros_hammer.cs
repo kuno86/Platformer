@@ -20,6 +20,7 @@ namespace Game
         private short frameDelay = 0;
         public int hbW = 16;
         public int hbH = 16;
+        private double yVel;
         //jumps 40 Pixel high
         public bool isDead = false; //does not respawn after it was killed
 
@@ -40,6 +41,8 @@ namespace Game
             this.type = type;
             this.yVel = yVel;
             this.dir = dir; //Startdirection: true = Left ; false = Right
+            this.colWithOthers = true;
+            this.colWithBlocks = false;
         }
 
         public override string getName()

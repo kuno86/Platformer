@@ -38,6 +38,7 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_piranha_green =  Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_piranha_green.bmp");//
         public static int smb1_piranha_red =    Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_piranha_red.bmp");//
         public static int smb1_hammerbros =     Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_hammerbros.bmp");//
+        public static int smb1_lakitu =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_lakitu.bmp");
         public static int smb1_potaboo =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_potaboo.bmp");//
 
         //Items
@@ -110,6 +111,8 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_smoke =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_smoke.bmp");//
         public static int smb2_smoke =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb2_smoke.bmp");//
         public static int smb3_smoke =          Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb3_smoke.bmp");//
+
+        public static int smb1_pulley =         Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_balanceplatform_pulley.bmp");
 
         public static int fireballshot =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\fireballshot.bmp");//
         public static int fireball_hit =        Image.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\fireball_hit.bmp");//

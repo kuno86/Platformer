@@ -28,6 +28,8 @@ namespace Game
             this.colRect.y = (short)this.y;
             this.colRect.w = (short)this.w;
             this.colRect.h = (short)this.h;
+            this.colWithBlocks = true;
+            this.colWithOthers = true;
         }
 
         public override string getName()

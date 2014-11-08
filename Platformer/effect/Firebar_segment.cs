@@ -26,6 +26,8 @@ namespace Game
             this.colRect.y = (short)this.y;
             this.colRect.w = (short)this.w;
             this.colRect.h = (short)this.h;
+            this.colWithBlocks = false;
+            this.colWithOthers = true;
         }
 
         public override string getName()
@@ -44,8 +46,8 @@ namespace Game
                 if (frameDelay == 3)
                     frameDelay = 0;
             }
-            
-           
+
+
             Image.drawTileFrame(texture, frameDelay, 4, x, y, dir);
         }
 

@@ -62,6 +62,7 @@
     <Compile Include="effect\Firebar_segment.cs" />
     <Compile Include="effect\Hammerbros_hammer.cs" />
     <Compile Include="effect\Minismoke.cs" />
+    <Compile Include="effect\Platform_pulley.cs" />
     <Compile Include="effect\Qm_open.cs" />
     <Compile Include="effect\Smb1_getCoin.cs" />
     <Compile Include="effect\Smb2_pow_on.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="npc\Hammerbros.cs" />
     <Compile Include="npc\Koopa_green.cs" />
     <Compile Include="npc\Koopa_red.cs" />
+    <Compile Include="npc\Lakitu.cs" />
     <Compile Include="npc\Piranhaplant.cs" />
     <Compile Include="npc\Potaboo.cs" />
     <Compile Include="npc\Spiny.cs" />

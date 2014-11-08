@@ -44,6 +44,8 @@ namespace Game
             this.dir = dir; //Startdirection: true = Left ; false = Right
             onGround = false;
             falling = true;
+            this.colWithBlocks = true;
+            this.colWithOthers = true;
         }
 
         public override string getName()

@@ -25,12 +25,19 @@ namespace Game
         public short colOffsetX;
         public short colOffsetY;
 
-        protected int colTop, colBottom, colRight, colLeft;
+        public int colCntSprites = 0;
+        public int colTop, colBottom, colRight, colLeft;
         public ColRect colRect;
+        public bool onGround = false;
 
         public bool grabable = false;
         public bool blockTop = false;   //Acts like a solid block, stuff can land and stay on it
         public bool blockSides = false;
+
+        public bool colWithBlocks = true;
+        public bool colWithOthers = false;
+
+        protected double xDecel = 0.0625;
 
         public bool despawnOffScreen = true;
 
@@ -39,7 +46,6 @@ namespace Game
 
         public short type;
         public string name = "Base";
-        public bool colWithOthers = false;
         public int texture;
         public bool dir;    //false=right ; true=left
         public double x;
@@ -63,6 +69,11 @@ namespace Game
             colRect.h = colH;
             id = idCount;
             idCount++;
+        }
+
+        public BaseObj DeepCopySprite(int id)
+        {
+            return (BaseObj)Map.sprites[id].MemberwiseClone();
         }
 
         public BaseObj(double x, double y)
@@ -90,7 +101,7 @@ namespace Game
         }
 
         ///////////////////////////////////////////Return Collision Value for a Block on Map/Sprite
-        protected void getColGrid()
+        public void getColGrid()
         {
             colTop = 0;
             colBottom = 0;
@@ -99,45 +110,55 @@ namespace Game
             if (despawnOffScreen)
             {
                 /////////////////////////////////////////////////For Block collision
-                try
+                if (colWithBlocks)
                 {
-                    if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)(colRect.y / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 1)  //ceiling-Collisions
-                        colTop = 1;           //
-
-                    if (Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 1 || //Floor-Collisions (Solids-check)
-                        Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 2 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize) / 16), 0] == 2)  //Floor-Collisions (clouds-check)
-                        colBottom = 1;
-
-                    if (Map.map[(int)(colRect.y / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1)  //Right Walls Collsion
-                        colRight = 1;
-
-                    if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)(colRect.x / 16), 0] == 1)  //Left Wall Collision
-                        colLeft = 1;
-                }
-                catch { ; }
-
-                /////////////////////////////////////////////////For sprites with collision
-                for (int i = 0; i != Map.spriteArrMax; i++)
-                {
-                    if (Map.spriteArray[i] != null)
+                    try
                     {
-                        if (getCol2Obj(Map.spriteArray[i].colRect, this.colRect))
-                        {
-                            if (Map.spriteArray[i].blockTop)
-                            {
-                                if (this.colRect.y + this.colRect.h <= Map.spriteArray[i].colRect.y)
-                                {
-                                    colBottom = 1;
-                                    this.y += Map.spriteArray[i].yVel;
-                                }
-                            }
+                        if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)(colRect.y / 16), (int)((colRect.x + Map.tileSize - 1) / 16), 0] == 1)  //ceiling-Collisions
+                            colTop = 1;           //
 
-                            if (Map.spriteArray[i].blockSides)
-                            {
-                                if (this.colRect.x <= Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w)
-                                    colRight = 1;
-                                if (this.colRect.x + this.colRect.w >= Map.spriteArray[i].colRect.x)
-                                    colLeft = 1;
+                        if (Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize - 1) / 16), 0] == 1 || //Floor-Collisions (Solids-check)
+                            Map.map[(int)((colRect.y + colRect.h) / 16), (int)(colRect.x / 16), 0] == 2 || Map.map[(int)((colRect.y + colRect.h) / 16), (int)((colRect.x + Map.tileSize - 1) / 16), 0] == 2)  //Floor-Collisions (clouds-check)
+                            colBottom = 1;
+
+                        if (Map.map[(int)(colRect.y / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)((colRect.x + colRect.w) / 16), 0] == 1)  //Right Walls Collsion
+                            colRight = 1;
+
+                        if (Map.map[(int)(colRect.y / 16), (int)(colRect.x / 16), 0] == 1 || Map.map[(int)((colRect.y + Map.tileSize) / 16), (int)(colRect.x / 16), 0] == 1)  //Left Wall Collision
+                            colLeft = 1;
+                    }
+                    catch { ; }
+                }
+                /////////////////////////////////////////////////For sprites with collision
+                if (colWithOthers)
+                {
+                    
+                    for (int i = 0; i != Map.spriteArrMax; i++)
+                    {
+                        if (Map.spriteArray[i] != null)
+                        {
+
+                            if (Map.spriteArray[i].colWithOthers)       //////
+                            {                                           //////
+
+                                if (getCol2Obj(Map.spriteArray[i].colRect, this.colRect))
+                                {
+                                    if (Map.spriteArray[i].blockTop)
+                                    {
+                                        if (this.colRect.y + this.colRect.h + this.yVel <= Map.spriteArray[i].colRect.y + Map.spriteArray[i].yVel)
+                                        {
+                                            colBottom = 1;
+                                        }
+                                    }
+
+                                    if (Map.spriteArray[i].blockSides)
+                                    {
+                                        if (this.colRect.x <= Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w)
+                                            colRight = 1;
+                                        if (this.colRect.x + this.colRect.w >= Map.spriteArray[i].colRect.x)
+                                            colLeft = 1;
+                                    }
+                                }
                             }
                         }
                     }
@@ -154,10 +175,38 @@ namespace Game
         ///////////////////////////////////////////Return Collision Value for a Pixel on Map
         protected int getColXY(int x, int y)
         {
-            if ((y < Map.map.GetLength(0)*Map.tileSize) && (x < Map.map.GetLength(1)*Map.tileSize) && (x >= 0) && (y >= 0))
+            int temp = 0;
+            if (colWithOthers)
+            {
+                for (int i = 0; i != Map.spriteArrMax; i++)
+                {
+                    if (Map.spriteArray[i] != null)
+                    {
+
+                        if (Map.spriteArray[i].colWithOthers)       //////
+                        {                                           //////
+
+                            if ((x >= Map.spriteArray[i].colRect.x && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= x) && (y >= Map.spriteArray[i].colRect.y && Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h >=y))
+                            {
+                                if (Map.spriteArray[i].blockTop)
+                                {
+                                    temp = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (temp == 1)
+            {
+                return temp;
+            }
+
+            if ((y < Map.map.GetLength(0) * Map.tileSize) && (x < Map.map.GetLength(1) * Map.tileSize) && (x >= 0) && (y >= 0))
                 return Map.map[(int)y / 16, (int)x / 16, 0];
             else
                 return 1;
+
         }
 
 

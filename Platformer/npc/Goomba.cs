@@ -17,7 +17,6 @@ namespace Game
     {
         public int hbW = 16;
         public int hbH = 16;
-        private bool onGround;
         private bool falling;
         private short frame=0;
         private short frameDelay;
@@ -63,19 +62,7 @@ namespace Game
             refreshColRect();
             getColGrid();
 
-            //for (int i = 0; i != Map.spriteArray.Count(); i++)
-            //{
-            //    if (Map.spriteArray[i] != null)
-            //    {
-            //        if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
-            //        {
-            //            if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
-            //            {
-            //                dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
-            //            }
-            //        }
-            //    }
-            //}
+            
 
             if (getColXY((int)x -1, (int)y + (h / 2)) == 1) //Left wall ?
             { 
@@ -98,6 +85,7 @@ namespace Game
                     getColGrid();
                 }
                 yVel = 0;
+                xVel = 0.3;
                 onGround = true;
                 falling = false;
             }
@@ -110,10 +98,10 @@ namespace Game
 
             y = y + yVel;
             if (dir)
-                x -= 0.3;
+                x -= xVel;
             else
-                x += 0.3;
-
+                x += xVel;
+            
             animate();
 
         }

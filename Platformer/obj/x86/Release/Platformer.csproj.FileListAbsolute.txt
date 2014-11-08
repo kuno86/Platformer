@@ -17,3 +17,4 @@ C:\Users\pfeil\Desktop\Platformer\Platformer\bin\Release\OpenTK.GLControl.xml
 C:\Users\pfeil\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.csprojResolveAssemblyReference.cache
 C:\Users\pfeil\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.exe
 C:\Users\pfeil\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.pdb
+C:\Users\Karsten\Desktop\Platformer\Platformer\obj\x86\Release\Platformer.csprojResolveAssemblyReference.cache

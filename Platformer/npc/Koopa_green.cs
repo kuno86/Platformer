@@ -38,7 +38,7 @@ namespace Game
         };
 
         public Koopa_green(double x, double y, bool dir = false, short type = 1,  short behavior=1)
-            : base(x, y, 16, 16)
+            : base(x, y, 12, 14)
         {
             switch (type)
             {
@@ -79,19 +79,7 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            for (int i = 0; i != Map.spriteArrMax; i++)
-            {
-                if (Map.spriteArray[i] != null)
-                {
-                    if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
-                    {
-                        if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
-                        {
-                            dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
-                        }
-                    }
-                }
-            }
+            
             switch (state)
             {
                 case 0: //stunned
@@ -158,6 +146,12 @@ namespace Game
                     {
                         if (colBottom == 1)
                         {
+                            while (colBottom == 1)
+                            {
+                                y--;
+                                refreshColRect();
+                                getColGrid();
+                            }
                             if (state == 2)
                                 yVel = -3.32;
                             if (state == 3)

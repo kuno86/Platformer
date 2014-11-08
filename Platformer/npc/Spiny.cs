@@ -34,10 +34,16 @@ namespace Game
         public Spiny(double x, double y, bool dir = false, short type = 1, bool egg=false)
             : base(x, y, 16, 16)
         {
-            if(egg)
+            if (egg)
+            {
                 this.name = "Spiny-Egg";
+                this.colWithOthers = false;     //it only Hatches on hitting Blocks
+            }
             else
+            {
                 this.name = "Spiny";
+                this.colWithOthers = true;
+            }
             switch (type)
             {
                 case 1: this.texture = Texture.smb1_spiny; break;
@@ -60,7 +66,7 @@ namespace Game
             this.dir = dir; //Startdirection: true = Left ; false = Right
             onGround = false;
             falling = true;
-            this.colWithOthers = true;
+            this.colWithBlocks = true;
         }
 
         public override string getName()
@@ -70,19 +76,7 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            for (int i = 0; i != Map.spriteArrMax; i++)
-            {
-                if (Map.spriteArray[i] != null)
-                {
-                    if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
-                    {
-                        if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
-                        {
-                            dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
-                        }
-                    }
-                }
-            }
+            
             if (getColXY((int)x - 1, (int)y + (h / 2)) == 1) //Left wall ?
             {
                 dir = false;
@@ -108,8 +102,10 @@ namespace Game
                     egg = false;
                     state = 1;
                     this.name = "Spiny";
+                    this.colWithOthers = true;
                 }
                 yVel = 0;
+                xVel = 0.3;
                 onGround = true;
                 falling = false;
             }
@@ -122,9 +118,9 @@ namespace Game
 
             y = y + yVel;
             if (dir)
-                x -= 0.3;
+                x -= xVel;
             else
-                x += 0.3;
+                x += xVel;
 
             animate();
 

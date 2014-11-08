@@ -20,6 +20,7 @@ namespace Game
         private short frameDelay = 0;
         public int hbW = 16;
         public int hbH = 16;
+        private double yVel;
                                 //jumps 40 Pixel high
         public bool isDead = false; //does not respawn after it was killed
         private short state;
@@ -47,6 +48,8 @@ namespace Game
             this.colRect.h = (short)this.h;
             this.type = type;
             this.dir = dir; //Startdirection: true = Left ; false = Right
+            this.colWithBlocks = true;
+            this.colWithOthers = true;
         }
 
         public override string getName()
@@ -80,7 +83,15 @@ namespace Game
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
                 if (colBottom == 1)
-                    yVel= -3.32;
+                {
+                    while (colBottom == 1)
+                    {
+                        y--;
+                        refreshColRect();
+                        getColGrid();
+                    }
+                    yVel = -3.32;
+                }
             }
 
             if (getColXY((int)x + (w / 2), (int)y - 1) == 1)

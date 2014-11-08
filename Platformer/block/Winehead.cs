@@ -14,7 +14,7 @@ namespace Game
         
         private List<int> wines = new List<int>();
 
-        public Winehead(double x, double y, short type = 1, bool dir = true)
+        public Winehead(double x, double y, short type = 1, bool dir = false)
             : base(x, y)
         {
             this.name = "Winehead";
@@ -34,9 +34,9 @@ namespace Game
                 }
             }
             if (dir)
-                this.yVel = 1;
+                this.yVel = 1; //Growing down
             else
-                this.yVel = -1;
+                this.yVel = -1;  //Growing up
             this.yOrigin = y;
             this.x = x;
             this.y = y;
@@ -47,7 +47,8 @@ namespace Game
             this.colRect.w = (short)this.w;
             this.colRect.h = (short)this.h;
             this.type = type;
-            this.colWithOthers = true;
+            this.colWithOthers = false;
+            this.colWithBlocks = true;
         }
 
         public override string getName()

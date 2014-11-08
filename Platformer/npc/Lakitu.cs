@@ -5,33 +5,39 @@ using System.Text;
 
 namespace Game
 {
-    class Boo : BaseObj
+    class Lakitu : BaseObj
     {
         public int hbW = 16;
         public int hbH = 16;
-        private double accel = 0.0395;
-        private double velMax = 0.5;
+        private double accel = 0.1;
+        private double velMax = 1;
         private double xVel, yVel;
-        private short frame=0;
+        private short frame = 0;
+        private int throwDelay;
+        private int throwObjectId;
         
         public bool isDead = false; //does not respawn after it was killed   
 
-        public Boo(double x, double y, bool dir=false)
-            : base(x, y,16,16)
+        public Lakitu(double x, double y, bool dir = false, int throwObjectId = 14)
+            : base(x, y, 14, 15)
         {
-            this.name = "Boo";
-            this.texture = Texture.smw_boo;
+            this.name = "Lakitu";
+            this.texture = Texture.smb1_lakitu;
             this.x = x;
             this.y = y;
             this.w = 16;
             this.h = 16;
+            this.colOffsetX = 1;
+            this.colOffsetY = 9;
             this.colRect.x = (short)this.x;
             this.colRect.y = (short)this.y;
-            this.colRect.w = (short)this.w;
-            this.colRect.h = (short)this.h;
+            this.colRect.w = 14;
+            this.colRect.h = 15;
             this.dir = dir; //Startdirection: true = Left ; false = Right
-            this.colWithBlocks = false;
+            this.colWithBlocks = true;
             this.colWithOthers = true;
+            this.throwDelay = Map.rnd.Next(60, 120);
+            this.throwObjectId = throwObjectId;
         }
 
         public override string getName()
@@ -40,37 +46,47 @@ namespace Game
         public override void process()
         {
             refreshColRect();
-            frame = 0;
+            throwDelay--;
+            if (throwDelay == 45)
+                frame = 1;
+            if (throwDelay == 0)
+            {
+                frame = 0;
+                throwDelay = Map.rnd.Next(60, 120);
+                int tmpId=Map.spriteAdd(DeepCopySprite(this.throwObjectId));
+                Map.spriteArray[tmpId].setXY(x, y - Map.spriteArray[tmpId].h - 2);
+                Map.spriteArray[tmpId].setXYVel(4, -2);
+
+            }
+
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
                 if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if ((Map.spriteArray[i].x < x) && (Map.spriteArray[i].dir))  //is right from player an d looks away
+                    if ((Map.spriteArray[i].x < x))  //is right from player an d looks away
                     {
                         dir = true;
-                        frame = 1;
                         if (xVel > -velMax)
                             xVel -= accel;
                         else
                             xVel = -velMax;
 
-                        if (Map.spriteArray[i].y > y)
+                        if (64 > y)
                             y += 0.16;
-                        if (Map.spriteArray[i].y < y+h)
+                        if (64 < y + h)
                             y -= 0.16;
                     }
-                    else if ((Map.spriteArray[i].x > x) && (!Map.spriteArray[i].dir))  //is left from player an d looks away
+                    else if ((Map.spriteArray[i].x > x))  //is left from player an d looks away
                     {
                         dir = false;
-                        frame = 1;
                         if (xVel < velMax)
                             xVel += accel;
                         else
                             xVel = velMax;
 
-                        if (Map.spriteArray[i].y > y)
+                        if (64 > y)
                             y += 0.16;
-                        if (Map.spriteArray[i].y < y)
+                        if (64 < y)
                             y -= 0.16;
                     }
                     else
@@ -84,10 +100,11 @@ namespace Game
                     }
                 }
             }
-            x+=xVel;
-            Image.drawTileFrame(texture, frame, 2, x, y,dir);
+            x += xVel;
+            Image.drawTileFrame(texture, frame, 2, x, y, dir);
         }
 
 
     }
 }
+

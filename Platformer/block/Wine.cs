@@ -33,6 +33,7 @@ namespace Game
             this.colRect.h = (short)this.h;
             this.type = type;
             this.colWithOthers = true;
+            this.colWithBlocks = false;
         }
 
         public override string getName()

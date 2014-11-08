@@ -69,19 +69,7 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-            for (int i = 0; i != Map.spriteArrMax; i++)
-            {
-                if (Map.spriteArray[i] != null)
-                {
-                    if (Map.spriteArray[i].colWithOthers && this.id != Map.spriteArray[i].id)
-                    {
-                        if (getCol2Obj(colRect, Map.spriteArray[i].colRect))
-                        {
-                            dir = !dir; //Map.spriteArray[i].dir = !Map.spriteArray[i].dir;
-                        }
-                    }
-                }
-            }
+            
             switch (state)
             {
                 case 0: //stunned
@@ -117,6 +105,7 @@ namespace Game
                             getColGrid();
                         }
                         yVel = 0;
+                        xVel = 0.3;
                         onGround = true;
                         falling = false;
                     }
@@ -150,6 +139,7 @@ namespace Game
                             getColGrid();
                         }
                         yVel = 0;
+                        xVel = 2.7;
                         onGround = true;
                         falling = false;
                     }
@@ -159,10 +149,6 @@ namespace Game
                         onGround = false;
                         falling = true;
                     }
-                    if (dir)
-                        x -= 2.7;
-                    else
-                        x += 2.7;
                     break;
 
                 ///////////////////////////////////////////////////////////////////////////////////
@@ -175,21 +161,11 @@ namespace Game
             y = y + yVel;
 
             if (dir)
-                x -= 0.3;
+                x -= xVel;
             else
-                x += 0.3;
+                x += xVel;
 
             animate();
-
-            //Image.endDraw2D();
-            //GL.Begin(PrimitiveType.LineLoop);
-            //GL.Color3(Color.Aqua);
-            //GL.Vertex2(colRect.x, colRect.y);
-            //GL.Vertex2(colRect.x + colRect.w, colRect.y);
-            //GL.Vertex2(colRect.x + colRect.w, colRect.y + colRect.h);
-            //GL.Vertex2(colRect.x, colRect.y + colRect.h);
-            //GL.End();
-            //Image.beginDraw2D();
 
         }
 

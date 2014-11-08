@@ -37,6 +37,7 @@ namespace Game
             this.colRect.w = (short)this.w;
             this.colRect.h = (short)this.h;
             this.colWithOthers = true;
+            this.colWithBlocks = false;
             this.invisible = invisible;
         }
 
@@ -68,7 +69,7 @@ namespace Game
                     {
                         Map.spriteAdd(new Qm_e(x, y, type));
                         Map.spriteAdd(new Qm_open(x,y-16));
-                        int tmp =Map.spriteAdd(Map.sprites[this.contentID]);
+                        int tmp =Map.spriteAdd(DeepCopySprite(this.contentID));
                         Map.spriteArray[tmp].setXY(x, y - h);
                         x = -100;
                         y = -100;

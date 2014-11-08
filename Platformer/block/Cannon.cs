@@ -16,7 +16,7 @@ namespace Game
         public bool onGround, falling;
 
         public Cannon(double x, double y, short type = 1, bool flipV=false, bool fixd=false)
-            : base(x, y)
+            : base(x, y, 16, 16)
         {
             this.name = "Cannon";
             switch (type)
@@ -40,6 +40,7 @@ namespace Game
             this.flipV = flipV;
             this.type = type;
             this.colWithOthers = true;
+            this.colWithBlocks = true;
         }
 
         public override string getName()
@@ -47,7 +48,6 @@ namespace Game
 
         public override void process()
         {
-
             refreshColRect();
             getColGrid();
 
@@ -82,7 +82,7 @@ namespace Game
                 falling = true;
             }
 
-            y = y + yVel;
+            y += yVel;
             x += xVel;
 
             if (wait > 0)
@@ -93,20 +93,20 @@ namespace Game
                 if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
                     if (wait <= 0 && (Map.spriteArray[i].colRect.x - (Map.spriteArray[i].colRect.w / 2) - x - (w / 2) > 16))
-                    { 
+                    {
                         Map.spriteAdd(new Bulletbill(x + 16, y, false, type, homing));
                         Map.spriteAdd(new Smoke(x + 16, y, type));                     //shot right
                         wait = Map.rnd.Next(90, 300);
                     }
 
                     if (wait <= 0 && (Map.spriteArray[i].colRect.x + (Map.spriteArray[i].colRect.w / 2) - x + (w / 2) < -16))
-                    { 
+                    {
                         Map.spriteAdd(new Bulletbill(x - 16, y, true, type, homing));
                         Map.spriteAdd(new Smoke(x - 16, y, type));                     //shoot left
                         wait = Map.rnd.Next(90, 300);
                     }
-                        
-                    
+
+
                 }
             }
             

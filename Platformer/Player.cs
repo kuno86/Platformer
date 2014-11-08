@@ -101,6 +101,7 @@ namespace Game
             spinjumping = false;
             onGround = false;
             this.colWithOthers = true;
+            this.colWithBlocks = true;
         }
 
         public override string getName()
