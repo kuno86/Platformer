@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AniFrame.cs" />
     <Compile Include="BaseObj.cs" />
+    <Compile Include="npc\Blooper.cs" />
     <Compile Include="block\Bricks.cs" />
     <Compile Include="block\Cannon.cs" />
     <Compile Include="block\Firebar.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="effect\Smb2_pow_on.cs" />
     <Compile Include="effect\Smoke.cs" />
     <Compile Include="effect\Sparkle.cs" />
+    <Compile Include="GUI\Form_NPCs.cs" />
     <Compile Include="item\Fireflower.cs" />
     <Compile Include="item\Keyy.cs" />
     <Compile Include="item\Mushroom.cs" />
@@ -85,10 +88,11 @@
     <Compile Include="Geometry.cs" />
     <Compile Include="npc\Bulletbill.cs" />
     <Compile Include="npc\Buzzybeetle.cs" />
+    <Compile Include="npc\CheepCheep.cs" />
     <Compile Include="npc\Goomba.cs" />
-    <Compile Include="Image.cs" />
+    <Compile Include="MyImage.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="block\Fireballshot.cs" />
+    <Compile Include="effect\Fireballshot.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="effect\Brickshatter.cs" />
     <Compile Include="npc\Hammerbros.cs" />
@@ -101,6 +105,12 @@
     <Compile Include="npc\VeloTest.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="special\Generator.cs" />
+    <Compile Include="special\Keyhole.cs" />
+    <Compile Include="special\RollingRock.cs" />
+    <Compile Include="special\WarpToXYS.cs" />
+    <Compile Include="special\WarpToWarp.cs" />
+    <Compile Include="special\WaterArea.cs" />
     <Compile Include="Texture.cs" />
   </ItemGroup>
   <ItemGroup>

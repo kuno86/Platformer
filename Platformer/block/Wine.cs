@@ -39,16 +39,15 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
-
-            Image.drawImage(texture, x, y,false,dir);
-
         }
 
-
-
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y, false, dir);
+        }
 
     }
 }

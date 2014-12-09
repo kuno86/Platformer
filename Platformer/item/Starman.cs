@@ -54,8 +54,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+                
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -99,16 +99,18 @@ namespace Game
                 yVel = 0;
             }
             yVel += Map.gravity;
-            y=y+yVel;
+            y = y + yVel;
 
             if (dir)
                 x -= 0.6;
             else
                 x += 0.6;
-
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+        }
 
     }
 }

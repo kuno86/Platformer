@@ -9,7 +9,7 @@ namespace Game
     {
         public int hbW = 16;
         public int hbH = 16;
-        private double accel = 0.1;
+        private double accel = 0.3;
         private double velMax = 1;
         private double xVel, yVel;
         private short frame = 0;
@@ -36,26 +36,26 @@ namespace Game
             this.dir = dir; //Startdirection: true = Left ; false = Right
             this.colWithBlocks = true;
             this.colWithOthers = true;
-            this.throwDelay = Map.rnd.Next(60, 120);
+            this.throwDelay = Map.rnd.Next(90, 120);
             this.throwObjectId = throwObjectId;
         }
 
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             throwDelay--;
-            if (throwDelay == 45)
+            if (throwDelay == 30)
                 frame = 1;
             if (throwDelay == 0)
             {
                 frame = 0;
-                throwDelay = Map.rnd.Next(60, 120);
-                int tmpId=Map.spriteAdd(DeepCopySprite(this.throwObjectId));
+                throwDelay = Map.rnd.Next(90, 120);
+                int tmpId = Map.spriteAdd(DeepCopySprite(this.throwObjectId));
                 Map.spriteArray[tmpId].setXY(x, y - Map.spriteArray[tmpId].h - 2);
-                Map.spriteArray[tmpId].setXYVel(4, -2);
+                Map.spriteArray[tmpId].setXYVel((Map.rnd.NextDouble() - 0.5) * 2.5, -2);
 
             }
 
@@ -101,9 +101,12 @@ namespace Game
                 }
             }
             x += xVel;
-            Image.drawTileFrame(texture, frame, 2, x, y, dir);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, 2, x, y, dir);
+        }
 
     }
 }

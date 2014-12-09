@@ -44,7 +44,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             frameDelay++;
@@ -57,9 +57,6 @@ namespace Game
             {
                 frame = 1;
             }
-            if(!invisible)
-                Image.drawTileFrame(texture, frame, 4, x, y);
-
 
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
@@ -68,8 +65,8 @@ namespace Game
                     if (getCol2Obj(colRect, Map.spriteArray[i].colRect) && this.id != Map.spriteArray[i].id)
                     {
                         Map.spriteAdd(new Qm_e(x, y, type));
-                        Map.spriteAdd(new Qm_open(x,y-16));
-                        int tmp =Map.spriteAdd(DeepCopySprite(this.contentID));
+                        Map.spriteAdd(new Qm_open(x, y - 16));
+                        int tmp = Map.spriteAdd(DeepCopySprite(this.contentID));
                         Map.spriteArray[tmp].setXY(x, y - h);
                         x = -100;
                         y = -100;
@@ -77,10 +74,13 @@ namespace Game
 
                 }
             }
-
         }
-               
 
+        public override void doRender()
+        {
+            if(!invisible)
+                MyImage.drawTileFrame(texture, frame, 4, x, y);
+        }
 
     }
 }

@@ -31,7 +31,7 @@ namespace Game
             this.colRect.h = (short)this.h;
             this.dir=dir;
             this.type = type;
-            grabable = true;
+            this.grabable = true;
             this.colWithBlocks = true;
             this.colWithOthers = true;
         }
@@ -39,7 +39,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -63,7 +63,6 @@ namespace Game
                 falling = true;
             }
 
-
             if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
             {
                 xVel = 0;
@@ -77,14 +76,20 @@ namespace Game
 
             y += yVel;
             x += xVel;
-           
-            Image.drawImage(texture, x, y, dir);
-
         }
 
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y, dir);
+            if (RootThingy.debugInfo)
+            {
+                if (grabable)
+                    MyImage.drawText("G1", (int)(x), (int)(y - 12), Color.White, Texture.ASCII);
+                else
+                    MyImage.drawText("G0", (int)(x), (int)(y - 12), Color.White, Texture.ASCII);
+            }
+        }
     }
-
-
 }
 
 

@@ -46,7 +46,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
 
@@ -76,7 +76,7 @@ namespace Game
                         if (Map.spriteArray[i].colRect.y < y)
                             y--;
                         if (Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w + HomingRange > x)
-                        { xVel += 0.2; } 
+                        { xVel += 0.2; }
                         if (Map.spriteArray[i].colRect.x - HomingRange < x + w)
                         { xVel -= 0.2; }
                     }
@@ -96,12 +96,12 @@ namespace Game
                 frame = 1;
             }
             x += xVel;
-            Image.drawTileFrame(texture, frame, frames, x, y, dir);
-
         }
 
-
-
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y, dir);
+        }
 
     }
 }

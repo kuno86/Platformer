@@ -52,7 +52,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -67,7 +67,6 @@ namespace Game
                 dir = true;
                 falling = true;
             }
-
 
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
@@ -94,10 +93,12 @@ namespace Game
                 x -= 0.3;
             else
                 x += 0.3;
-
-            Image.drawImage(texture, x, y);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y);
+        }
 
     }
 }

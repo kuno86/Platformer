@@ -42,8 +42,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+        
+        public override void doSubAI()
         {
             angle += adder;
 
@@ -58,11 +58,11 @@ namespace Game
             {
                 for (int i = 1; i != segments; i++)
                 {
-                    segmentObj.Add(Map.spriteAdd(new Firebar_segment((Math.Cos(angle) * x * i) + 4,Math.Sin(angle)* y + 4, clockwise)));
+                    segmentObj.Add(Map.spriteAdd(new Firebar_segment((Math.Cos(angle) * x * i) + 4, Math.Sin(angle) * y + 4, clockwise)));
                 }
                 spawned = true;
             }
-                        
+
             for (int i = 0; i < segmentObj.Count; i++)
             {
                 if (Map.spriteArray[segmentObj[i]] == null)
@@ -73,11 +73,12 @@ namespace Game
                     Map.spriteArray[segmentObj[i]].y = Math.Sin(angle) * 8 * i + y + 4;
                 }
             }
-
-            Image.drawImage(texture, x, y);
         }
 
-
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y);
+        }
 
     }
 }

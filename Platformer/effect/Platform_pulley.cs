@@ -48,8 +48,8 @@ namespace Game
 
         public override string getName()
         { return this.name; }
-
-        public override void process()
+                
+        public override void doSubAI()
         {
             if (!dead)
             {
@@ -112,54 +112,53 @@ namespace Game
                     Map.spriteArray[platformL].yVel += Map.gravity;
                     Map.spriteArray[platformR].yVel += Map.gravity;
                 }
-
-
-                if (!cutOff)
-                {
-                    ////////////////////////////////////////////////////////////////////// All the below Code draws the pulley
-                    Image.endDraw2D();
-                    GL.Begin(PrimitiveType.Lines);                                     // O--
-                    GL.Color4(System.Drawing.Color.WhiteSmoke);                        // |
-                    GL.Vertex2(this.colRect.x + 1, this.colRect.y + this.colRect.h);   //Withe part of the Left UD-Line 
-                    GL.Vertex2(this.colRect.x + 1, Map.spriteArray[platformL].y);      //
-                    GL.End();                                                          //
-                    GL.Begin(PrimitiveType.Lines);                                     // O--                   
-                    GL.Color4(System.Drawing.Color.HotPink);                           // |
-                    GL.Vertex2(this.colRect.x + 2, this.colRect.y + this.colRect.h);   //Pink part of the Left UD-Line 
-                    GL.Vertex2(this.colRect.x + 2, Map.spriteArray[platformL].y);      //
-                    GL.End();                                                          //
-
-                    GL.Begin(PrimitiveType.Lines);                                                                      // --O
-                    GL.Color4(System.Drawing.Color.WhiteSmoke);                                                         //   |
-                    GL.Vertex2(x + this.colRect.w + (16 * blockDistance) - 1, this.colRect.y + this.colRect.h);         //Withe part of the Right UD-Line 
-                    GL.Vertex2(x + this.colRect.w + (16 * blockDistance) - 1, Map.spriteArray[platformR].y);            //
-                    GL.End();                                                                                           //
-                    GL.Begin(PrimitiveType.Lines);                                                              // --O
-                    GL.Color4(System.Drawing.Color.HotPink);                                                    //   |
-                    GL.Vertex2(x + this.colRect.w + (16 * blockDistance), this.colRect.y + this.colRect.h);     //Withe part of the Right UD-Line 
-                    GL.Vertex2(x + this.colRect.w + (16 * blockDistance), Map.spriteArray[platformR].y);        //
-                    GL.End();                                                                                   //
-                    Image.beginDraw2D();
-                }
-
             }
-                
-            Image.drawTileFrame(texture, 0, 2, x, y);                       //Left Pulley
-            Image.drawTileFrame(texture, 1, 2, x + (blockDistance * 16), y);    //Right Pulley
-            Image.endDraw2D();
-            GL.Begin(PrimitiveType.Lines);              //O---O
-            GL.Color4(System.Drawing.Color.WhiteSmoke); //
+        }
+
+        public override void doRender()
+        {
+            if (!dead && !cutOff)
+            {
+                ////////////////////////////////////////////////////////////////////// All the below Code draws the pulley
+                MyImage.endDraw2D();
+                GL.Begin(PrimitiveType.Lines);                                     // O--
+                GL.Color4(System.Drawing.Color.WhiteSmoke);                        // |
+                GL.Vertex2(this.colRect.x + 1, this.colRect.y + this.colRect.h);   //Withe part of the Left UD-Line 
+                GL.Vertex2(this.colRect.x + 1, Map.spriteArray[platformL].y);      //
+                GL.End();                                                          //
+                GL.Begin(PrimitiveType.Lines);                                     // O--                   
+                GL.Color4(System.Drawing.Color.HotPink);                           // |
+                GL.Vertex2(this.colRect.x + 2, this.colRect.y + this.colRect.h);   //Pink part of the Left UD-Line 
+                GL.Vertex2(this.colRect.x + 2, Map.spriteArray[platformL].y);      //
+                GL.End();                                                          //
+
+                GL.Begin(PrimitiveType.Lines);                                                                      // --O
+                GL.Color4(System.Drawing.Color.WhiteSmoke);                                                         //   |
+                GL.Vertex2(x + this.colRect.w + (16 * blockDistance) - 1, this.colRect.y + this.colRect.h);         //Withe part of the Right UD-Line 
+                GL.Vertex2(x + this.colRect.w + (16 * blockDistance) - 1, Map.spriteArray[platformR].y);            //
+                GL.End();                                                                                           //
+                GL.Begin(PrimitiveType.Lines);                                                              // --O
+                GL.Color4(System.Drawing.Color.HotPink);                                                    //   |
+                GL.Vertex2(x + this.colRect.w + (16 * blockDistance), this.colRect.y + this.colRect.h);     //Withe part of the Right UD-Line 
+                GL.Vertex2(x + this.colRect.w + (16 * blockDistance), Map.spriteArray[platformR].y);        //
+                GL.End();                                                                                   //
+                MyImage.beginDraw2D();
+            }
+
+            MyImage.drawTileFrame(texture, 0, 2, x, y);                       //Left Pulley
+            MyImage.drawTileFrame(texture, 1, 2, x + (blockDistance * 16), y);//Right Pulley
+            MyImage.endDraw2D();
+            GL.Begin(PrimitiveType.Lines);                  //O---O
+            GL.Color4(System.Drawing.Color.WhiteSmoke);     //
             GL.Vertex2(x + 16, y + 1);                      //Withe part of the LR-Line 
             GL.Vertex2(x + (blockDistance * 16), y + 1);    //
-            GL.End();                                   //
+            GL.End();                                       //
             GL.Begin(PrimitiveType.Lines);              //O---O
             GL.Color4(System.Drawing.Color.HotPink);    //
             GL.Vertex2(x + 16, y + 2);                  //Pink part of the LR-line
             GL.Vertex2(x + (blockDistance * 16), y + 2);//
             GL.End();                                   //
-            Image.beginDraw2D();
-            
+            MyImage.beginDraw2D();
         }
-
     }
 }

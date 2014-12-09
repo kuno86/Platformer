@@ -27,24 +27,25 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             frameDelay++;
             if (frameDelay == 3)
-            { 
-                frame++; 
-                frameDelay = 0; 
+            {
+                frame++;
+                frameDelay = 0;
             }
             if (frame > 3)
-            { 
+            {
                 x = -100;   //
                 y = -100;   // delete yourself after Animation (Position out of Scene will cause delete) 
             }
-
-            Image.drawTileFrame(texture, frame, 3, x, y);
         }
-    
-    
+
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, 3, x, y);
+        }    
     }
 }

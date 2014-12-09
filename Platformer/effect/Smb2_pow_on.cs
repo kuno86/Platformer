@@ -25,8 +25,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+        
+        public override void doSubAI()
         {
             refreshColRect();
             frameDelay++;
@@ -41,10 +41,12 @@ namespace Game
                 y = -100;   // delete yourself after Animation (Position out of Scene will cause delete) 
                 Map.powActive = 2;
             }
-            Image.drawTileFrame(texture, frame, 4, x-12, y);
         }
 
-        
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, 4, x - 12, y);
+        }
 
     }
 }

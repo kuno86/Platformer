@@ -38,15 +38,15 @@ namespace Game
 
         public override string getName()
         { return (name.ToString()) + "(" + (harmPlayers.ToString()) + ")"; }
-
-        public override void process()
+        
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
             if (dir)    //Left
-            {x -= 2.0;}
+            { x -= 2.0; }
             else        //Right
-            {x += 2.0;}
+            { x += 2.0; }
 
             frameCount++;
             if (frameCount == 10)
@@ -56,7 +56,6 @@ namespace Game
                 if (frameDelay == 3)
                     frameDelay = 0;
             }
-
 
             if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)
             {
@@ -84,8 +83,11 @@ namespace Game
 
             yVel += Map.gravity;
             y = y + yVel;
+        }
 
-            Image.drawTileFrame(texture, frameDelay, 4, x, y, dir);
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frameDelay, 4, x, y, dir);
         }
 
     }

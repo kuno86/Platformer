@@ -7,6 +7,7 @@ namespace Game
 {
     class Boo : BaseObj
     {
+        private double angle, adder, angleDeg;
         public int hbW = 16;
         public int hbH = 16;
         private double accel = 0.0395;
@@ -32,12 +33,13 @@ namespace Game
             this.dir = dir; //Startdirection: true = Left ; false = Right
             this.colWithBlocks = false;
             this.colWithOthers = true;
+            this.adder = 0.03;
         }
 
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             frame = 0;
@@ -45,8 +47,9 @@ namespace Game
             {
                 if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
                 {
-                    if ((Map.spriteArray[i].x < x) && (Map.spriteArray[i].dir))  //is right from player an d looks away
+                    if ((Map.spriteArray[i].x < x) && (Map.spriteArray[i].dir))  //is right from player and looks away
                     {
+
                         dir = true;
                         frame = 1;
                         if (xVel > -velMax)
@@ -56,11 +59,14 @@ namespace Game
 
                         if (Map.spriteArray[i].y > y)
                             y += 0.16;
-                        if (Map.spriteArray[i].y < y+h)
+                        if (Map.spriteArray[i].y < y + h)
                             y -= 0.16;
+
                     }
-                    else if ((Map.spriteArray[i].x > x) && (!Map.spriteArray[i].dir))  //is left from player an d looks away
+                    else if ((Map.spriteArray[i].x > x) && (!Map.spriteArray[i].dir))  //is left from player and looks away
                     {
+
+
                         dir = false;
                         frame = 1;
                         if (xVel < velMax)
@@ -72,6 +78,7 @@ namespace Game
                             y += 0.16;
                         if (Map.spriteArray[i].y < y)
                             y -= 0.16;
+
                     }
                     else
                     {
@@ -84,10 +91,13 @@ namespace Game
                     }
                 }
             }
-            x+=xVel;
-            Image.drawTileFrame(texture, frame, 2, x, y,dir);
+            x += xVel;
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, 2, x, y, dir);
+        }
 
     }
 }

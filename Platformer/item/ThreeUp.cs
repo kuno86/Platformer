@@ -35,7 +35,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -75,9 +75,12 @@ namespace Game
                 y = y + yVel;
                 x += xVel;
             }
-            Image.drawImage(texture, x, y);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y);
+        }
 
     }
 }

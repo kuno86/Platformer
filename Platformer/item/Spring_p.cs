@@ -28,11 +28,9 @@ namespace Game
             this.y = y;
             this.w = 16;
             this.h = 16;
-            colOffsetX = 0;
-            colOffsetY = 8;
             colRect.w = 16;
-            colRect.h = 8;
-            this.springVel = -4.5;
+            colRect.h = 16;
+            this.springVel = -3.2;
             cRect.x = x;
             cRect.y = y;
             cRect.w = w;
@@ -46,8 +44,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+                
+        public override void doSubAI()
         {
             refreshColRect();
 
@@ -94,33 +92,42 @@ namespace Game
             frame = 0;
 
             var keyboard = Keyboard.GetState();
-            //Thread.Sleep(30);
+
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
-                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].id != this.id)
                 {
-                    if (getCol2Obj(Map.spriteArray[i].colRect, cRect))
+                    if (Map.spriteArray[i].colWithOthers || colWithBlocks)
                     {
-
-                        Image.drawText((Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y).ToString(), (int)x + w + 3, (int)y, Color.Red, Texture.ASCII);
-
-                        if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 4)
-                            frame = 1;
-                        else if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 8)
+                        if (getCol2Obj(Map.spriteArray[i].colRect, cRect))
                         {
-                            frame = 2;
-                            if(keyboard[Key.Z] || keyboard[Key.Y])
-                                Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel - 3);
-                            else
-                                Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel);
+                            if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 4 && Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y < 16)
+                                frame = 1;
+                            if (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y >= 6 && Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y < 16)
+                            {
+                                frame = 2;
+                                if (Map.spriteArray[i].name == "Player")
+                                {
+                                    if (keyboard[Key.Z] || keyboard[Key.Y])
+                                        Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel - 3.2);
+                                    else
+                                        Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel);
+                                }
+                                else
+                                { Map.spriteArray[i].setXYVel(Map.spriteArray[i].xVel, springVel); }
+                            }
                         }
                     }
                 }
             }
-
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+            //MyImage.drawText((Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h - y).ToString(), (int)x + w + 3, (int)y, Color.Red, Texture.ASCII);
+            //MyImage.drawText("yVel: " + Map.spriteArray[i].yVel, (int)x + w + 3, (int)y + 12, Color.Red, Texture.ASCII);
+        }
 
     }
 }

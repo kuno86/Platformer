@@ -42,7 +42,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -66,7 +66,6 @@ namespace Game
                 falling = true;
             }
 
-
             if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
             {
                 xVel = 0;
@@ -89,11 +88,10 @@ namespace Game
                     frame++;
                     frameDelay = 0;
                 }
-                if (frame > frames-1)
+                if (frame > frames - 1)
                 {
                     frame = 1;
                 }
-                Image.drawTileFrame(texture, frame-1, frames, x, y);
             }
 
             if (Map.pSwitchTimer_b > 0 && !pressed)
@@ -133,18 +131,25 @@ namespace Game
 
             if (pressed)
             {
-                Image.drawTileFrame(texture, frames-1, frames, x, y);
                 frameDelay--;
                 if (frameDelay <= 0)
                 {
                     x = -100;
                     y = -100;
                 }
-                Image.drawText(frameDelay.ToString(), (int)x, (int)y - 24, Color.Blue, Texture.ASCII);
+                
             }
-            
         }
 
+        public override void doRender()
+        {
+            if(pressed)
+                MyImage.drawTileFrame(texture, frames - 1, frames, x, y);
+            else
+                MyImage.drawTileFrame(texture, frame - 1, frames, x, y);
+
+            //MyImage.drawText(frameDelay.ToString(), (int)x, (int)y - 24, Color.Blue, Texture.ASCII);
+        }
 
     }
 }

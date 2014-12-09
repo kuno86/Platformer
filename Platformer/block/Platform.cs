@@ -59,11 +59,11 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
-            
+
             //xVel = Map.mausXVel;
             //yVel = Map.mausYVel;
             //yVel=-0.1;
@@ -90,10 +90,10 @@ namespace Game
                                     (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y + this.colRect.h) &&      //does the bottom of the other object touch the platform ?
                                     (Map.spriteArray[i].colRect.x <= this.colRect.x + this.colRect.w && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= this.colRect.x)      //check the correct x-range of the platform
                                     )
-                                { 
-                                    falling = true; 
-                                    this.despawnOffScreen = true; 
-                                    yVel = 1; 
+                                {
+                                    falling = true;
+                                    this.despawnOffScreen = true;
+                                    yVel = 1;
                                 }
                             }
                         }
@@ -111,13 +111,13 @@ namespace Game
                                     (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y + this.colRect.h) &&      //does the bottom of the other object touch the platform ?
                                     (Map.spriteArray[i].colRect.x <= this.colRect.x + this.colRect.w && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= this.colRect.x)      //check the correct x-range of the platform
                                     )
-                                { 
-                                    falling = true; 
-                                    this.despawnOffScreen = true; 
+                                {
+                                    falling = true;
+                                    this.despawnOffScreen = true;
                                     yVel = 1;
                                 }
                                 else
-                                { 
+                                {
                                     falling = false;
                                     yVel = 0;
                                 }
@@ -163,7 +163,7 @@ namespace Game
                     } break;
             }
 
-            
+
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
                 if (Map.spriteArray[i] != null)
@@ -173,7 +173,7 @@ namespace Game
                         Map.spriteArray[i].colWithBlocks &&                     //Only Object that would be influenced by block-collision (Example: no Boo's)
                         this.id != Map.spriteArray[i].id &&                     //don't check collision with yourself
                         (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h > this.colRect.y) &&                       //
-                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y +this.colRect.h) &&      //does the bottom of the other object touch the platform ?
+                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y + this.colRect.h) &&      //does the bottom of the other object touch the platform ?
                         (Map.spriteArray[i].colRect.x <= this.colRect.x + this.colRect.w && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= this.colRect.x)      //check the correct x-range of the platform
                         )
                     {
@@ -193,28 +193,35 @@ namespace Game
                         //getCol2Obj(this.colRect, Map.spriteArray[i].colRect) &&
                         Map.spriteArray[i].colWithBlocks &&                     //Only Object that would be influenced by block-collision (Example: no Boo's)
                         this.id != Map.spriteArray[i].id &&                     //don't check collision with yourself
-                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h +2 > this.colRect.y) &&                       //
+                        (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h + 2 > this.colRect.y) &&                       //
                         (Map.spriteArray[i].colRect.y + Map.spriteArray[i].colRect.h <= this.colRect.y + this.colRect.h) &&      //does the bottom of the other object touch the platform ?
                         (Map.spriteArray[i].colRect.x <= this.colRect.x + this.colRect.w && Map.spriteArray[i].colRect.x + Map.spriteArray[i].colRect.w >= this.colRect.x)      //check the correct x-range of the platform
                         )
                     {
-                        
+
                         colCntSprites++;
                     }
 
                 }
             }
 
-            Image.drawText("Col: "+colCntSprites, (int)x, (int)(y + h), System.Drawing.Color.White, Texture.ASCII);
+            MyImage.drawText("Col: " + colCntSprites, (int)x, (int)(y + h), System.Drawing.Color.White, Texture.ASCII);
 
             for (int i = 0; i != this.size; i++)
             {
-                Image.drawImage(texture, x + (8 * i), y);
+                MyImage.drawImage(texture, x + (8 * i), y);
             }
-
         }
 
+        public override void doRender()
+        {
+            //MyImage.drawText("Col: " + colCntSprites, (int)x, (int)(y + h), System.Drawing.Color.White, Texture.ASCII);
 
+            for (int i = 0; i != this.size; i++)
+            {
+                MyImage.drawImage(texture, x + (8 * i), y);
+            }
+        }
 
 
     }

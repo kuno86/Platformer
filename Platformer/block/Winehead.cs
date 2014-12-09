@@ -54,7 +54,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -68,7 +68,7 @@ namespace Game
                         Map.spriteAdd(new Wine(x, this.y, type, this.id, this.dir));
                     if (yVel < 0)
                         Map.spriteAdd(new Wine(x, this.y, type, this.id, this.dir));
-                    
+
                     if (x > 0 && y > 0 && x < RootThingy.sceneX && y < RootThingy.sceneY)
                         Map.map[(int)(y - 16) / 16, (int)x / 16, 0] = 3;
                 }
@@ -81,14 +81,12 @@ namespace Game
                 this.x = -100;
                 this.y = -100;
             }
-
-            Image.drawImage(texture, x, y,false,dir);
-
         }
 
-
-
-
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y, false, dir);
+        }
     }
 }
 

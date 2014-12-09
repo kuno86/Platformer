@@ -75,11 +75,11 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
-            
+
             switch (state)
             {
                 case 0: //stunned
@@ -219,11 +219,12 @@ namespace Game
                 x -= xVel;
             else
                 x += xVel;
-
-            animate();
-
         }
 
+        public override void doRender()
+        {
+            animate();
+        }
 
         private void animate()
         {
@@ -232,7 +233,7 @@ namespace Game
             { frame++; frameDelay = 0; }
             if (frame > stateArr[state].Length - 1)
                 frame = 0;
-            Image.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
+            MyImage.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
         }
     }
 }

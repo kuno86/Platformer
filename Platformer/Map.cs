@@ -52,6 +52,7 @@ namespace Game
         public static Random rnd = new Random();
 
         public static double temp = 0.25;
+        public static short warpNr = 0;
 
         public static short powActive;
         public static bool pSwitch_b = false;
@@ -85,7 +86,7 @@ namespace Game
                     0,0,0,0,2,2,2,0,2,0,0,0,0,
                     0,0,0,0,1,1,1,0,0,0,0,0,0,
                     0,0,0,0,1,0,1,1,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0
+                    0,0,0,0,0,0,0,0,0,0,1,0,0
                     };
 
 
@@ -114,6 +115,10 @@ namespace Game
             sprites[015] = new Piranhaplant(-200, -200, 1);     //Green Piranha Plant
             sprites[016] = new Piranhaplant(-200, -200, 2);     //Red Piranha Plant
             sprites[017] = new Hammerbros(-200, -200);
+            sprites[018] = new Lakitu(-200, -200);
+            sprites[019] = new Blooper(-200, -200,(short)rnd.Next(0,2));
+            sprites[020] = new CheepCheep(-200, -200,false, 0); //Green CheepCheep
+            sprites[021] = new CheepCheep(-200, -200, false, 1); //Red CheepCheep
 
             sprites[100] = null;
             sprites[101] = new Coin(-200, -200, (short)rnd.Next(1, 6));     //fixed Coin
@@ -137,15 +142,21 @@ namespace Game
             sprites[203] = new Winehead(-200, -200);
             sprites[204] = new Bricks(-200, -200, (short)rnd.Next(1, 5), (short)rnd.Next(102,114));
             sprites[205] = new Qm(-200, -200, 1, 102);
+            sprites[206] = new Keyhole(-200, -200);
+            sprites[207] = new Generator(mausX * 16, mausY * 16, 3);    //Sprite-generator
+            sprites[208] = new WarpToWarp(mausX * 16, mausY * 16,true,2,0,warpNr);      //Warp Start-Point
+            sprites[209] = new WarpToWarp(mausX * 16, mausY * 16, false, 2, 0, warpNr);  //Warp End-Point
+            sprites[210] = new WarpToXYS(mausX * 16, mausY * 16, 200, 200);     //Warp to XY Coordinates (S=Section of that level)
+            sprites[211] = new RollingRock(mausX * 16, mausY * 16);
             
             maxTextureSize = GL.GetInteger(OpenTK.Graphics.OpenGL.GetPName.MaxTextureSize);
             Console.WriteLine("BG: " + Texture.backGround);
-            Image.activeTexture = Texture.backGround;
+            MyImage.activeTexture = Texture.backGround;
             GL.BindTexture(TextureTarget.Texture2D, Texture.backGround);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out bgW);     //Get Width and
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out bgH);    //Height from the loaded Background
 
-            Image.activeTexture = Texture.tileSet;
+            MyImage.activeTexture = Texture.tileSet;
             GL.BindTexture(TextureTarget.Texture2D, Texture.tileSet);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out tileSetW);    //Get Width and
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out tileSetH);   //Height from the loaded tileset
@@ -155,6 +166,8 @@ namespace Game
             currentIDArr[2, 1] = ((tileSetW / tileSize) * (tileSetH / tileSize))-1; //max tileID
             currentIDArr[3, 1] = sprites.GetLength(0) - 1;                          //max spriteID
             currentIDArr[4, 1] = Texture.bgTilesArray.GetLength(0) - 1;             //Max Back- / Fore-ground Object ID
+
+            currentIDArr[3, 0] = 100;
 
             while (y < map.GetLength(0))    //fill a new map with empty and no collision
             {
@@ -213,10 +226,10 @@ namespace Game
                 }
             }
 
-            Image.beginDraw2D();
+            MyImage.beginDraw2D();
 
             if (fpsLine.Count >= 1)
-                Image.drawText("FPS-Graph:"+(int)fpsLine[0], 705, 468, Color.Yellow, Texture.ASCII);
+                MyImage.drawText("FPS-Graph:"+(int)fpsLine[0], 705, 468, Color.Yellow, Texture.ASCII);
 
             frameCount++;
             if (frameCount == 10)
@@ -227,22 +240,27 @@ namespace Game
                     frameDelay = 0;
             }
 
-            var keyboard = Keyboard.GetState();     
+            var keyboard = RootThingy.keyboard;     
             var maus = Mouse.GetState();        //Don't use this mouse for coordinates, their origin is not from the gameWindow !!!
+            
+            MyImage.drawText("Press F12 to toggle Debug-Info", 870, 38, Color.Blue, Texture.ASCII);
 
 
-            Image.drawText("Press F12 to toggle Debug-Info", 870, 38, Color.Blue, Texture.ASCII);
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AI-Loop
             for (int i = 0; i <= spriteArrMax; i++)
             {
                 if (spriteArray[i] != null)
                 {
-                    spriteArray[i].process();
-                    spriteArray[i].refreshColRect();
-
+                    if (spriteArray[i].AIEnabled)
+                    {
+                        
+                        spriteArray[i].doAI();
+                        spriteArray[i].refreshColRect();
+                    }
                     if (RootThingy.debugInfo)
                     {
-                        Image.drawText("[" + i + "]=" + spriteArray[i].name + " X=" + (int)spriteArray[i].x + " Y=" + (int)spriteArray[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
-                        Image.endDraw2D();
+                        MyImage.drawText("[" + i + "][id"+spriteArray[i].id+"]=" + spriteArray[i].name + " X=" + (int)spriteArray[i].x + " Y=" + (int)spriteArray[i].y, 870, (i * 12) + 50, Color.Red, Texture.ASCII);
+                        MyImage.endDraw2D();
                         GL.Begin(PrimitiveType.LineLoop);
                         GL.Color3(Color.Aqua);
                         GL.Vertex2(spriteArray[i].colRect.x, spriteArray[i].colRect.y);
@@ -250,22 +268,45 @@ namespace Game
                         GL.Vertex2(spriteArray[i].colRect.x + spriteArray[i].colRect.w, spriteArray[i].colRect.y + spriteArray[i].colRect.h);
                         GL.Vertex2(spriteArray[i].colRect.x, spriteArray[i].colRect.y + spriteArray[i].colRect.h);
                         GL.End();
-                        Image.beginDraw2D();
+                        MyImage.beginDraw2D();
                     }
-                    
-                    
                     if (spriteArray[i].despawnOffScreen)
-                    //{
+                    {
                         if (spriteArray[i].x + spriteArray[i].w > RootThingy.sceneX || spriteArray[i].x < 0 || /*spriteArray[i].y < 0 ||*/ spriteArray[i].y + spriteArray[i].h > RootThingy.sceneY)
                         {
                             spriteArray[i] = null;
                             //spriteArrayCount--; 
                         }   //Delete sprites that are out of scene Borders
-                    //}
+                    }
                 }
             }
-
-
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Render-Loops
+            for (int i = 0; i <= spriteArrMax; i++)
+            {
+                if (spriteArray[i] != null && spriteArray[i].renderOrder < 0)   // -X to -1 = Background
+                {
+                    if(spriteArray[i].renderEnabled)  
+                        spriteArray[i].doRender();  
+                }
+            }
+            for (int i = 0; i <= spriteArrMax; i++)
+            {
+                if (spriteArray[i] != null && spriteArray[i].renderOrder == 0)   // 0 = Middle
+                {
+                    if (spriteArray[i].renderEnabled)
+                        spriteArray[i].doRender();
+                }
+            }
+            for (int i = 0; i <= spriteArrMax; i++)
+            {
+                if (spriteArray[i] != null && spriteArray[i].renderOrder > 0)   // 1 to +X = Foreground
+                {
+                    if (spriteArray[i].renderEnabled)
+                        spriteArray[i].doRender();
+                }
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             if (powActive > 0)
                 powActive--;
@@ -311,10 +352,10 @@ namespace Game
                 pSwitch_s = false;      //
 
             
-            Image.drawText("Mouse-Grid X: " + (mausXX / 16), 0, 504, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse-Grid Y: " + (mausYY / 16), 0, 516, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse X: " + mausXX + "(xVel: " + mausXVel + ")", 0, 528, Color.Red, Texture.ASCII);
-            Image.drawText("Mouse Y: " + mausYY + "(yVel: " + mausYVel + ")", 0, 540, Color.Red, Texture.ASCII);
+            MyImage.drawText("Mouse-Grid X: " + (mausXX / 16), 0, 504, Color.Red, Texture.ASCII);
+            MyImage.drawText("Mouse-Grid Y: " + (mausYY / 16), 0, 516, Color.Red, Texture.ASCII);
+            MyImage.drawText("Mouse X: " + mausXX + "(xVel: " + mausXVel + ")", 0, 528, Color.Red, Texture.ASCII);
+            MyImage.drawText("Mouse Y: " + mausYY + "(yVel: " + mausYVel + ")", 0, 540, Color.Red, Texture.ASCII);
 
             mausXVel = mausXX - mausXLast;
             mausYVel = mausYY - mausYLast;
@@ -337,28 +378,28 @@ namespace Game
             if (currentIDArr[currentDimension, 0] > 0 && mausRadDelta < 0)
                 currentIDArr[currentDimension, 0] += mausRadDelta;
 
-            Image.drawText(getCurrentDimensionStr() + " (" + currentDimension + ")", 0, 492, Color.Red, Texture.ASCII);
-            Image.drawText(" | ID " + currentIDArr[currentDimension, 0] + " / " + currentIDArr[currentDimension, 1], 204, 492, Color.Red, Texture.ASCII);
+            MyImage.drawText(getCurrentDimensionStr() + " (" + currentDimension + ")", 0, 492, Color.Red, Texture.ASCII);
+            MyImage.drawText(" | ID " + currentIDArr[currentDimension, 0] + " / " + currentIDArr[currentDimension, 1], 204, 492, Color.Red, Texture.ASCII);
             
             switch (currentDimension)
             {
                 case 0: ; break;    //COllision
                 case 1:
                     if (Texture.bgTilesArray[currentIDArr[currentDimension, 0], 1] == 1)
-                        Image.drawImage(Texture.bgTilesArray[currentIDArr[currentDimension, 0],0], mausX * 16, mausY * 16);   //Background
+                        MyImage.drawImage(Texture.bgTilesArray[currentIDArr[currentDimension, 0],0], mausX * 16, mausY * 16);   //Background
                     if (Texture.bgTilesArray[currentIDArr[currentDimension, 0], 1] > 1)
-                        Image.drawTileFrame(Texture.bgTilesArray[currentIDArr[currentDimension, 0], 0], frameDelay, Texture.bgTilesArray[currentIDArr[currentDimension, 0], 1], mausX * 16, mausY * 16);
+                        MyImage.drawTileFrame(Texture.bgTilesArray[currentIDArr[currentDimension, 0], 0], frameDelay, Texture.bgTilesArray[currentIDArr[currentDimension, 0], 1], mausX * 16, mausY * 16);
                 break;
 
                 case 2: 
-                    Image.drawTileSquare(Texture.tileSet, currentIDArr[currentDimension, 0], tileSize, mausX * 16, mausY * 16); 
+                    MyImage.drawTileSquare(Texture.tileSet, currentIDArr[currentDimension, 0], tileSize, mausX * 16, mausY * 16); 
                     break;  //tiles
 
                 case 3:
                     if(sprites[currentIDArr[currentDimension, 0]]!=null)
-                        Image.drawText("Id" + currentIDArr[currentDimension, 0] + " = " + sprites[currentIDArr[currentDimension, 0]].getName(), (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
+                        MyImage.drawText("Id" + currentIDArr[currentDimension, 0] + " = " + sprites[currentIDArr[currentDimension, 0]].getName(), (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
                     else
-                        Image.drawText("Id" + currentIDArr[currentDimension, 0]+" = Leer", (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
+                        MyImage.drawText("Id" + currentIDArr[currentDimension, 0]+" = Leer", (mausX * 16), (mausY * 16) - 12, Color.White, Texture.ASCII);
                     break;    //sprites
 
                 case 4: ; break;    //Foreground
@@ -381,11 +422,33 @@ namespace Game
                     map[mausY, mausX, currentDimension] = -1;
                     map[mausY, mausX, 0] = 0;
                     //Console.WriteLine("removed Tile from [" + mausX + "][" + mausY + "].");
+
+                    BaseObj.ColRect obj1= new BaseObj.ColRect();
+                    obj1.x=mausXX;
+                    obj1.y=mausYY;
+                    obj1.w=1;
+                    obj1.h=1;
+                    for (int i = 0; i <= spriteArrMax; i++)
+                    {
+                        if (spriteArray[i] != null)
+                        {
+                            BaseObj.ColRect obj2 = new BaseObj.ColRect();
+                            obj2 = spriteArray[i].colRect;
+                            if ((obj1.x + obj1.w >= obj2.x && obj1.x <= obj2.x + obj2.w) && (obj1.y + obj1.h >= obj2.y && obj1.y <= obj2.y + obj2.h))
+                                spriteArray[i] = null;
+                        }
+                    }
                 }
             }
 
 
             ///////////////////////////////////////////////////////////////////// KEYS
+
+            if (keyboard[Key.V])
+            {spriteAdd(new VeloTest(mausX * 16, mausY * 16)); Thread.Sleep(150); }
+
+            if (keyboard[Key.Y])    //its actuacly the Z-Key on QWERTZ-Keyboards
+            { RootThingy.zoomed = !RootThingy.zoomed; MyImage.BMPfromTextureID(10); Thread.Sleep(300); }
 
             if (keyboard[Key.D])
             {
@@ -394,30 +457,35 @@ namespace Game
                     currentDimension = 0;
                 Thread.Sleep(150);
             }
+            if (keyboard[Key.F8])
+            { spriteAdd(new RollingRock(mausX * 16, mausY * 16)); Thread.Sleep(150); }
+
+            if (keyboard[Key.F9])               // F9
+            { spriteAdd(new CheepCheep(mausX * 16, mausY * 16, false, (short)rnd.Next(0,2))); Thread.Sleep(150); }     // Spawn something with F9 Key
 
             if (keyboard[Key.F10])               // F10
-            { spriteAdd(new Lakitu(mausX*16,mausY*16,false,14)); Thread.Sleep(150); }     // Spawn something with F10 Key
+            { spriteAdd(new Blooper(mausX * 16, mausY * 16)); Thread.Sleep(150); }     // Spawn something with F10 Key
 
             if (keyboard[Key.F11])               // F11
-            { spriteAdd(new Platform(mausX * 16, mausY * 16, 6, 0)); Thread.Sleep(150); }     // Spawn something with F11 Key
+            { spriteAdd(new WaterArea(mausX * 16, mausY * 16, 256, 256)); Thread.Sleep(150); }     // Spawn something with F11 Key
 
-            if (keyboard[Key.F12])               // +
+            if (keyboard[Key.F12])               // F12
             { RootThingy.debugInfo = !RootThingy.debugInfo; Thread.Sleep(150); }
 
-            if (keyboard[Key.PageUp])               // +
-            { temp += 0.01; Thread.Sleep(20); }     // A temp
-            if (keyboard[Key.PageDown])             // Variable
-            { temp -= 0.01; Thread.Sleep(20); }     // -
+            if (keyboard[Key.PageUp] || keyboard[Key.Keypad9])               // +
+            { temp += 0.01; warpNr++; /*Thread.Sleep(20);*/ }     // A temp
+            if (keyboard[Key.PageDown] || keyboard[Key.Keypad3])             // Variable
+            { temp -= 0.01; warpNr--; /*Thread.Sleep(20);*/ }     // -
 
-            Image.drawText("Temp: " + Math.Round(temp,3), 0, 612, Color.Red, Texture.ASCII);
-
-            Image.endDraw2D();
+            MyImage.drawText("Temp: " + Math.Round(temp,3), 0, 612, Color.Red, Texture.ASCII);
+            
+            MyImage.endDraw2D();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW
         public void draw()
         {            
-            Image.beginDraw2D();
+            MyImage.beginDraw2D();
             double tileX = 0;
             double tileY = 0;
             int tileID;
@@ -428,9 +496,9 @@ namespace Game
             int animatedCounter = 0;
 
             //Render Background
-            if (Image.activeTexture != Texture.backGround)
+            if (MyImage.activeTexture != Texture.backGround)
                 GL.BindTexture(TextureTarget.Texture2D, Texture.backGround);
-            Image.activeTexture = Texture.backGround;
+            MyImage.activeTexture = Texture.backGround;
 
             GL.Begin(PrimitiveType.Quads);
             GL.Color4(1, 1, 1, 1.0f);
@@ -476,6 +544,10 @@ namespace Game
                             case 015: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 1)); break;    //Green Piranha Plant
                             case 016: spriteAdd(new Piranhaplant(arrX * 16, arrY * 16, 2)); break;    //Red Piranha Plant
                             case 017: spriteAdd(new Hammerbros(arrX * 16, arrY * 16)); break;
+                            case 018: spriteAdd(new Lakitu(arrX * 16, arrY * 16)); break;
+                            case 019: spriteAdd(new Blooper(arrX * 16, arrY * 16, (short)rnd.Next(0, 2))); break;
+                            case 020: spriteAdd(new CheepCheep(arrX * 16, arrY * 16, false, 0)); break; //Green CheepCheep
+                            case 021: spriteAdd(new CheepCheep(arrX * 16, arrY * 16, false, 1)); break; //Red CheepCheep
 
                             case 100: break;
                             case 101: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
@@ -499,6 +571,12 @@ namespace Game
                             case 203: spriteAdd(new Winehead(arrX * 16, arrY * 16)); break;
                             case 204: spriteAdd(new Bricks(arrX * 16, arrY * 16, (short)rnd.Next(1, 5))); break;
                             case 205: spriteAdd(new Qm(arrX * 16, arrY * 16, 1, (short)rnd.Next(102, 114))); break;
+                            case 206: spriteAdd(new Keyhole(arrX * 16, arrY * 16)); break;
+                            case 207: spriteAdd(new Generator(mausX * 16, mausY * 16, 3)); break;   //Sprite-generator
+                            case 208: spriteAdd(new WarpToWarp(mausX * 16, mausY * 16, true, 2, 0, warpNr)); break;     //Warp Start-Point
+                            case 209: spriteAdd(new WarpToWarp(mausX * 16, mausY * 16, false, 2, 0, warpNr)); break;    //Warp End-Point
+                            case 210: spriteAdd(new WarpToXYS(mausX * 16, mausY * 16, 200, 200)); break;    //Warp to XY Coordinates (S=Section of that level)
+                            case 211: spriteAdd(new RollingRock(mausX * 16, mausY * 16)); break;
 
                             case 300: spriteAdd(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
 
@@ -527,10 +605,10 @@ namespace Game
                     if (map[arrY, arrX, 1] > -1)
                     {
                         if (Texture.bgTilesArray[map[arrY, arrX, 1], 1] == 1)
-                        { Image.drawImage(Texture.bgTilesArray[map[arrY, arrX, 1], 0], arrX * 16, arrY * 16); }  //BG-Object-ID
+                        { MyImage.drawImage(Texture.bgTilesArray[map[arrY, arrX, 1], 0], arrX * 16, arrY * 16); }  //BG-Object-ID
                         if (Texture.bgTilesArray[map[arrY, arrX, 1], 1] > 1)
                         {
-                            Image.drawTileFrame(Texture.bgTilesArray[map[arrY, arrX, 1], 0], frameDelay, Texture.bgTilesArray[map[arrY, arrX, 1], 1], arrX * 16, arrY * 16);
+                            MyImage.drawTileFrame(Texture.bgTilesArray[map[arrY, arrX, 1], 0], frameDelay, Texture.bgTilesArray[map[arrY, arrX, 1], 1], arrX * 16, arrY * 16);
                             animatedCounter++;
                         }
                     }
@@ -545,15 +623,15 @@ namespace Game
                         break;
                 }
             }
-            Image.drawText("Animated Objects: " + animatedCounter, 0, 552, Color.Red, Texture.ASCII);
-            Image.drawText("Sprites: " + spriteArrMax, 0, 564, Color.Red, Texture.ASCII);
+            MyImage.drawText("Animated Objects: " + animatedCounter, 0, 552, Color.Red, Texture.ASCII);
+            MyImage.drawText("Sprites: " + spriteArrMax, 0, 564, Color.Red, Texture.ASCII);
 
-            Image.drawText("P-Switch b timer: " + pSwitchTimer_b, 0, 576, Color.Blue, Texture.ASCII);
-            Image.drawText("P-Switch s timer: " + pSwitchTimer_s, 0, 588, Color.Silver, Texture.ASCII);
+            MyImage.drawText("P-Switch b timer: " + pSwitchTimer_b, 0, 576, Color.Blue, Texture.ASCII);
+            MyImage.drawText("P-Switch s timer: " + pSwitchTimer_s, 0, 588, Color.Silver, Texture.ASCII);
 
-            if (Image.activeTexture != Texture.tileSet)
+            if (MyImage.activeTexture != Texture.tileSet)
                 GL.BindTexture(TextureTarget.Texture2D, Texture.tileSet);
-            Image.activeTexture = Texture.tileSet;
+            MyImage.activeTexture = Texture.tileSet;
             GL.Begin(PrimitiveType.Quads);
             arrY = 0;
             arrX = 0;            
@@ -598,14 +676,14 @@ namespace Game
             }
 
             GL.End();
-            Image.drawImage(Texture.tileSet, RootThingy.sceneX, 0);
+            MyImage.drawImage(Texture.tileSet, RootThingy.sceneX, 0);
             //drawImage(ASCII, 0, 480);
             //for (int ii = 0; ii < 256; ii++)
             //{drawText((Convert.ToChar(ii).ToString()), (ii*8), 492, Color.Red);}
 
-            Image.drawText(("Max texture Size: " + maxTextureSize), 0, 480, Color.Aqua, Texture.ASCII);
+            MyImage.drawText(("Max texture Size: " + maxTextureSize), 0, 480, Color.Aqua, Texture.ASCII);
 
-            Image.endDraw2D();
+            MyImage.endDraw2D();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ADD_A_SPRITE
@@ -618,13 +696,14 @@ namespace Game
                 if (spriteArray[i] == null)
                 {
                     spriteArray[i] = spriteObj;
+                    spriteArray[i].id = i;
                     done = true;
                     if (i > spriteArrMax)
                         spriteArrMax = i;
                 }
                 else
                 {
-                    Console.WriteLine("["+i+"]spriteAdd("+spriteArray[i].getName()+")");
+                    //Console.WriteLine("["+i+"]spriteAdd("+spriteArray[i].getName()+")");
                     //Console.ReadKey();
                     i++;
                 }

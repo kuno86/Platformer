@@ -45,8 +45,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+        
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -69,7 +69,6 @@ namespace Game
                 onGround = false;
                 falling = true;
             }
-
 
             if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
             {
@@ -105,17 +104,15 @@ namespace Game
                         Map.spriteAdd(new Smoke(x - 16, y, type));                     //shoot left
                         wait = Map.rnd.Next(90, 300);
                     }
-
-
                 }
             }
-            
-            Image.drawImage(texture, x, y,flipV);
-            //Image.drawText("t:" + wait, (int)x, (int)y - 12, Color.White, Texture.ASCII);
-
         }
 
-
+        public override void doRender()
+        {
+            MyImage.drawImage(texture, x, y, flipV);
+            //Image.drawText("t:" + wait, (int)x, (int)y - 12, Color.White, Texture.ASCII);
+        }
 
 
     }

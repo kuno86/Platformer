@@ -36,10 +36,10 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             yVel += Map.gravity;
-            
+
             frameDelay++;
             if (frameDelay == 3)
             {
@@ -49,9 +49,9 @@ namespace Game
                 if (xVel - 1 > 0 || xVel + 1 < 0)
                 {
                     if (xVel > 0)
-                        xVel-=0.75;
+                        xVel -= 0.75;
                     else if (xVel < 0)
-                        xVel+=0.75;
+                        xVel += 0.75;
                 }
             }
             if (frame > frames)
@@ -60,12 +60,11 @@ namespace Game
             }
             x += xVel;
             y += yVel;
-
-            //Thread.Sleep(50);
-
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
 
-
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+        }
     }
 }

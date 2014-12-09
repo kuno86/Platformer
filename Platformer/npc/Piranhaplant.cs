@@ -64,25 +64,25 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
-            
+
             //moves out -> stays 2,5s -> moves down -> stays 2,5s -> moves out ... 
 
 
             if (timer != 0)
             {
                 timer--;
-                if (timer<=h)
+                if (timer <= h)
                 {
                     y += yVel;
                 }
             }
             if (ignorePlayer)
             {
-                if (timer==0)
+                if (timer == 0)
                 {
                     yVel = yVel * -1;
                     onGround = !onGround;
@@ -126,25 +126,15 @@ namespace Game
                     }
                 }
             }
-            
-
-            animate();
-            Image.drawText("t" + timer , (int)x, (int)y + 48, Color.White, Texture.ASCII);
-            Image.drawText(";v" + yVel, (int)x, (int)y + 60, Color.White, Texture.ASCII);
-            Image.drawText("Out" + onGround, (int)x, (int)y + 72, Color.White, Texture.ASCII);
-
-            //Image.endDraw2D();
-            //GL.Begin(PrimitiveType.LineLoop);
-            //GL.Color3(Color.Aqua);
-            //GL.Vertex2(colRect.x, colRect.y);
-            //GL.Vertex2(colRect.x + colRect.w, colRect.y);
-            //GL.Vertex2(colRect.x + colRect.w, colRect.y + colRect.h);
-            //GL.Vertex2(colRect.x, colRect.y + colRect.h);
-            //GL.End();
-            //Image.beginDraw2D();
-
         }
 
+        public override void doRender()
+        {
+            animate();
+            MyImage.drawText("t" + timer, (int)x, (int)y + 48, Color.White, Texture.ASCII);
+            MyImage.drawText(";v" + yVel, (int)x, (int)y + 60, Color.White, Texture.ASCII);
+            MyImage.drawText("Out" + onGround, (int)x, (int)y + 72, Color.White, Texture.ASCII);
+        }
 
         private void animate()
         {
@@ -153,7 +143,7 @@ namespace Game
             { frame++; frameDelay = 0; }
             if (frame > stateArr[state].Length - 1)
                 frame = 0;
-            Image.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y-8, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
+            MyImage.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y-8, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
         }
     }
 }

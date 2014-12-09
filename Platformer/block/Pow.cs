@@ -31,8 +31,8 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+        
+        public override void doSubAI()
         {
             refreshColRect();
             frameDelay++;
@@ -45,8 +45,6 @@ namespace Game
             {
                 frame = 1;
             }
-            Image.drawTileFrame(texture, frame, 8, x, y);
-
             
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
@@ -64,10 +62,12 @@ namespace Game
 
                 }
             }
-
         }
 
-
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, 8, x, y);
+        }
     }
 }
 

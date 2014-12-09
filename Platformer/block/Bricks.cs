@@ -42,10 +42,9 @@ namespace Game
 
         public override string getName()
         { return name; }
-
-        public override void process()
+                
+        public override void doSubAI()
         {
-            refreshColRect();
             frameDelay++;
             if (frameDelay == 3)
             {
@@ -57,6 +56,7 @@ namespace Game
                 frame = 1;
             }
 
+            refreshColRect();
             for (int i = 0; i != Map.spriteArrMax; i++)
             {
                 if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "Player")
@@ -79,9 +79,11 @@ namespace Game
 
                 }
             }
-            
-            Image.drawTileFrame(texture, frame, frames, x, y);
-            
+        }
+
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
         }
         
 

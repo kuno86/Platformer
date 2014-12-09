@@ -33,7 +33,7 @@ namespace Game
         public override string getName()
         { return this.name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -46,11 +46,12 @@ namespace Game
                 if (frameDelay == 3)
                     frameDelay = 0;
             }
-
-
-            Image.drawTileFrame(texture, frameDelay, 4, x, y, dir);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frameDelay, 4, x, y, dir);
+        }
     }
 }
 

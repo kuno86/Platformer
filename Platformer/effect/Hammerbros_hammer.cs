@@ -48,7 +48,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             frameDelay++;
             if (frameDelay == 3)
@@ -63,13 +63,13 @@ namespace Game
 
             switch (frame)
             {
-                case 0: 
+                case 0:
                     colOffsetX = 3;
                     colOffsetY = 1;
                     colRect.w = 10;
-                    colRect.h = 8; 
+                    colRect.h = 8;
                     break;
-                case 1: 
+                case 1:
                     colOffsetX = 7;
                     colOffsetY = 3;
                     colRect.w = 8;
@@ -89,8 +89,6 @@ namespace Game
                     break;
             }
 
-                  
-            
             yVel += Map.gravity;
             y = y + yVel;
 
@@ -101,11 +99,12 @@ namespace Game
 
             refreshColRect();
             getColGrid();
-                        
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
-        
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+        }
     }
 }
 

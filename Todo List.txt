@@ -3,5 +3,46 @@
 
  - fix green Phiranha-plant AI
 
+ - add slope collisions
+
+ - add circle collisions
+
+ - Fix MyImage::BitmapFromTexturId()
+
+ - Try this for collision:
+
+	if (objRect.Intersects(wallRect)) // If there is a collision
+	{
+	    Vector2 newPos = obj.Position;
+	
+	    if (obj.Velocity.X > 0) // object came from the left
+	        newPos.X = wallRect.Left - objRect.Width;
+	    else if (obj.Velocity.X < 0) // object came from the right
+	        newPos.X = wallRect.Right;
+	    if (obj.Velocity.Y > 0) // object came from the top
+ 	        newPos.Y = wallRect.Top - objRect.Height;
+	    else if (obj.Velocity.Y < 0) // object came from the bottom
+	        newPos.Y = wallRect.Bottom;
+
+	    obj.Position = newPos;
+	}
+
+ - and try this: 
+	http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 
 
+
+
+Done-List:
+-added BaseObj-Generator
+-added WarpToWarp
+-added WarpToXYS (teleport)
+-added Keyhole
+-added experimental RollingRock (Circle-Collision)
+-added WaterArea
+-added Blooper
+-added CheepCheep
+-changed BaseObj.process() to
+	- BaseObj.doAI()
+	- BaseObj.doRender()
+-added player ability to grab & throw items

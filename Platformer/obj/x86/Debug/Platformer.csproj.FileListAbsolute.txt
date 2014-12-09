@@ -122,3 +122,16 @@ L:\Platformer\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference
 H:\Platformer\Platformer\bin\Debug\Platformer.exe.config
 H:\Platformer\Platformer\obj\x86\Debug\Platformer.exe
 H:\Platformer\Platformer\obj\x86\Debug\Platformer.pdb
+L:\Platformer\Platformer\bin\Debug\OpenTK.dll
+L:\Platformer\Platformer\bin\Debug\OpenTK.GLControl.dll
+L:\Platformer__\Platformer\bin\Debug\Platformer.exe.config
+L:\Platformer__\Platformer\obj\x86\Debug\Platformer.exe
+L:\Platformer__\Platformer\obj\x86\Debug\Platformer.pdb
+L:\Platformer__\Platformer\obj\x86\Debug\Platformer.csprojResolveAssemblyReference.cache
+L:\Platformer__\Platformer\bin\Debug\Platformer.exe
+L:\Platformer__\Platformer\bin\Debug\Platformer.pdb
+L:\Platformer__\Platformer\bin\Debug\OpenTK.dll
+L:\Platformer__\Platformer\bin\Debug\OpenTK.GLControl.dll
+L:\Platformer__\Platformer\bin\Debug\OpenTK.pdb
+L:\Platformer__\Platformer\bin\Debug\OpenTK.xml
+L:\Platformer__\Platformer\bin\Debug\OpenTK.GLControl.xml

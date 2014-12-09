@@ -41,7 +41,7 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
@@ -55,7 +55,7 @@ namespace Game
             {
                 frame = 1;
             }
-                        
+
             if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
             {
                 while (colBottom == 1)
@@ -73,7 +73,7 @@ namespace Game
                         xVel -= xDecel;
                     if (xVel < xDecel)
                         xVel += xDecel;
-                    if(xVel <= xDecel && xVel >= xDecel*-1)
+                    if (xVel <= xDecel && xVel >= xDecel * -1)
                         xVel = 0;
                 }
             }
@@ -85,10 +85,12 @@ namespace Game
             }
 
             y = y + yVel;
-
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
 
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+        }
 
     }
 }

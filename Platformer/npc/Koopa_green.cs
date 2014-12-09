@@ -75,19 +75,23 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
-            
+
+            if (this.metaData[0] == "kicked")
+                this.state = 5;
+
             switch (state)
             {
                 case 0: //stunned
                     state = 0;
+                    grabable = true;
                     if (stuntTimer > 0)
                         stuntTimer--;
                     if (stuntTimer == 0)
-                        state = 1;
+                        state = 4;
                     break;
 
                 /////////////////////////////////////////////////////////////////////////////////// 
@@ -129,7 +133,7 @@ namespace Game
                 ///////////////////////////////////////////////////////////////////////////////////
                 case 2: //jumping low
                 case 3: //jumping high
-                    
+
                     if (getColXY((int)colRect.x - 1, (int)colRect.y + (colRect.h / 2)) == 1) //Left wall ?
                     {
                         dir = false;
@@ -175,7 +179,7 @@ namespace Game
                     break;
                 ///////////////////////////////////////////////////////////////////////////////////
                 case 5: //shellspin
-                    state = 4;
+                    //state = 4;
                     if (getColXY((int)colRect.x - 1, (int)colRect.y + (colRect.h / 2)) == 1) //Left wall ?
                     {
                         dir = false;
@@ -222,11 +226,12 @@ namespace Game
                 x -= 0.3;
             else
                 x += 0.3;
-
-            animate();
-
         }
 
+        public override void doRender()
+        {
+            animate();
+        }
 
         private void animate()
         {
@@ -235,7 +240,7 @@ namespace Game
             { frame++; frameDelay = 0; }
             if (frame > stateArr[state].Length - 1)
                 frame = 0;
-            Image.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
+            MyImage.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
         }
     }
 }

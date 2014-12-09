@@ -45,15 +45,15 @@ namespace Game
         public override string getName()
         { return name; }
 
-        public override void process()
+        public override void doSubAI()
         {
             refreshColRect();
             getColGrid();
             frameDelay++;
             if (frameDelay == 3)
-            { 
-                frame++; 
-                frameDelay = 0; 
+            {
+                frame++;
+                frameDelay = 0;
             }
             if (frame > frames)
             {
@@ -62,9 +62,9 @@ namespace Game
             if (Map.powActive == 1)
             {
                 fixd = false;
-                xVel = Map.rnd.Next(-1, 1) * Map.rnd.NextDouble()*0.5;
+                xVel = Map.rnd.Next(-1, 1) * Map.rnd.NextDouble() * 0.5;
             }
-                       
+
             if (!fixd && (x > 0 && y > 0))
             {
                 if (getColXY((int)x + (w / 2), (int)y + h + 1) == 1)    //floorCol
@@ -89,7 +89,6 @@ namespace Game
                     onGround = false;
                     falling = true;
                 }
-                
 
                 if (getColXY((int)x - 1, (int)y + (h / 2)) == 1)    //RightCol
                 {
@@ -105,9 +104,12 @@ namespace Game
                 y = y + yVel;
                 x += xVel;
             }
-            Image.drawTileFrame(texture, frame, frames, x, y);
         }
-    
+
+        public override void doRender()
+        {
+            MyImage.drawTileFrame(texture, frame, frames, x, y);
+        }
     
     }
 }

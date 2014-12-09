@@ -7,7 +7,7 @@ namespace Game
 {
     class Collision : Geometry
     {
-        public bool PointsArrayCollision(Point[] points, Rect obst,bool fixIt)
+        public static bool PointsArrayCollision(Point[] points, ColRect obst,bool fixIt)
         {
             bool col = false;
             for (int i = 0; i != points.Length; i++)
@@ -64,33 +64,76 @@ namespace Game
             return col;
         }
 
-        public bool Circlecollision(double cx, double cy, double r,Point pExt)
+        public static bool col_circlePoint(double cx, double cy, double r, Point pExt)
         {
-            Point circle = new Point();
-            circle.x = cx;
-            circle.y = cy;
-            double dis = distance(circle, pExt);
-            if (dis <= r)
+            Point pC = new Point();
+            pC.x = cx;
+            pC.y = cy;
+
+            double x = Math.Abs(pC.x - pExt.x);
+            double y = Math.Abs(pC.x - pExt.y);
+            double dis = ((x * x) + (y * y));
+            //Console.WriteLine("Distance: " + dis);
+            if (dis * dis <= r)
                 return true;
             return false;
         }
 
-        public bool Circlecollision(double cx, double cy, double r, double px, double py)
+        public static bool col_circlePoint(double cx, double cy, double r, double px, double py)
         {
-            Point circle = new Point();
-            circle.x = cx;
-            circle.y = cy;
-            Point pExt = new Point();
-            pExt.x = px;
-            pExt.y = py;
-            double dis = distance(circle, pExt);
-            Console.WriteLine("Distance: " + dis);
-            if (dis <= r)
+            Point pC = new Point();
+            pC.x = cx;
+            pC.y = cy;
+            Point pE = new Point();
+            pE.x = px;
+            pE.y = py;
+
+            double x = Math.Abs(pC.x - pE.x);
+            double y = Math.Abs(pC.x - pE.y);
+            double dis =((x * x) + (y * y));
+            //Console.WriteLine("Distance: " + dis);
+            if (dis*dis <= r)
                 return true;
             return false;
         }
 
-        
+
+        public static bool col_circleRect(double circleX, double circleY, double circleR, double rectX, double rectY, double rectW, double rectH)
+        {
+            Point circleDistance = new Point();
+            circleDistance.x = Math.Abs(circleX - rectX);
+            circleDistance.y = Math.Abs(circleY - rectY);
+
+            if (circleDistance.x > (rectW / 2 + circleR)) { return false; }
+            if (circleDistance.y > (rectH / 2 + circleR)) { return false; }
+
+            if (circleDistance.x <= (rectW / 2)) { return true; }
+            if (circleDistance.y <= (rectH / 2)) { return true; }
+
+            double cornerDistance_sq = (circleDistance.x - rectW / 2) * (circleDistance.x - rectW / 2) +
+                                        (circleDistance.y - rectH / 2) * (circleDistance.y - rectH / 2);
+
+            return (cornerDistance_sq <= (circleR * circleR));
+        }
+
+
+        public static bool col_circleRect(double circleX, double circleY, double circleR, BaseObj.ColRect rect)
+        {
+            Point circleDistance = new Point();
+            circleDistance.x = Math.Abs(circleX - rect.x);
+            circleDistance.y = Math.Abs(circleY - rect.y);
+
+            if (circleDistance.x > (rect.w / 2 + circleR)) { return false; }
+            if (circleDistance.y > (rect.h / 2 + circleR)) { return false; }
+
+            if (circleDistance.x <= (rect.w / 2)) { return true; }
+            if (circleDistance.y <= (rect.h / 2)) { return true; }
+
+            double cornerDistance_sq = (circleDistance.x - rect.w / 2) * (circleDistance.x - rect.w / 2) +
+                                        (circleDistance.y - rect.h / 2) * (circleDistance.y - rect.h / 2);
+
+            return (cornerDistance_sq <= (circleR * circleR));
+        }
         
 //=================================================================
     }

@@ -25,10 +25,17 @@ namespace Game
         public short colOffsetX;
         public short colOffsetY;
 
+        public short colType = 0;   ///0=Bounding box, 1=Point/circle, 3=bitmask
+
         public int colCntSprites = 0;
         public int colTop, colBottom, colRight, colLeft;
         public ColRect colRect;
         public bool onGround = false;
+        //public bool inWater = false;
+
+        public short renderOrder = 0;   // Negative(-) = Background, 0 = Middle, Positive(+) = Foreground
+        public bool renderEnabled = true;   //if the object is rendered (!!! this alone wont turn off the Objects AI !!!)
+        public bool AIEnabled = true;   //if the object will just sit there and does nothing (It still renders if 'renderEnabled' is true)
 
         public bool grabable = false;
         public bool blockTop = false;   //Acts like a solid block, stuff can land and stay on it
@@ -43,6 +50,8 @@ namespace Game
 
         public static int idCount=0;
         public int id;
+
+        public string[]metaData=new string[16]; //Generic extra Data
 
         public short type;
         public string name = "Base";
@@ -67,8 +76,8 @@ namespace Game
             colRect.y = y + colOffsetY;
             colRect.w = colW;
             colRect.h = colH;
-            id = idCount;
-            idCount++;
+            //id = idCount;
+            //idCount++;
         }
 
         public BaseObj DeepCopySprite(int id)
@@ -80,13 +89,60 @@ namespace Game
         {
             this.x = x;
             this.y = y;
+            this.w = 16;
+            this.h = 16;
+            this.colOffsetX = 0;
+            this.colOffsetY = 0;
+            colRect.x = x + colOffsetX;
+            colRect.y = y + colOffsetY;
+            colRect.w = w;
+            colRect.h = h;
+            //id = idCount;
+            //idCount++;
         }
+
+        public BaseObj()
+        { ;}
       
         public virtual string getName()
         {return name;}
 
-        public virtual void process()
+        //public void process()
+        //{
+        //    if (AIEnabled)
+        //        doSubAI();
+        //    if (renderEnabled)
+        //        doRender();
+        //}
+
+        public void doAI()
+        {
+            
+            doSubAI();
+        }
+
+        public virtual void doSubAI()
         {;}
+
+        public virtual void doRender()
+        { ;}
+
+        //////////////////////////////Water-Check
+        protected bool inWater()
+        {
+            for (int i = 0; i <= Map.spriteArrMax; i++)
+            {
+                if (Map.spriteArray[i] != null && Map.spriteArray[i].name == "WaterArea")
+                {
+                    if (getCol2Obj(this.colRect, Map.spriteArray[i].colRect))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        //public virtual void process()
+        //{;}
 
         public virtual void setXY(double x, double y)
         { 
@@ -99,6 +155,8 @@ namespace Game
             this.xVel = xVel;
             this.yVel = yVel;
         }
+
+        
 
         ///////////////////////////////////////////Return Collision Value for a Block on Map/Sprite
         public void getColGrid()
@@ -137,7 +195,7 @@ namespace Game
                     {
                         if (Map.spriteArray[i] != null)
                         {
-
+                            
                             if (Map.spriteArray[i].colWithOthers)       //////
                             {                                           //////
 
@@ -158,6 +216,7 @@ namespace Game
                                         if (this.colRect.x + this.colRect.w >= Map.spriteArray[i].colRect.x)
                                             colLeft = 1;
                                     }
+                                    
                                 }
                             }
                         }
@@ -211,9 +270,9 @@ namespace Game
 
 
         ///////////////////////////////////////////Check if two BaseObj's collide with each other
-        protected bool getCol2Obj(ColRect obj1, ColRect obj2)
+        public bool getCol2Obj(ColRect obj1, ColRect obj2)
         {
-            if ((obj1.x + obj1.w > obj2.x && obj1.x < obj2.x + obj2.w) && (obj1.y + obj1.h > obj2.y && obj1.y < obj2.y + obj2.h))
+            if ((obj1.x + obj1.w >= obj2.x && obj1.x <= obj2.x + obj2.w) && (obj1.y + obj1.h >= obj2.y && obj1.y <= obj2.y + obj2.h))
                 return true;
             else
                 return false;
