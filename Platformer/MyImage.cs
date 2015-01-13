@@ -86,21 +86,22 @@ namespace Game
         {
             int w, h;
             GL.Color4(1, 1, 1, 1.0f);
-            GL.BindTexture(TextureTarget.ProxyTexture2D, id);
+            GL.BindTexture(TextureTarget.Texture2D, id);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out w);
             GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out h);
+            if (w == 0 || h == 0)   //Don't try empty / not existing textures
+                return null;
 
             Bitmap bmp = new Bitmap(w, h);
-            System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), 
-            ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            GL.Finish();
-
-            //GL.GetTexImage(TextureTarget.ProxyTexture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
-            GL.TexSubImage2D(TextureTarget.ProxyTexture2D, 0, 0, 0, w, h, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+              
+            System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, w, h), 
+            ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            
+            GL.GetTexImage(TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, data.Scan0);
             
             bmp.UnlockBits(data);
             //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            bmp.Save(@"C:\test.bmp");
+            //bmp.Save(@"C:\test\"+id+".bmp");
             return bmp;
         }
 
@@ -108,13 +109,13 @@ namespace Game
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// BEGIN DRAW 2D
         public static void beginDraw2D()
         {
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.PushMatrix();
-            GL.LoadIdentity();
-            GL.Ortho(0, RootThingy.windowX, RootThingy.windowY, 0, -1, 1);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.PushMatrix();
-            GL.LoadIdentity();
+            //GL.MatrixMode(MatrixMode.Projection);
+            //GL.PushMatrix();
+            //GL.LoadIdentity();
+            //GL.Ortho(0, RootThingy.windowX, RootThingy.windowY, 0, -1, 1);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.PushMatrix();
+            //GL.LoadIdentity();
             GL.Disable(EnableCap.Lighting);
             GL.Enable(EnableCap.Texture2D);
         }
@@ -123,10 +124,10 @@ namespace Game
         public static void endDraw2D()
         {
             GL.Disable(EnableCap.Texture2D);
-            GL.PopMatrix();
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.PopMatrix();
-            GL.MatrixMode(MatrixMode.Modelview);
+            //GL.PopMatrix();
+            //GL.MatrixMode(MatrixMode.Projection);
+            //GL.PopMatrix();
+            //GL.MatrixMode(MatrixMode.Modelview);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW IMAGE WITH ROTATION
@@ -226,8 +227,76 @@ namespace Game
             GL.End();
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW SQUARE TILE
-        public static void drawTileSquare(int image, int tileID, int tileSize, double x, double y, bool flipV = false, bool flipH = false, double z=0)
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW TILE AT POSITION FROM A TILESET
+        public static void drawTileFromXY(int image, int tileX, int tileY, int tileSize, double x, double y, bool flipV = false, bool flipH = false, double z = 0)
+        {
+            int w;
+            int h;
+            if (activeTexture != image)
+                GL.BindTexture(TextureTarget.Texture2D, image);
+            activeTexture = image;
+            GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out w);
+            GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out h);
+
+            double tileXX = 0;
+            double tileYY = 0;
+            if (tileX * tileSize <= w)
+                tileXX = tileX * tileSize;
+
+            if (tileY * tileSize <= h)
+                tileYY = (tileY * tileSize);
+
+            GL.Begin(PrimitiveType.Quads);
+            GL.Color4(1, 1, 1, 1.0f);
+            if (!flipV && !flipH)    //No flip
+            {
+                GL.TexCoord2(tileXX / w, tileYY / h);
+                GL.Vertex3(x, y, z);
+                GL.TexCoord2((tileXX + tileSize) / w, tileYY / h);
+                GL.Vertex3(x + tileSize, y, z);
+                GL.TexCoord2((tileXX + tileSize) / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x + tileSize, y + tileSize, z);
+                GL.TexCoord2(tileXX / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x, y + tileSize, z);
+            }
+            else if (flipV && !flipH)   //Vertical(X) flip 
+            {
+                GL.TexCoord2((tileXX + tileSize) / w, tileYY / h);
+                GL.Vertex3(x, y, z);
+                GL.TexCoord2(tileXX / w, tileYY / h);
+                GL.Vertex3(x + tileSize, y, z);
+                GL.TexCoord2(tileXX / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x + tileSize, y + tileSize, z);
+                GL.TexCoord2((tileXX + tileSize) / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x, y + tileSize, z);
+            }
+            else if (!flipV && flipH)    //Horizontal(y) flip
+            {
+                GL.TexCoord2(tileXX / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x, y, z);
+                GL.TexCoord2((tileXX + tileSize) / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x + tileSize, y, z);
+                GL.TexCoord2((tileXX + tileSize) / w, tileYY / h);
+                GL.Vertex3(x + tileSize, y + tileSize, z);
+                GL.TexCoord2(tileXX / w, tileYY / h);
+                GL.Vertex3(x, y + tileSize, z);
+            }
+            else if (flipV && flipH)    //Vertical(x) + Horizontal(y) flip
+            {
+                GL.TexCoord2((tileXX + tileSize) / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x, y, z);
+                GL.TexCoord2(tileXX / w, (tileYY + tileSize) / h);
+                GL.Vertex3(x + tileSize, y, z);
+                GL.TexCoord2(tileXX / w, tileYY / h);
+                GL.Vertex3(x + tileSize, y + tileSize, z);
+                GL.TexCoord2((tileXX + tileSize) / w, tileYY / h);
+                GL.Vertex3(x, y + tileSize, z);
+            }
+            GL.End();
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////// DRAW TILE-ID FROM A TILESET
+        public static void drawTileFromID(int image, int tileID, int tileSize, double x, double y, bool flipV = false, bool flipH = false, double z=0)
         {
             int w;
             int h;

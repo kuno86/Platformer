@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+using System.Threading;
 
 
 namespace Game
@@ -40,6 +43,7 @@ namespace Game
         public bool grabable = false;
         public bool blockTop = false;   //Acts like a solid block, stuff can land and stay on it
         public bool blockSides = false;
+        public bool climbable = false;
 
         public bool colWithBlocks = true;
         public bool colWithOthers = false;
@@ -50,8 +54,10 @@ namespace Game
 
         public static int idCount=0;
         public int id;
-
-        public string[]metaData=new string[16]; //Generic extra Data
+        public static bool message = false;
+        public static int messageId; 
+                
+        public Dictionary<string, string> metaData = new Dictionary<string, string>();
 
         public short type;
         public string name = "Base";
@@ -117,8 +123,13 @@ namespace Game
 
         public void doAI()
         {
-            
-            doSubAI();
+            var keyboard = Keyboard.GetState();
+            if (keyboard[Key.Pause])
+            { message = false; }
+            if (!message)
+                doSubAI();
+            else
+                Map.spriteArray[messageId].showMessage();   //Stop all AI while Messagebox is beeing read
         }
 
         public virtual void doSubAI()
@@ -141,8 +152,79 @@ namespace Game
             return false;
         }
 
-        //public virtual void process()
-        //{;}
+        protected void showMessage(string msg ="")
+        {
+            if (!this.metaData.ContainsKey("Message"))
+                return;
+            else
+            {
+                if(msg=="")
+                    msg = this.metaData["Message"];
+                short boxW = 3 + 4 + (27 * 8) + 4 + 3;
+                int boxX = (RootThingy.sceneX / 2) - (boxW / 2);
+                int boxY = RootThingy.sceneY / 4;
+                int drawTextY = boxY + 3 + 4;
+                string[] msgP = msg.Split('¶');
+                int boxH = 3 + 4 + (msgP.Count()*12) + 4 + 3;
+
+                MyImage.endDraw2D();
+                GL.Begin(PrimitiveType.Quads);
+                GL.Color3(System.Drawing.Color.Black);
+                GL.Vertex2(boxX, boxY);
+                GL.Vertex2(boxX+boxW, boxY);
+                GL.Vertex2(boxX+boxW, boxY+boxH);
+                GL.Vertex2(boxX, boxY+boxH);
+                GL.End();
+                GL.Begin(PrimitiveType.Quads);
+                GL.Color3(System.Drawing.Color.White);
+                GL.Vertex2(boxX+1, boxY+1);
+                GL.Vertex2(boxX + boxW-1, boxY+1);
+                GL.Vertex2(boxX + boxW-1, boxY + boxH-1);
+                GL.Vertex2(boxX+1, boxY + boxH-1);
+                GL.End();
+                GL.Begin(PrimitiveType.Quads);
+                GL.Color3(System.Drawing.Color.Aqua);
+                GL.Vertex2(boxX + 2, boxY + 2);
+                GL.Vertex2(boxX + boxW - 2, boxY + 2);
+                GL.Vertex2(boxX + boxW - 2, boxY + boxH - 2);
+                GL.Vertex2(boxX + 2, boxY + boxH - 2);
+                GL.End();
+                MyImage.beginDraw2D();
+
+                foreach( string s in msgP)
+                {
+                    MyImage.drawText(s, boxX + 2 + 4, drawTextY, System.Drawing.Color.White, Texture.ASCII);
+                    drawTextY += 12;
+                }
+            }
+            if (!message)
+                message = true;
+            messageId = this.id;
+            
+        }
+
+        public void setMessage(string message)
+        {
+            string[] msgP = message.Split(' ');
+            string line = "";
+            string convMsg = "";
+            for (int i = 0; i <= msgP.Length-1;i++ )
+            {
+                msgP[i] += " ";
+                if ((line + msgP[i]).Length <= 27)
+                { line += msgP[i]; }
+                else
+                {
+                    convMsg += line + "¶";
+                    line = msgP[i];
+                }
+            }
+            convMsg += line;
+            if (this.metaData.ContainsKey("Message"))
+                this.metaData["Message"] = convMsg;
+            else
+                this.metaData.Add("Message", convMsg);
+        }
 
         public virtual void setXY(double x, double y)
         { 

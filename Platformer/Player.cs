@@ -84,14 +84,23 @@ namespace Game
         private bool isWarping = false;     //Between two warp-points (also pipe-entering/exiting)
         private bool warpState = false;     //false = enters, true = exits
         private short warpMove = 0;         //how far the above is
-                
-        public Key upBtn = Key.Up; 
-        public Key downBtn = Key.Down;
-        public Key leftBtn = Key.Left;
-        public Key rightBtn = Key.Right;
-        public Key RunShootBtn = Key.C;
-        public Key jumpBtn = Key.X;
-        public Key spinjumpBtn = Key.Z; //its actually the "Y"-Key on a QWERTZ-Keyboard...
+        
+        
+        public Key upBtnK = Key.Up; 
+        public Key downBtnK = Key.Down;
+        public Key leftBtnK = Key.Left;
+        public Key rightBtnK = Key.Right;
+        public Key RunShootBtnK = Key.C;
+        public Key jumpBtnK = Key.X;
+        public Key spinjumpBtnK = Key.Z; //its actually the "Y"-Key on a QWERTZ-Keyboard...
+
+        private bool upBtn = false; 
+        private bool downBtn = false;
+        private bool leftBtn = false;
+        private bool rightBtn = false;
+        private bool RunShootBtn = false;
+        private bool jumpBtn = false;
+        private bool spinjumpBtn = false;
 
         public Player(double x, double y, short power = 0, short coins=0, short lives=5)
             : base(x, y, 16, 16, 10, 12, 2, 4)
@@ -119,6 +128,8 @@ namespace Game
             onGround = false;
             this.colWithOthers = true;
             this.colWithBlocks = true;
+            metaData.Add("setFrame", "-1");
+            metaData.Add("Control", "--------");
         }
 
         public override string getName()
@@ -128,18 +139,89 @@ namespace Game
         {
             refreshColRect();
             getColGrid();
-
             var keyboard = RootThingy.keyboard;
+            
+            /////////////////////////////////////// ('T' = Key active ; 'F' = Key inactive ; '-' = get Key value fom keyboard)
+            /////////////////////////////////////// Up-Key
+            if (metaData["Control"][0] == 'T')
+                upBtn = true;
+            if (metaData["Control"][0] == 'F')
+                upBtn = false;
+            if (metaData["Control"][0] == '-')
+            { upBtn = keyboard[upBtnK];}
+            /////////////////////////////////////// Down-Key
+            if (metaData["Control"][1] == 'T')
+                downBtn = true;
+            if (metaData["Control"][1] == 'F')
+                downBtn = false;
+            if (metaData["Control"][1] == '-')
+            { downBtn = keyboard[downBtnK];}
+            /////////////////////////////////////// Left-Key
+            if (metaData["Control"][2] == 'T')
+                leftBtn = true;
+            if (metaData["Control"][2] == 'F')
+                leftBtn = false;
+            if (metaData["Control"][2] == '-')
+            { leftBtn = keyboard[leftBtnK];}
+            /////////////////////////////////////// Right-Key
+            if (metaData["Control"][3] == 'T')
+                rightBtn = true;
+            if (metaData["Control"][3] == 'F')
+                rightBtn = false;
+            if (metaData["Control"][3] == '-')
+            { rightBtn = keyboard[rightBtnK];}
+            /////////////////////////////////////// Run/Shoot-Key
+            if (metaData["Control"][4] == 'T')
+                RunShootBtn = true;
+            if (metaData["Control"][4] == 'F')
+                RunShootBtn = false;
+            if (metaData["Control"][4] == '-')
+            { RunShootBtn = keyboard[RunShootBtnK];}
+            /////////////////////////////////////// Jump-Key
+            if (metaData["Control"][5] == 'T')
+                jumpBtn = true;
+            if (metaData["Control"][5] == 'F')
+                jumpBtn = false;
+            if (metaData["Control"][5] == '-')
+            { jumpBtn = keyboard[jumpBtnK];}
+            /////////////////////////////////////// SpinJump-Key
+            if (metaData["Control"][6] == 'T')
+                spinjumpBtn = true;
+            if (metaData["Control"][6] == 'F')
+                spinjumpBtn = false;
+            if (metaData["Control"][6] == '-')
+            { spinjumpBtn = keyboard[spinjumpBtnK];}
 
-            if (keyboard[upBtn] && colTop != 1)
+            if (keyboard[upBtnK])
+                metaData["Control2"] = "T------";
+            if (downBtn)
+                metaData["Control2"] = "-T-----";
+            if (leftBtn)
+                metaData["Control2"] = "--T----";
+            if (rightBtn)
+                metaData["Control2"] = "---T---";
+            if (RunShootBtn)
+                metaData["Control2"] = "----T--";
+            if (jumpBtn)
+                metaData["Control2"] = "-----T-";
+            if (spinjumpBtn)
+                metaData["Control2"] = "------T";
+
+            this.setMessage("Hallo ich bin der Mario, und mein Ziel isses die Peach zu befreien. Die hängt wahscheinlich schonwieder bei Bowser ab... mmmm");
+
+            if (keyboard[Key.Enter])
+                this.showMessage();
+
+
+            if (upBtn && colTop != 1)
             { ; }
 
-            if (keyboard[downBtn])
+            if (downBtn)
             {
                 state = 18;
             }
 
-            if (keyboard[leftBtn] && getColXY((int)x - 1, (int)y + (h / 2)) != 1)
+            if (leftBtn && getColXY((int)x - 1, (int)y + (h / 2)) != 1)
             {
                 if (xVel > 0)    //direction != Inputdirection means skidding / breaking
                 {
@@ -155,7 +237,7 @@ namespace Game
                 {
                     if (pMeter >= 112)
                     {
-                        if (keyboard[RunShootBtn])  //Player presses run-button
+                        if (RunShootBtn)  //Player presses run-button
                         {
                             xVel -= xAccel;
                             if (xVel < sprintVelMax * -1)    //
@@ -179,7 +261,7 @@ namespace Game
                 pMeter += 2;
             }
 
-            if (keyboard[rightBtn] && getColXY((int)x + w + 1, (int)y + (h / 2)) != 1)
+            if (rightBtn && getColXY((int)x + w + 1, (int)y + (h / 2)) != 1)
             {
                 if (xVel < 0)    //direction != Inputdirection means skidding / breaking
                 {
@@ -195,7 +277,7 @@ namespace Game
                 {
                     if (pMeter >= 112)
                     {
-                        if (keyboard[RunShootBtn])  //Player presses run-button
+                        if (RunShootBtn)  //Player presses run-button
                         {
                             xVel += xAccel;
                             if (xVel > sprintVelMax)    //
@@ -219,7 +301,7 @@ namespace Game
                 pMeter += 2;
             }
 
-            if (!keyboard[rightBtn] && !keyboard[leftBtn])
+            if (!rightBtn && !leftBtn)
             {
                 if (colBottom == 1)     //on ground
                 {
@@ -242,13 +324,13 @@ namespace Game
 
 
 
-            if ((keyboard[jumpBtn] || keyboard[spinjumpBtn]))//&& !falling)
+            if ((jumpBtn || spinjumpBtn))//&& !falling)
             {
                 if (jmpTimer <= 8 && canJmp)      //
                 {                       //jump Velocity is incresed for max 8 frames
                     jmpTimer++;         //by jump-Acceleration
                     yVel -= jmpAccel;   //
-                    if (keyboard[jumpBtn] && !spinjumping)
+                    if (jumpBtn && !spinjumping)
                     {
                         spinjumping = false; jumping = true;
                         if (state == 3) //sprinting ?
@@ -256,7 +338,7 @@ namespace Game
                         if ((state == 1) || (state == 2) || (state == 4) || (state == 9) || (state == 13))
                             state = 5;
                     }
-                    if (keyboard[spinjumpBtn])
+                    if (spinjumpBtn)
                     {
                         spinjumping = true;
                         jumping = false;
@@ -270,13 +352,13 @@ namespace Game
                 { canJmp = false; jmpTimer = 0; }
             }
 
-            if (keyboard.IsKeyUp(spinjumpBtn) && spinjumping)
+            if (keyboard.IsKeyUp(spinjumpBtnK) && spinjumping)
             {
                 jmpTimer = 0; canJmp = false;
-                if(stateArr[state][frame]!=null)
-                    dir = stateArr[state][frame].flipV;
+                //if(stateArr[state][frame]!=null)
+                //    dir = stateArr[state][frame].flipV;
             }
-            if (keyboard.IsKeyUp(jumpBtn) && jumping)
+            if (keyboard.IsKeyUp(jumpBtnK) && jumping)
             {
                 jmpTimer = 0; canJmp = false;
             }
@@ -284,43 +366,43 @@ namespace Game
             ////////////////////////////////////////////////////////Warp-Handling
             //wartoWarp metaData:
             //====================
-            //metaData[0]   warpId int
-            //metaData[1]   isEntrance True or False    (True=Entrance, False=Exit)
-            //metaData[2]   type 0-2                    (0=Pipe, 1=Door, 2=Instant)
-            //metaData[3]   direction 0-3               (0=Moving Right, 1=Moving Down, 2=Moving Left, 3=Moving Up)
+            //metaData["warpId"]        warpId int
+            //metaData["isEntrance"]    isEntrance True or False    (True=Entrance, False=Exit)
+            //metaData["warpType"]      type 0-2                    (0=Pipe, 1=Door, 2=Instant)
+            //metaData["warpDir"]       direction 0-3               (0=Moving Right, 1=Moving Down, 2=Moving Left, 3=Moving Up)
             if (canWarpRight || canWarpDown || canWarpLeft || canWarpUp || canWarpDoor)
             {
                 for (int i = 0; i != Map.spriteArrMax; i++)
                 {
                     if (Map.spriteArray[i] != null)
                     {
-                        if ((canWarpObjStart.metaData[0] == Map.spriteArray[i].metaData[0]) &&
-                            (canWarpObjStart.metaData[1] != Map.spriteArray[i].metaData[1]) &&
+                        if ((canWarpObjStart.metaData["warpId"] == Map.spriteArray[i].metaData["warpId"]) &&
+                            (canWarpObjStart.metaData["isEntrance"] != Map.spriteArray[i].metaData["isEntrance"]) &&
                             (Map.spriteArray[i].id != this.id))
                         {
                             this.canWarpObjEnd = Map.spriteArray[i];
                         }
                     }
                 }
-                if (keyboard.IsKeyDown(rightBtn))
+                if (keyboard.IsKeyDown(rightBtnK))
                 {
                     invulnerable = true;
                     isWarping = true;
                     warpState = false;
                 }
-                if (keyboard.IsKeyDown(downBtn))
+                if (keyboard.IsKeyDown(downBtnK))
                 {
                     invulnerable = true;
                     isWarping = true;
                     warpState = false;
                 }
-                if (keyboard.IsKeyDown(leftBtn))
+                if (keyboard.IsKeyDown(leftBtnK))
                 {
                     invulnerable = true;
                     isWarping = true;
                     warpState = false;
                 }
-                if (keyboard.IsKeyDown(upBtn))
+                if (keyboard.IsKeyDown(upBtnK))
                 {
                     if (canWarpDoor)
                     {
@@ -328,7 +410,7 @@ namespace Game
                         isWarping = true;
                         warpState = false;
                     }
-                    if (keyboard.IsKeyDown(spinjumpBtn | jumpBtn) && canWarpUp)
+                    if (keyboard.IsKeyDown(spinjumpBtnK | jumpBtnK) && canWarpUp)
                     {
                         invulnerable = true;
                         isWarping = true;
@@ -339,9 +421,9 @@ namespace Game
 
             if (warpState == false && isWarping == true)    //Is warping and entering
             {
-                if (canWarpObjEnd != null && canWarpObjStart.metaData[2] == "0")  //type Pipe
+                if (canWarpObjEnd != null && canWarpObjStart.metaData["warpType"] == "0")  //type Pipe
                 {
-                    switch (int.Parse(canWarpObjStart.metaData[3]))
+                    switch (int.Parse(canWarpObjStart.metaData["warpDir"]))
                     {
                         case 0: //warp Right
                             if (x <= canWarpObjStart.x + canWarpObjStart.w)
@@ -369,7 +451,7 @@ namespace Game
                             break;
                     }
                 }
-                if (canWarpObjStart.metaData[2] == "1")  //type Door
+                if (canWarpObjStart.metaData["warpType"] == "1")  //type Door
                 {
                     setXY(canWarpObjEnd.x, canWarpObjEnd.y);
                     warpState = false;
@@ -379,9 +461,9 @@ namespace Game
             }
             if (warpState == true && isWarping == true)    //Is warping and exiting
             {
-                if (canWarpObjEnd != null && canWarpObjEnd.metaData[2] == "0")  //type Pipe
+                if (canWarpObjEnd != null && canWarpObjEnd.metaData["warpType"] == "0")  //type Pipe
                 {
-                    switch (int.Parse(canWarpObjEnd.metaData[3]))
+                    switch (int.Parse(canWarpObjEnd.metaData["warpDir"]))
                     {
                         case 0: //warp Right
                             if (x <= canWarpObjEnd.x)
@@ -418,9 +500,9 @@ namespace Game
 
             ////////////////////////////////////////////////////////End Warp-Handling
 
-            if (keyboard[RunShootBtn])
+            if (RunShootBtn)
             {
-                if (shotCoolDown == 0 && keyboard.IsKeyDown(RunShootBtn) && power == 2)
+                if (shotCoolDown == 0 && keyboard.IsKeyDown(RunShootBtnK) && power == 2)
                 {
                     Map.spriteAdd(new Fireballshot(x, y, this, stateArr[state][frame].flipV ^ dir));
                     shotCoolDown = 5;//30
@@ -452,21 +534,21 @@ namespace Game
                     else        //Right
                     { throwDir = 1; }
 
-                    if (keyboard[upBtn] || keyboard[downBtn])
+                    if (upBtn || downBtn)
                     {
-                        if (keyboard[upBtn])
+                        if (upBtn)
                         {
                             Map.spriteArray[grabbedItemId].setXYVel(this.xVel, -6);
-                            Map.spriteArray[grabbedItemId].metaData[0] = "";
+                            Map.spriteArray[grabbedItemId].metaData["kicked"] = "";
                             Map.spriteArray[grabbedItemId].colWithBlocks = this.grabbedItem_ColBlocksTemp;
                             Map.spriteArray[grabbedItemId].colWithOthers = this.grabbedItem_ColOthersTemp;
                             Map.spriteArray[grabbedItemId].despawnOffScreen = this.grabbedItem_despawnOffScreen;
                             grabbedItemId = -1;
                         }
-                        if (keyboard[downBtn])
+                        if (downBtn)
                         {
                             Map.spriteArray[grabbedItemId].setXYVel(this.xVel + (throwDir * 0.25), -0.5);
-                            Map.spriteArray[grabbedItemId].metaData[0] = "";
+                            Map.spriteArray[grabbedItemId].metaData["kicked"] = "";
                             Map.spriteArray[grabbedItemId].colWithBlocks = this.grabbedItem_ColBlocksTemp;
                             Map.spriteArray[grabbedItemId].colWithOthers = this.grabbedItem_ColOthersTemp;
                             Map.spriteArray[grabbedItemId].despawnOffScreen = this.grabbedItem_despawnOffScreen;
@@ -476,7 +558,7 @@ namespace Game
                     else
                     {
                         Map.spriteArray[grabbedItemId].setXYVel(this.xVel + (throwDir * 2.7), -0.5);
-                        Map.spriteArray[grabbedItemId].metaData[0] = "kicked";
+                        Map.spriteArray[grabbedItemId].metaData["kicked"] = "kicked";
                         Map.spriteArray[grabbedItemId].colWithBlocks = this.grabbedItem_ColBlocksTemp;
                         Map.spriteArray[grabbedItemId].colWithOthers = this.grabbedItem_ColOthersTemp;
                         Map.spriteArray[grabbedItemId].despawnOffScreen = this.grabbedItem_despawnOffScreen;
@@ -500,7 +582,7 @@ namespace Game
                 }
             }
 
-            if (shotCoolDown > 0 && keyboard.IsKeyUp(RunShootBtn))
+            if (shotCoolDown > 0 && keyboard.IsKeyUp(RunShootBtnK))
                 shotCoolDown--;
 
 
@@ -687,12 +769,27 @@ namespace Game
 
         private void animate()
         {
-            frameDelay++;
-            if (frameDelay == 3)
-            { frame++; frameDelay = 0; }
-            if (frame > stateArr[state].Length-1)
-                frame = 0;
-            MyImage.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH); 
+            if (metaData["setFrame"]!="-1")
+            {
+                int setFrame = - 1;
+                try
+                {
+                    setFrame = int.Parse(metaData["setFrame"]);
+                    Console.WriteLine("SetFrame: " + setFrame);
+                }
+                catch{;}
+                MyImage.drawTileFrame(texture, setFrame, frames, x, y, dir);
+                metaData["setFrame"] = "-1";
+            }
+            else
+            {
+                frameDelay++;
+                if (frameDelay == 3)
+                { frame++; frameDelay = 0; }
+                if (frame > stateArr[state].Length - 1)
+                    frame = 0;
+                MyImage.drawTileFrame(texture, (stateArr[state][frame].id), frames, x, y, stateArr[state][frame].flipV ^ dir, stateArr[state][frame].flipH);
+            }
         }
 
 
@@ -769,10 +866,10 @@ namespace Game
         public void processWarp(BaseObj warpSprite)
         {   //wartoWarp metaData:
             //====================
-            //metaData[0]   warpId int
-            //metaData[1]   isEntrance True or False    (True=Entrance, False=Exit)
-            //metaData[2]   type 0-2                    (0=Pipe, 1=Door, 2=Instant)
-            //metaData[3]   direction 0-3               (0=Moving Right, 1=Moving Down, 2=Moving Left, 3=Moving Up)
+            //metaData["warpId"]        warpId int
+            //metaData["isEntrance"]    isEntrance True or False    (True=Entrance, False=Exit)
+            //metaData["warpType"]      type 0-2                    (0=Pipe, 1=Door, 2=Instant)
+            //metaData["warpDir"]       direction 0-3               (0=Moving Right, 1=Moving Down, 2=Moving Left, 3=Moving Up)
 
             canWarpRight = false;
             canWarpDown = false;
@@ -780,11 +877,11 @@ namespace Game
             canWarpUp = false;
             canWarpDoor = false;
             canWarpObjStart = null;
-            switch (int.Parse(warpSprite.metaData[2]))
+            switch (int.Parse(warpSprite.metaData["warpType"]))
             {
                 case 0:     //Pipes
                     {
-                        switch (int.Parse(warpSprite.metaData[3]))
+                        switch (int.Parse(warpSprite.metaData["warpDir"]))
                         {
                             case 0:
                             default: if (onGround) canWarpRight = true; canWarpObjStart = warpSprite; break;

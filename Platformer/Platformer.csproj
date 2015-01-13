@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="AniFrame.cs" />
     <Compile Include="BaseObj.cs" />
+    <Compile Include="block\FixedSpring.cs" />
+    <Compile Include="effect\Fireball_Bowser_smb1.cs" />
     <Compile Include="npc\Blooper.cs" />
     <Compile Include="block\Bricks.cs" />
     <Compile Include="block\Cannon.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="block\Winehead.cs" />
     <Compile Include="effect\Bricks_shatter.cs" />
     <Compile Include="effect\Firebar_segment.cs" />
-    <Compile Include="effect\Hammerbros_hammer.cs" />
+    <Compile Include="effect\Hammer_thrown.cs" />
     <Compile Include="effect\Minismoke.cs" />
     <Compile Include="effect\Platform_pulley.cs" />
     <Compile Include="effect\Qm_open.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Circle.cs" />
     <Compile Include="effect\Fireball_hit.cs" />
     <Compile Include="Geometry.cs" />
+    <Compile Include="npc\Bowser_smb1.cs" />
     <Compile Include="npc\Bulletbill.cs" />
     <Compile Include="npc\Buzzybeetle.cs" />
     <Compile Include="npc\CheepCheep.cs" />
@@ -105,8 +108,11 @@
     <Compile Include="npc\VeloTest.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="special\Flagpole.cs" />
     <Compile Include="special\Generator.cs" />
     <Compile Include="special\Keyhole.cs" />
+    <Compile Include="block\Messagebox.cs" />
+    <Compile Include="special\Resizeable.cs" />
     <Compile Include="special\RollingRock.cs" />
     <Compile Include="special\WarpToXYS.cs" />
     <Compile Include="special\WarpToWarp.cs" />

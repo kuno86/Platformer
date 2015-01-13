@@ -19,7 +19,7 @@ namespace Game
         private short direction, type, warpId;
 
         /// <summary>
-        /// 
+        /// Bla
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -30,11 +30,18 @@ namespace Game
         public WarpToWarp(double x, double y, bool isEntrance = true, short direction = 0, short type = 2, short warpId = 0)
             : base(x, y,16,16)
         {
+            //wartoWarp metaData:
+            //====================
+            //metaData["warpId"]        warpId int
+            //metaData["isEntrance"]    isEntrance True or False    (True=Entrance, False=Exit)
+            //metaData["warpType"]      type 0-2                    (0=Pipe, 1=Door, 2=Instant)
+            //metaData["warpDir"]       direction 0-3               (0=Moving Right, 1=Moving Down, 2=Moving Left, 3=Moving Up)
+
             this.name = "WarpToWarp";
-            this.metaData[0] = warpId.ToString();       //warpId int
-            this.metaData[1] = isEntrance.ToString();   //isEntrance True or False
-            this.metaData[2] = type.ToString();         //type 0-2
-            this.metaData[3] = direction.ToString();    //direction 0-3
+            this.metaData.Add("warpId", warpId.ToString());         //warpId int
+            this.metaData.Add("isEntrance", isEntrance.ToString()); //isEntrance True or False
+            this.metaData.Add("warpType", type.ToString());         //type 0-2
+            this.metaData.Add("warpDir", direction.ToString());     //direction 0-3
 
             ImageFormat bmpFormat = ImageFormat.Bmp;
             Image render = (Image)(new Bitmap(16, 16));
@@ -125,9 +132,9 @@ namespace Game
                                     {
                                         if (Map.spriteArray[j] != null)
                                         {
-                                            if ((Map.spriteArray[j].name == "WarpToWarp") && (Map.spriteArray[j].metaData[0] == this.metaData[0]))  //is this a Warp with the same ID ?
+                                            if ((Map.spriteArray[j].name == "WarpToWarp") && (Map.spriteArray[j].metaData["warpId"] == this.metaData["warpId"]))  //is this a Warp with the same ID ?
                                             {
-                                                if (Map.spriteArray[j].metaData[1] != this.metaData[1].ToString() && this.metaData[1] == true.ToString())
+                                                if (Map.spriteArray[j].metaData["isEntrance"] != this.metaData["isEntrance"].ToString() && this.metaData["isEntrance"] == true.ToString())
                                                     Map.spriteArray[i].setXY(Map.spriteArray[j].x, Map.spriteArray[j].y);
 
                                             }

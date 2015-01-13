@@ -191,7 +191,6 @@ namespace Game
                         Map.spriteArray[creations.Last()].setXYVel(this.xVel, this.yVel);
                         Map.spriteAdd(new Smoke(spawnSpace.x, spawnSpace.y, type));
                     }
-                    Map.spriteArray[creations.Last()].metaData[0] = "fromGenerator" + this.id;
                 }
                 tickCount = 0;
             }

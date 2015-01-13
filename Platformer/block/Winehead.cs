@@ -11,6 +11,7 @@ namespace Game
         private short frameDelay = 0;
         private short growth = -1;
         private double yOrigin;
+        private double yMove;
         
         private List<int> wines = new List<int>();
 
@@ -34,9 +35,9 @@ namespace Game
                 }
             }
             if (dir)
-                this.yVel = 1; //Growing down
+                this.yMove = 1; //Growing down
             else
-                this.yVel = -1;  //Growing up
+                this.yMove = -1;  //Growing up
             this.yOrigin = y;
             this.x = x;
             this.y = y;
@@ -64,20 +65,20 @@ namespace Game
                 if (this.growth >= 16)
                 {
                     this.growth = 0;
-                    if (yVel > 0)
+                    if (yMove > 0)
                         Map.spriteAdd(new Wine(x, this.y, type, this.id, this.dir));
-                    if (yVel < 0)
+                    if (yMove < 0)
                         Map.spriteAdd(new Wine(x, this.y, type, this.id, this.dir));
 
                     if (x > 0 && y > 0 && x < RootThingy.sceneX && y < RootThingy.sceneY)
                         Map.map[(int)(y - 16) / 16, (int)x / 16, 0] = 3;
                 }
 
-                this.y += this.yVel;
+                this.y += this.yMove;
             }
             else
             {
-                this.yVel = 0;
+                this.yMove = 0;
                 this.x = -100;
                 this.y = -100;
             }

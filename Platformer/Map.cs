@@ -51,7 +51,7 @@ namespace Game
 
         public static Random rnd = new Random();
 
-        public static double temp = 0.25;
+        public static double temp = 1.0;
         public static short warpNr = 0;
 
         public static short powActive;
@@ -65,6 +65,7 @@ namespace Game
 
         public static BaseObj[] spriteArray = new BaseObj[4096];
         public static int spriteArrMax;
+        public static int spriteCount;
 
         public static BaseObj[] sprites = new BaseObj[1024];  // this is a catalouge of all spawnable sprites
 
@@ -119,6 +120,8 @@ namespace Game
             sprites[019] = new Blooper(-200, -200,(short)rnd.Next(0,2));
             sprites[020] = new CheepCheep(-200, -200,false, 0); //Green CheepCheep
             sprites[021] = new CheepCheep(-200, -200, false, 1); //Red CheepCheep
+            sprites[022] = new Bowser_smb1(-200, -200, false, false);   //smb1 Bowser
+            sprites[023] = new Bowser_smb1(-200, -200, false, true);    //smb1 Bowser with Hammers
 
             sprites[100] = null;
             sprites[101] = new Coin(-200, -200, (short)rnd.Next(1, 6));     //fixed Coin
@@ -143,11 +146,15 @@ namespace Game
             sprites[204] = new Bricks(-200, -200, (short)rnd.Next(1, 5), (short)rnd.Next(102,114));
             sprites[205] = new Qm(-200, -200, 1, 102);
             sprites[206] = new Keyhole(-200, -200);
-            sprites[207] = new Generator(mausX * 16, mausY * 16, 3);    //Sprite-generator
-            sprites[208] = new WarpToWarp(mausX * 16, mausY * 16,true,2,0,warpNr);      //Warp Start-Point
-            sprites[209] = new WarpToWarp(mausX * 16, mausY * 16, false, 2, 0, warpNr);  //Warp End-Point
-            sprites[210] = new WarpToXYS(mausX * 16, mausY * 16, 200, 200);     //Warp to XY Coordinates (S=Section of that level)
-            sprites[211] = new RollingRock(mausX * 16, mausY * 16);
+            sprites[207] = new Generator(-200, -200, 3);    //Sprite-generator
+            sprites[208] = new WarpToWarp(-200, -200, true, 1, 0, warpNr);      //Warp Start-Point
+            sprites[209] = new WarpToWarp(-200, -200, false, 3, 0, warpNr);  //Warp End-Point
+            sprites[210] = new WarpToXYS(-200, -200, 200, 200);     //Warp to XY Coordinates (S=Section of that level)
+            sprites[211] = new RollingRock(-200, -200);
+            sprites[212] = new Platform(-200, -200);
+            sprites[213] = new Platform_pulley(-200, -200, 6);
+            sprites[214] = new FixedSpring(-200, -200, 0);  //Red normal fix spring
+            sprites[215] = new FixedSpring(-200, -200, 1);  //Green strong fix spring
             
             maxTextureSize = GL.GetInteger(OpenTK.Graphics.OpenGL.GetPName.MaxTextureSize);
             Console.WriteLine("BG: " + Texture.backGround);
@@ -187,7 +194,13 @@ namespace Game
                 }
             }
 
-            map[9, 9, 3] = 5; //Test Player
+            map[9, 9, 3] = 1; //Test Player
+            map[11, 8, 2] = 0;//Block under Player
+            map[11, 8, 0] = 1;//Solid under Player
+            map[11, 9, 2] = 0;//Block under Player
+            map[11, 9, 0] = 1;//Solid under Player
+            map[11, 10, 2] = 0;//Block under Player
+            map[11, 10, 0] = 1;//Solid under Player
             map[10, 10, 3] = 2; //Test Boo
             map[11, 11, 3] = 300;   //Test Fireball (harms player)
 
@@ -245,12 +258,37 @@ namespace Game
             
             MyImage.drawText("Press F12 to toggle Debug-Info", 870, 38, Color.Blue, Texture.ASCII);
 
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Calculate Average Player(s) Position for Camera
+            double avgX = 0;
+            double avgY = 0;
+            int avgNr = 0;
+            for (int i = 0; i <= spriteArrMax; i++)
+            {
+                if (spriteArray[i] != null && spriteArray[i].name=="Player")
+                {
+                    avgX += Map.spriteArray[i].colRect.x;
+                    avgY += Map.spriteArray[i].colRect.y;
+                    avgNr++;
+                }
+            }
+            if (avgNr > 0)
+            {
+                RootThingy.camX = avgX / avgNr;
+                RootThingy.camY = avgY / avgNr;
+            }
+            else
+            {
+                RootThingy.camX = RootThingy.sceneX / 2;
+                RootThingy.camY = RootThingy.sceneY / 2;
+            }
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AI-Loop
+            spriteCount = 0;
             for (int i = 0; i <= spriteArrMax; i++)
             {
                 if (spriteArray[i] != null)
                 {
+                    spriteCount++;
                     if (spriteArray[i].AIEnabled)
                     {
                         
@@ -392,7 +430,7 @@ namespace Game
                 break;
 
                 case 2: 
-                    MyImage.drawTileSquare(Texture.tileSet, currentIDArr[currentDimension, 0], tileSize, mausX * 16, mausY * 16); 
+                    MyImage.drawTileFromID(Texture.tileSet, currentIDArr[currentDimension, 0], tileSize, mausX * 16, mausY * 16); 
                     break;  //tiles
 
                 case 3:
@@ -411,7 +449,7 @@ namespace Game
                 if (maus[MouseButton.Left]) //Place
                 {
                     map[mausY, mausX, currentDimension] = currentIDArr[currentDimension, 0];
-                    if(currentDimension!=3)
+                    if (currentDimension != 1 && currentDimension != 3 && currentDimension != 4)    //Background sprites and Foreground don't set collision data to map
                         map[mausY, mausX, 0] = colInf[currentIDArr[currentDimension, 0]];
                     //Console.WriteLine("wrote TileID " + mausRad + "to [" + mausX + "][" + mausY + "].");
                     if(currentDimension==3)
@@ -448,7 +486,7 @@ namespace Game
             {spriteAdd(new VeloTest(mausX * 16, mausY * 16)); Thread.Sleep(150); }
 
             if (keyboard[Key.Y])    //its actuacly the Z-Key on QWERTZ-Keyboards
-            { RootThingy.zoomed = !RootThingy.zoomed; MyImage.BMPfromTextureID(10); Thread.Sleep(300); }
+            { RootThingy.zoomed = !RootThingy.zoomed; Thread.Sleep(150); }
 
             if (keyboard[Key.D])
             {
@@ -457,11 +495,12 @@ namespace Game
                     currentDimension = 0;
                 Thread.Sleep(150);
             }
+
             if (keyboard[Key.F8])
             { spriteAdd(new RollingRock(mausX * 16, mausY * 16)); Thread.Sleep(150); }
 
             if (keyboard[Key.F9])               // F9
-            { spriteAdd(new CheepCheep(mausX * 16, mausY * 16, false, (short)rnd.Next(0,2))); Thread.Sleep(150); }     // Spawn something with F9 Key
+            { spriteAdd(new Resizeable(mausX * 16, mausY * 16,(short)(rnd.Next(2,7)),(short)(rnd.Next(2,7)),Texture.resizeable001)); Thread.Sleep(150); }     // Spawn something with F9 Key
 
             if (keyboard[Key.F10])               // F10
             { spriteAdd(new Blooper(mausX * 16, mausY * 16)); Thread.Sleep(150); }     // Spawn something with F10 Key
@@ -548,6 +587,8 @@ namespace Game
                             case 019: spriteAdd(new Blooper(arrX * 16, arrY * 16, (short)rnd.Next(0, 2))); break;
                             case 020: spriteAdd(new CheepCheep(arrX * 16, arrY * 16, false, 0)); break; //Green CheepCheep
                             case 021: spriteAdd(new CheepCheep(arrX * 16, arrY * 16, false, 1)); break; //Red CheepCheep
+                            case 022: spriteAdd(new Bowser_smb1(arrX * 16, arrY * 16, false, false)); break;   //smb1 Bowser
+                            case 023: spriteAdd(new Bowser_smb1(arrX * 16, arrY * 16, false, true)); break;    //smb1 Bowser with Hammers
 
                             case 100: break;
                             case 101: spriteAdd(new Coin(arrX * 16, arrY * 16, (short)rnd.Next(1, 6))); break;
@@ -577,8 +618,13 @@ namespace Game
                             case 209: spriteAdd(new WarpToWarp(mausX * 16, mausY * 16, false, 2, 0, warpNr)); break;    //Warp End-Point
                             case 210: spriteAdd(new WarpToXYS(mausX * 16, mausY * 16, 200, 200)); break;    //Warp to XY Coordinates (S=Section of that level)
                             case 211: spriteAdd(new RollingRock(mausX * 16, mausY * 16)); break;
+                            case 212: spriteAdd(new Platform(mausX * 16, mausY * 16)); break;
+                            case 213: spriteAdd(new Platform_pulley(mausX * 16, mausY * 16, 6)); break;
+                            case 214: spriteAdd(new FixedSpring(mausX * 16, mausY * 16, 0)); break;  //Red normal fix spring
+                            case 215: spriteAdd(new FixedSpring(mausX * 16, mausY * 16, 1)); break;  //Green strong fix spring
 
                             case 300: spriteAdd(new Fireballshot(0, 0, new BaseObj(0, 0))); map[arrY, arrX, 3] = 0; break;
+                            case 301: spriteAdd(new Fireball_Bowser_smb1(mausX * 16, mausY * 16)); break;
 
                             default: Console.WriteLine("Invalid Sprite-ID: " + map[arrY, arrX, 3] + " @[" + arrX + "][" + arrY + "] "); break; 
                         }
@@ -624,7 +670,7 @@ namespace Game
                 }
             }
             MyImage.drawText("Animated Objects: " + animatedCounter, 0, 552, Color.Red, Texture.ASCII);
-            MyImage.drawText("Sprites: " + spriteArrMax, 0, 564, Color.Red, Texture.ASCII);
+            MyImage.drawText("Sprites: " + spriteCount, 0, 564, Color.Red, Texture.ASCII);
 
             MyImage.drawText("P-Switch b timer: " + pSwitchTimer_b, 0, 576, Color.Blue, Texture.ASCII);
             MyImage.drawText("P-Switch s timer: " + pSwitchTimer_s, 0, 588, Color.Silver, Texture.ASCII);

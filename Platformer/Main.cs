@@ -22,7 +22,13 @@ namespace Game
         public static int sceneX = 640;
         public static int sceneY = 480;
         public static bool debugInfo=true;
+
         public static bool zoomed = false;
+        public static double zoom = 2;
+        public static double camX;
+        public static double camY;
+        private static double diffx;
+        private static double diffy;
 
         public static double mouseX;
         public static double mouseY;
@@ -88,7 +94,9 @@ namespace Game
 
                 };
 
-                
+                //string s = "---4";
+                //Console.WriteLine("3" + s[3]);
+                //Console.ReadKey();
 
                 Map karte = new Map(16); 
 
@@ -115,54 +123,66 @@ namespace Game
                         game.Exit();
                     }
                                         
-                    game.Title = (("FPS: " + (int)(game.RenderFrequency) +" ; "+ Math.Round(game.RenderTime*1000,2)+"ms/frame  Zoomed="+zoomed));
+                    game.Title = (("FPS: " + (int)(game.RenderFrequency) +" ; "+ Math.Round(game.RenderTime*1000,2)+"ms/frame  Zoom="+zoom));
                     
                     
                     Map.fpsLine.Insert(0,(int)game.RenderFrequency);
                     while (Map.fpsLine.Count > 230)
                         Map.fpsLine.RemoveAt(Map.fpsLine.Count - 1);
 
+                    
                 };
                 
                 game.RenderFrame += (sender, e) =>
                 {
                     // render graphics
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
+                    //GL.Scale(Map.temp, Map.temp, 0);
                     GL.MatrixMode(MatrixMode.Projection);
+                    //GL.MatrixMode(MatrixMode.Modelview);
                     GL.LoadIdentity();
 
                     //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                    //Console.WriteLine("Cam (X:" + camX + " |Y:" + camY + ")");
+                    
+                    
+                    GL.Viewport((int)(0), (int)(0), windowX, windowY);
+                    GL.LineWidth(1.0f);
+                    game.Width = windowX;
+                    game.Height = windowY;
+                    Vector2d mouseVector = new Vector2d(game.Mouse.X, game.Mouse.Y);
 
                     if (zoomed)
                     {
-                        GL.Viewport(0,(int) -374, (int)(sceneX * 4.17), (int)(sceneY * 2.78)); //2x Zoomed
-
-                        game.Width = sceneX * 2+320;
-                        game.Height = sceneY * 2;
-                        GL.Ortho(0, windowX, windowY, 0, -1000, 1000);  //Render  distant objects smaller
+                        GL.Ortho((int)(-sceneX / 2), (int)(sceneX / 2), (int)(sceneY / 2), (int)(-sceneY / 2), -1000, 1000);  //Render  distant objects smaller
                         GL.MatrixMode(MatrixMode.Modelview);
-                        karte.draw();    ///////////////////////////////////////// MAP-Object
-                        karte.process((int)(game.Mouse.X / 2.084), (int)(game.Mouse.Y / 1.937));
+
+                        GL.PopMatrix();
+                        GL.PushMatrix();
+                        zoom = Map.temp;
+                        
+                        GL.Scale(zoom, zoom, 1);        //glZomm the scene
+                        GL.Translate(-camX, -camY, 0);  //glTranslate (add offset) the zoomed scene
+
+                        GL.Vertex2(mouseVector.X, mouseVector.Y);
+
+                        mouseVector.X -= (sceneX / 2);// + camX;
+                        mouseVector.Y -= (sceneY / 2);// + camY;
+
+                        mouseVector.X /= zoom * 2*(1.6);
+                        mouseVector.Y /= zoom * 2*(0.9);
                     }
                     else
                     {
-                        GL.Viewport(0, 0, windowX, windowY);  //unZoomed
-                        game.Width = windowX;
-                        game.Height = windowY;
-                        GL.Ortho(0, windowX, windowY, 0, -1000, 1000);  //Render  distant objects smaller
+                        GL.Ortho((int)0, (int)windowX, (int)windowY, (int)0, -1000, 1000);  //Render  distant objects smaller
                         GL.MatrixMode(MatrixMode.Modelview);
-                        karte.draw();    ///////////////////////////////////////// MAP-Object
-                        karte.process(game.Mouse.X, game.Mouse.Y);
+                        GL.PopMatrix();
+                        GL.PushMatrix();
                     }
-                    
 
-                    //GL.Ortho((int)sceneX, (int)sceneX * 2, (int)sceneY * 2, (int)sceneY, -1000, 1000);    
+                    karte.draw();    ///////////////////////////////////////// MAP-Object
+                    karte.process((int)(mouseVector.X), (int)(mouseVector.Y));
 
-
-                    
-                    
-                                        
                     game.SwapBuffers();
                 };
 
@@ -185,6 +205,8 @@ namespace Game
             npcForm.Show();
 
         }
+
+        
 
 //End of Root =============================================================
 

@@ -50,9 +50,7 @@ namespace Game
             {
                 for (int xx = (int)colRect.x; xx < (int)(colRect.x + colRect.w); xx += Map.tileSize)
                 {
-                    //GL.BlendFunc(BlendingFactorSrc.SrcColor, BlendingFactorDest.DstColor);
                     MyImage.drawImage(texture, xx, yy);
-                    //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 }
             }
             //MyImage.endDraw2D();

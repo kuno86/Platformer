@@ -80,7 +80,7 @@ namespace Game
             refreshColRect();
             getColGrid();
 
-            if (this.metaData[0] == "kicked")
+            if (this.metaData["kicked"] == "kicked")
                 this.state = 5;
 
             switch (state)

@@ -21,6 +21,9 @@ namespace Game  //Only purpose is to hold all the textures
         public static int watertint =           MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\technical\watertint.png");//
         public static int waterTop =            MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\technical\smb1_watertop.png");//
 
+        public static int smb1_flagpole =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\technical\smb1_flagpole.bmp");//
+        public static int smb1_flagpoleflag =   MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\technical\smb1_flagpoleflag.bmp");//
+
         public static int circle32_debug =      MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\special\circle32_debug.bmp");//
 
         public static int smw_keyhole =         MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\special\smw_keyhole.bmp");//
@@ -56,6 +59,8 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb3_blooper =        MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb3_blooper.bmp");//
         public static int smb1_cheepcheepG =    MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_cheepcheep_green.bmp");//
         public static int smb1_cheepcheepR =    MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_cheepcheep_red.bmp");//
+
+        public static int smb1_bowser =         MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\npc\smb1_bowser.bmp");//
 
         //Items
         public static int smb1_mushroom =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\item\smb1_mushroom.bmp");//
@@ -109,12 +114,16 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smb1_winehead =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_winehead.bmp");//
 
         public static int smw_peaSpring =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smw_pea-spring.bmp");
+        public static int smb1_springFixed1 =   MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_fixedspringboard1.bmp");
+        public static int smb1_springFixed2 =   MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_fixedspringboard2.bmp");
 
         public static int smb1_cannon =         MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_cannon.bmp");//
         public static int smb3_cannon =         MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb3_cannon.bmp");//
         public static int smw_cannon =          MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smw_cannon.bmp");//
 
         public static int smb1_firebarBlock =   MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_firebar-block.bmp");//
+
+        public static int smw_messagebox =      MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smw_messagebox.bmp");//
 
         public static int smb1_lava =           MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb1_lava.bmp");//
         public static int smb3_lava1 =          MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\block\smb3_lava1.bmp");//
@@ -132,7 +141,8 @@ namespace Game  //Only purpose is to hold all the textures
 
         public static int fireballshot =        MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\fireballshot.bmp");//
         public static int fireball_hit =        MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\fireball_hit.bmp");//
-        public static int smb1_hammerbrosHmr1 = MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_hammerbros_hammer.bmp");
+        public static int smb1_hammerbrosHmr1 = MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_hammerbros_hammer.bmp");//
+        public static int smb1_bowser_fire =    MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_bowser_fireball.bmp");//
 
         public static int qm_open =             MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\open-questionmark-block.bmp");//
         public static int smb1_brickSh1 =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_brickshatter1.bmp");//
@@ -142,6 +152,9 @@ namespace Game  //Only purpose is to hold all the textures
         public static int smw_brickSh1 =        MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smw_brickshatter1.bmp");//
 
         public static int smb1_getCoin =        MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\effect\smb1_getCoin.bmp");//
+
+        //resizeables
+        public static int resizeable001 =       MyImage.LoadTexture(RootThingy.exePath + @"\gfx\sprites\resizeable\001.bmp");//
 
     }
 }

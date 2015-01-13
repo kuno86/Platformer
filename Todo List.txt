@@ -7,8 +7,6 @@
 
  - add circle collisions
 
- - Fix MyImage::BitmapFromTexturId()
-
  - Try this for collision:
 
 	if (objRect.Intersects(wallRect)) // If there is a collision
@@ -30,19 +28,25 @@
  - and try this: 
 	http://www.gamedev.net/page/resources/_/technical/game-programming/2d-rotated-rectangle-collision-r2604
 
+ - add these objects
+	- Level-Exit
+	- Ladder
+
+ - add resizeable blocks (min 3x3)
+
+ - fix zoom/offsetted mouse-position
 
 
 
 Done-List:
--added BaseObj-Generator
--added WarpToWarp
--added WarpToXYS (teleport)
--added Keyhole
--added experimental RollingRock (Circle-Collision)
--added WaterArea
--added Blooper
--added CheepCheep
--changed BaseObj.process() to
-	- BaseObj.doAI()
-	- BaseObj.doRender()
--added player ability to grab & throw items
+===========
+ - added Flag pole
+ - added support for player input override
+ - fixed MyImage.Bitmap BMPfromTextureID()
+ - added Message(Text)-Ability for all BaseObj's
+ - added Messagebox
+ - added fixed springboards (smb1)
+ - optical zoom and offset (z-Key)
+ - added smb1 Bowser
+ - added smb1 Bowser fireball
+ - added resizeable blocks
